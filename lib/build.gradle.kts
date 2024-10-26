@@ -12,6 +12,7 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
@@ -33,13 +34,17 @@ dependencies {
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.content.negotiation)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.konsist)
+    testImplementation(libs.ktor.client.mock)
 }
 
-//testing {
+// testing {
 //    suites {
 //        // Configure the built-in test suite
 //        val test by getting(JvmTestSuite::class) {
@@ -47,7 +52,7 @@ dependencies {
 //            useKotlinTest("2.0.0")
 //        }
 //    }
-//}
+// }
 
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
