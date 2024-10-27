@@ -14,7 +14,10 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.request
 import io.ktor.http.appendPathSegments
 import io.ktor.serialization.kotlinx.json.json
+import tech.sco.hetznerkloud.model.read.DataCenter
 import tech.sco.hetznerkloud.response.DataCenterList
+import tech.sco.hetznerkloud.response.ImageList
+import tech.sco.hetznerkloud.response.IsoList
 import tech.sco.hetznerkloud.response.ServerList
 
 private const val URL = "https://api.hetzner.cloud/v1"
@@ -38,6 +41,12 @@ class CloudApiClient private constructor(
     suspend fun servers(): ServerList = request(Route.GET_ALL_SERVERS)
 
     suspend fun datacenters(): DataCenterList = request(Route.GET_ALL_DATACENTERS)
+
+    suspend fun images(): ImageList = request(Route.GET_ALL_IMAGES)
+
+    suspend fun isos(): IsoList = request(Route.GET_ALL_ISOS)
+
+    suspend fun serverTypes(): DataCenter.ServerTypes = request(Route.GET_ALL_SERVER_TYPES)
 
     private suspend inline fun <reified T> request(route: Route): T =
         route.value.let {

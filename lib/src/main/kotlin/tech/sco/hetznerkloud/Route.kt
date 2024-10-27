@@ -15,4 +15,6 @@ enum class Route(
     GET_ALL_IMAGES(Pair(HttpMethod.Get, "/images")),
 
     GET_ALL_ISOS(Pair(HttpMethod.Get, "/isos")),
+
+    GET_ALL_SERVER_TYPES(Pair(HttpMethod.Get, "/server-types")),
 }

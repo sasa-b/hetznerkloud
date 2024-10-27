@@ -48,7 +48,7 @@ internal fun createMockEngine(apiToken: ApiToken) =
                 )
             Route.GET_ALL_ISOS.value == test ->
                 response(
-                    Route.GET_ALL_DATACENTERS,
+                    Route.GET_ALL_ISOS,
                     HttpStatusCode.OK,
                     defaultHeaders,
                 )
@@ -76,8 +76,8 @@ private fun content(route: Route): String =
     mapOf(
         Route.GET_ALL_SERVERS to "src/test/resources/examples/response/get_all_servers.json",
         Route.GET_ALL_DATACENTERS to "src/test/resources/examples/response/get_all_datacenters.json",
-        Route.GET_ALL_ISOS to "src/test/resources/examples/response/get_all_servers.json",
-        Route.GET_ALL_IMAGES to "src/test/resources/examples/response/get_all_servers.json",
+        Route.GET_ALL_ISOS to "src/test/resources/examples/response/get_all_isos.json",
+        Route.GET_ALL_IMAGES to "src/test/resources/examples/response/get_all_images.json",
     ).let {
         val filePath = Paths.get(it[route]!!).toAbsolutePath().toString()
 

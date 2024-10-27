@@ -14,6 +14,8 @@ import tech.sco.hetznerkloud.model.read.Meta
 import tech.sco.hetznerkloud.model.read.Server
 import tech.sco.hetznerkloud.model.read.ServerType
 import tech.sco.hetznerkloud.response.DataCenterList
+import tech.sco.hetznerkloud.response.ImageList
+import tech.sco.hetznerkloud.response.IsoList
 import tech.sco.hetznerkloud.response.ServerList
 
 private const val TEST_TOKEN = "foo"
@@ -21,12 +23,11 @@ private const val TEST_TOKEN = "foo"
 class CloudApiClientTest : AnnotationSpec() {
     private val apiToken = ApiToken(TEST_TOKEN)
     private val mockEngine = createMockEngine(apiToken)
+    private val underTest = CloudApiClient.of(apiToken, mockEngine)
 
     @Test
-    fun canGetServerList() {
+    fun shouldGetServerList() {
         runBlocking {
-            val underTest = CloudApiClient.of(apiToken, mockEngine)
-
             underTest.servers() shouldBe
                 ServerList(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
@@ -178,10 +179,8 @@ class CloudApiClientTest : AnnotationSpec() {
     }
 
     @Test
-    fun canGetDatacentersList() {
+    fun shouldGetDataCenterList() {
         runBlocking {
-            val underTest = CloudApiClient.of(apiToken, mockEngine)
-
             underTest.datacenters() shouldBe
                 DataCenterList(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
@@ -211,6 +210,60 @@ class CloudApiClientTest : AnnotationSpec() {
                             ),
                         ),
                     recommendation = 1,
+                )
+        }
+    }
+
+    @Test
+    fun shouldGetImageList() {
+        runBlocking {
+            underTest.images() shouldBe
+                ImageList(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    images =
+                        listOf(
+                            Image(
+                                id = 42,
+                                architecture = "x86",
+                                boundTo = null,
+                                created = "2016-01-30T23:55:00+00:00",
+                                createdFrom = Image.CreatedFrom(id = 1, name = "Server"),
+                                deleted = null,
+                                deprecated = "2018-02-28T00:00:00+00:00",
+                                description = "Ubuntu 20.04 Standard 64 bit",
+                                diskSize = 10,
+                                imageSize = 2.3,
+                                labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
+                                name = "ubuntu-20.04",
+                                osFlavor = "ubuntu",
+                                osVersion = "20.04",
+                                protection = Image.Protection(delete = false),
+                                rapidDeploy = false,
+                                status = "available",
+                                type = "snapshot",
+                            ),
+                        ),
+                )
+        }
+    }
+
+    @Test
+    fun shouldGetIsoList() {
+        runBlocking {
+            underTest.isos() shouldBe
+                IsoList(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    isos =
+                        listOf(
+                            Iso(
+                                id = 42,
+                                architecture = "x86",
+                                deprecation = Server.Deprecation(announced = "2023-06-01T00:00:00+00:00", unavailableAfter = "2023-09-01T00:00:00+00:00"),
+                                description = "FreeBSD 11.0 x64",
+                                name = "FreeBSD-11.0-RELEASE-amd64-dvd1",
+                                type = "public",
+                            ),
+                        ),
                 )
         }
     }
