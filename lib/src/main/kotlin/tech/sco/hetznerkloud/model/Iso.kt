@@ -5,7 +5,7 @@ import tech.sco.hetznerkloud.model.Server.Deprecation
 
 @Serializable
 data class Iso(
-    val id: Int,
+    val id: Long,
     val architecture: String,
     val deprecation: Deprecation,
     val description: String,

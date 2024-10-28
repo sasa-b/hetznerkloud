@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 
 @Serializable
 data class Server(
-    val id: Int,
+    val id: Long,
     @JsonNames("backup_window")
     val backupWindow: String,
     @Serializable(with = OffsetDateTimeSerializer::class)
@@ -56,7 +56,7 @@ data class Server(
 
     @Serializable
     data class PlacementGroup(
-        val id: Int,
+        val id: Long,
         @Serializable(with = OffsetDateTimeSerializer::class)
         val created: OffsetDateTime,
         val labels: Labels,
@@ -91,13 +91,13 @@ data class Server(
     ) {
         @Serializable
         data class Firewall(
-            val id: Int,
+            val id: Long,
             val status: String,
         )
 
         @Serializable
         data class Ipv4(
-            val id: Int? = null,
+            val id: Long? = null,
             val blocked: Boolean,
             @JsonNames("dns_ptr")
             val dnsPtr: String,
@@ -106,7 +106,7 @@ data class Server(
 
         @Serializable
         data class Ipv6(
-            val id: Int? = null,
+            val id: Long? = null,
             val blocked: Boolean,
             @JsonNames("dns_ptr")
             val dnsPtr: List<Map<String, String>>,

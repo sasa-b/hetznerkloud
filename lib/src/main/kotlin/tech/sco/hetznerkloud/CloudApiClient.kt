@@ -21,6 +21,7 @@ import kotlinx.serialization.json.Json
 import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.HttpMessage
+import tech.sco.hetznerkloud.response.ActionList
 import tech.sco.hetznerkloud.response.DatacenterList
 import tech.sco.hetznerkloud.response.ImageList
 import tech.sco.hetznerkloud.response.IsoList
@@ -60,73 +61,33 @@ class CloudApiClient private constructor(
         ) = CloudApiClient(httpEngine, token)
     }
 
-    suspend fun servers(): ServerList = request(
-        route = Route.GET_ALL_SERVERS,
-        resourceId = null,
-        body = null,
-    )
+    suspend fun actions(): ActionList = request(Route.GET_ALL_ACTIONS)
 
-    suspend fun server(id: Int): ServerItem = request(
-        route = Route.GET_SERVER,
-        resourceId = id,
-        body = null,
-    )
+    suspend fun action(id: Long): ActionList = request(Route.GET_ACTION, id)
 
-    suspend fun server(request: CreateServer): ServerCreated = request(
-        route = Route.CREATE_SERVER,
-        resourceId = null,
-        body = request,
-    )
+    suspend fun servers(): ServerList = request(Route.GET_ALL_SERVERS)
 
-    suspend fun datacenters(): DatacenterList = request(
-        route = Route.GET_ALL_DATACENTERS,
-        resourceId = null,
-        body = null,
-    )
+    suspend fun server(id: Long): ServerItem = request(Route.GET_SERVER, id)
 
-    suspend fun datacenter(id: Int): DatacenterList = request(
-        route = Route.GET_DATACENTER,
-        resourceId = id,
-        body = null,
-    )
+    suspend fun server(request: CreateServer): ServerCreated = request(Route.CREATE_SERVER, body = request)
 
-    suspend fun images(): ImageList = request(
-        route = Route.GET_ALL_IMAGES,
-        resourceId = null,
-        body = null,
-    )
+    suspend fun datacenters(): DatacenterList = request(Route.GET_ALL_DATACENTERS)
 
-    suspend fun image(id: Int): ImageList = request(
-        route = Route.GET_IMAGE,
-        resourceId = id,
-        body = null,
-    )
+    suspend fun datacenter(id: Long): DatacenterList = request(Route.GET_DATACENTER, id)
 
-    suspend fun isos(): IsoList = request(
-        route = Route.GET_ALL_ISOS,
-        resourceId = null,
-        body = null,
-    )
+    suspend fun images(): ImageList = request(Route.GET_ALL_IMAGES)
 
-    suspend fun iso(id: Int): IsoList = request(
-        route = Route.GET_ISO,
-        resourceId = id,
-        body = null,
-    )
+    suspend fun image(id: Long): ImageList = request(Route.GET_IMAGE, id)
 
-    suspend fun serverTypes(): Datacenter.ServerTypes = request(
-        route = Route.GET_ALL_SERVER_TYPES,
-        resourceId = null,
-        body = null,
-    )
+    suspend fun isos(): IsoList = request(Route.GET_ALL_ISOS)
 
-    suspend fun serverType(id: Int): Datacenter.ServerTypes = request(
-        route = Route.GET_SERVER_TYPE,
-        resourceId = id,
-        body = null,
-    )
+    suspend fun iso(id: Long): IsoList = request(Route.GET_ISO, id)
 
-    private suspend inline fun <reified T> request(route: Route, resourceId: Int?, body: HttpMessage?): T =
+    suspend fun serverTypes(): Datacenter.ServerTypes = request(Route.GET_ALL_SERVER_TYPES)
+
+    suspend fun serverType(id: Long): Datacenter.ServerTypes = request(Route.GET_SERVER_TYPE, id)
+
+    private suspend inline fun <reified T> request(route: Route, resourceId: Long? = null, body: HttpMessage? = null): T =
         route.value.let {
             val (httpMethod, path) = it
 

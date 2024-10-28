@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 
 @Serializable
 data class Image(
-    val id: Int,
+    val id: Long,
     val architecture: String,
     @JsonNames("bound_to")
     val boundTo: String? = null,
@@ -40,7 +40,7 @@ data class Image(
 ) {
     @Serializable
     data class CreatedFrom(
-        val id: Int,
+        val id: Long,
         val name: String,
     )
 

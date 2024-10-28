@@ -12,6 +12,7 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerItem
 import tech.sco.hetznerkloud.response.ServerList
 import java.time.OffsetDateTime
@@ -209,8 +210,8 @@ class ServerApiTest :
                     volumes = listOf(123),
                 )
 
-                underTest.server(request) should {
-                    it.action shouldBe Action(
+                underTest.server(request) shouldBe ServerCreated(
+                    action = Action(
                         id = 1,
                         command = "create_server",
                         Action.Error(
@@ -227,9 +228,21 @@ class ServerApiTest :
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
                         status = "running",
-                    )
-                    it.rootPassword shouldBe "YItygq1v3GYjjMomLaKc"
-                    it.server shouldBe Server(
+                    ),
+                    nextActions = listOf(
+                        Action(
+                            id = 13,
+                            command = "start_server",
+                            error = Action.Error(code = "action_failed", message = "Action failed"),
+                            finished = null,
+                            progress = 0,
+                            resources = listOf(Action.Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                            status = "running",
+                        ),
+                    ),
+                    rootPassword = "YItygq1v3GYjjMomLaKc",
+                    server = Server(
                         id = 42,
                         backupWindow = "22-02",
                         created = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -339,8 +352,8 @@ class ServerApiTest :
                         ),
                         status = "initializing",
                         volumes = emptyList(),
-                    )
-                }
+                    ),
+                )
             }
         }
     })

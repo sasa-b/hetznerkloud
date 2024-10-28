@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonNames
 
 @Serializable
 data class Location(
-    val id: Int,
+    val id: Long,
     val city: String,
     val country: String,
     val description: String,

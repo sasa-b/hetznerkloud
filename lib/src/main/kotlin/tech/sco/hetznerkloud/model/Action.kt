@@ -6,7 +6,7 @@ import java.time.OffsetDateTime
 
 @Serializable
 data class Action(
-    val id: Int,
+    val id: Long,
     val command: String,
     val error: Error? = null,
     @Serializable(with = OffsetDateTimeSerializer::class)
@@ -19,7 +19,7 @@ data class Action(
 ) {
     @Serializable
     data class Resource(
-        val id: Int,
+        val id: Long,
         val type: String,
     )
 

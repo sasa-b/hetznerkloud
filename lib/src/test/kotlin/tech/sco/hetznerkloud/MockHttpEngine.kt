@@ -13,7 +13,7 @@ import io.ktor.utils.io.ByteReadChannel
 import java.io.File
 import java.nio.file.Paths
 
-internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Int)? = null) =
+internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Long)? = null) =
     MockEngine { request ->
 
         if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
@@ -52,7 +52,7 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Int
         }
     }
 
-private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Int?) = if (resourceId != null) {
+private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?) = if (resourceId != null) {
     val (httpMethod, path) = route.value
     httpMethod == test.first && path.withId(resourceId).value == test.second.value
 } else {

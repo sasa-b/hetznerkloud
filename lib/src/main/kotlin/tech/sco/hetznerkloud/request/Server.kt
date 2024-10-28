@@ -33,7 +33,7 @@ data class CreateServer(
     @Serializable
     data class Firewall(
         @JsonNames("firewall")
-        val id: Int,
+        val id: Long,
     )
 
     @Serializable

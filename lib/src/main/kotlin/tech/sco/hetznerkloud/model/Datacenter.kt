@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonNames
 
 @Serializable
 data class Datacenter(
-    val id: Int,
+    val id: Long,
     val description: String,
     val location: Location,
     val name: String,

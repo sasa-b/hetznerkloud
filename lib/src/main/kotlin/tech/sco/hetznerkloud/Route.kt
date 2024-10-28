@@ -5,12 +5,15 @@ import io.ktor.http.HttpMethod
 typealias HttpMethodAndPath = Pair<HttpMethod, Path>
 
 data class Path(val value: String) {
-    fun withId(id: Int) = Path(value.replace("{id}", id.toString()))
+    fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
 }
 
 enum class Route(
     val value: HttpMethodAndPath,
 ) {
+    GET_ALL_ACTIONS(Pair(HttpMethod.Get, Path("/actions"))),
+    GET_ACTION(Pair(HttpMethod.Get, Path("/actions/{id}"))),
+
     GET_ALL_SERVERS(Pair(HttpMethod.Get, Path("/servers"))),
     GET_SERVER(Pair(HttpMethod.Get, Path("/servers/{id}"))),
     CREATE_SERVER(Pair(HttpMethod.Post, Path("/servers"))),
