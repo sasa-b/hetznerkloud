@@ -5,6 +5,8 @@ package tech.sco.hetznerkloud.model.read
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
+import java.time.OffsetDateTime
 
 @Serializable
 data class Image(
@@ -12,11 +14,13 @@ data class Image(
     val architecture: String,
     @JsonNames("bound_to")
     val boundTo: String? = null,
-    val created: String,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val created: OffsetDateTime,
     @JsonNames("created_from")
     val createdFrom: CreatedFrom,
     val deleted: String? = null,
-    val deprecated: String,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val deprecated: OffsetDateTime,
     val description: String,
     @JsonNames("disk_size")
     val diskSize: Int,

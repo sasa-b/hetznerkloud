@@ -17,6 +17,7 @@ import tech.sco.hetznerkloud.response.DataCenterList
 import tech.sco.hetznerkloud.response.ImageList
 import tech.sco.hetznerkloud.response.IsoList
 import tech.sco.hetznerkloud.response.ServerList
+import java.time.OffsetDateTime
 
 private const val TEST_TOKEN = "foo"
 
@@ -36,7 +37,7 @@ class CloudApiClientTest : AnnotationSpec() {
                             Server(
                                 id = 42,
                                 backupWindow = "22-02",
-                                created = "2016-01-30T23:55:00+00:00",
+                                created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                                 datacenter =
                                     DataCenter(
                                         id = 42,
@@ -65,10 +66,10 @@ class CloudApiClientTest : AnnotationSpec() {
                                         id = 42,
                                         architecture = "x86",
                                         boundTo = null,
-                                        created = "2016-01-30T23:55:00+00:00",
+                                        created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                                         createdFrom = Image.CreatedFrom(id = 1, name = "Server"),
                                         deleted = null,
-                                        deprecated = "2018-02-28T00:00:00+00:00",
+                                        deprecated = OffsetDateTime.parse("2018-02-28T00:00:00+00:00"),
                                         description = "Ubuntu 20.04 Standard 64 bit",
                                         diskSize = 10,
                                         imageSize = 2.3,
@@ -89,8 +90,8 @@ class CloudApiClientTest : AnnotationSpec() {
                                         architecture = "x86",
                                         deprecation =
                                             Server.Deprecation(
-                                                announced = "2023-06-01T00:00:00+00:00",
-                                                unavailableAfter = "2023-09-01T00:00:00+00:00",
+                                                announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
+                                                unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
                                             ),
                                         description = "FreeBSD 11.0 x64",
                                         name = "FreeBSD-11.0-RELEASE-amd64-dvd1",
@@ -104,7 +105,7 @@ class CloudApiClientTest : AnnotationSpec() {
                                 placementGroup =
                                     Server.PlacementGroup(
                                         id = 42,
-                                        created = "2016-01-30T23:55:00+00:00",
+                                        created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                                         labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
                                         name = "my-resource",
                                         servers = listOf(42),
@@ -150,8 +151,8 @@ class CloudApiClientTest : AnnotationSpec() {
                                         deprecated = false,
                                         deprecation =
                                             Server.Deprecation(
-                                                announced = "2023-06-01T00:00:00+00:00",
-                                                unavailableAfter = "2023-09-01T00:00:00+00:00",
+                                                announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
+                                                unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
                                             ),
                                         description = "CPX11",
                                         disk = 40,
@@ -226,10 +227,10 @@ class CloudApiClientTest : AnnotationSpec() {
                                 id = 42,
                                 architecture = "x86",
                                 boundTo = null,
-                                created = "2016-01-30T23:55:00+00:00",
+                                created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                                 createdFrom = Image.CreatedFrom(id = 1, name = "Server"),
                                 deleted = null,
-                                deprecated = "2018-02-28T00:00:00+00:00",
+                                deprecated = OffsetDateTime.parse("2018-02-28T00:00:00+00:00"),
                                 description = "Ubuntu 20.04 Standard 64 bit",
                                 diskSize = 10,
                                 imageSize = 2.3,
@@ -258,7 +259,11 @@ class CloudApiClientTest : AnnotationSpec() {
                             Iso(
                                 id = 42,
                                 architecture = "x86",
-                                deprecation = Server.Deprecation(announced = "2023-06-01T00:00:00+00:00", unavailableAfter = "2023-09-01T00:00:00+00:00"),
+                                deprecation =
+                                    Server.Deprecation(
+                                        announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
+                                        unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
+                                    ),
                                 description = "FreeBSD 11.0 x64",
                                 name = "FreeBSD-11.0-RELEASE-amd64-dvd1",
                                 type = "public",

@@ -5,13 +5,16 @@ package tech.sco.hetznerkloud.model.read
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
+import java.time.OffsetDateTime
 
 @Serializable
 data class Server(
     val id: Int,
     @JsonNames("backup_window")
     val backupWindow: String,
-    val created: String,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val created: OffsetDateTime,
     val datacenter: DataCenter,
     val image: Image,
     @JsonNames("included_traffic")
@@ -44,15 +47,18 @@ data class Server(
 ) {
     @Serializable
     data class Deprecation(
-        val announced: String,
+        @Serializable(with = OffsetDateTimeSerializer::class)
+        val announced: OffsetDateTime,
         @JsonNames("unavailable_after")
-        val unavailableAfter: String,
+        @Serializable(with = OffsetDateTimeSerializer::class)
+        val unavailableAfter: OffsetDateTime,
     )
 
     @Serializable
     data class PlacementGroup(
         val id: Int,
-        val created: String,
+        @Serializable(with = OffsetDateTimeSerializer::class)
+        val created: OffsetDateTime,
         val labels: Labels,
         val name: String,
         val servers: List<Int>,
