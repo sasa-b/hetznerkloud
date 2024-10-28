@@ -1,11 +1,11 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tech.sco.hetznerkloud.model.read
+package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.model.read.Server.Deprecation
+import tech.sco.hetznerkloud.model.Server.Deprecation
 
 @Serializable
 data class ServerType(
@@ -15,11 +15,11 @@ data class ServerType(
     @JsonNames("cpu_type")
     val cpuType: String,
     val deprecated: Boolean,
-    val deprecation: Deprecation,
+    val deprecation: Deprecation? = null,
     val description: String,
     val disk: Int,
     @JsonNames("included_traffic")
-    val includedTraffic: Double? = null,
+    val includedTraffic: Long? = null,
     val memory: Int,
     val name: String,
     val prices: List<Price>,
@@ -29,7 +29,7 @@ data class ServerType(
     @Serializable
     data class Price(
         @JsonNames("included_traffic")
-        val includedTraffic: Int,
+        val includedTraffic: Long,
         val location: String,
         @JsonNames("price_hourly")
         val priceHourly: Amount,

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tech.sco.hetznerkloud.model.read
+package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -15,24 +15,24 @@ data class Server(
     val backupWindow: String,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val created: OffsetDateTime,
-    val datacenter: DataCenter,
+    val datacenter: Datacenter,
     val image: Image,
     @JsonNames("included_traffic")
-    val includedTraffic: Int,
+    val includedTraffic: Long,
     @JsonNames("ingoing_traffic")
-    val ingoingTraffic: Int,
+    val ingoingTraffic: Long,
     val iso: Iso,
-    val labels: Labels,
+    val labels: Labels = emptyMap(),
     @JsonNames("load_balancers")
     val loadBalancers: List<Int>,
     val locked: Boolean,
     val name: String,
     @JsonNames("outgoing_traffic")
-    val outgoingTraffic: Int,
+    val outgoingTraffic: Long,
     @JsonNames("placement_group")
-    val placementGroup: PlacementGroup,
+    val placementGroup: PlacementGroup? = null,
     @JsonNames("primary_disk_size")
-    val primaryDiskSize: Int,
+    val primaryDiskSize: Long,
     @JsonNames("private_net")
     val privateNet: List<PrivateNetwork>,
     val protection: Protection,
@@ -97,7 +97,7 @@ data class Server(
 
         @Serializable
         data class Ipv4(
-            val id: Int,
+            val id: Int? = null,
             val blocked: Boolean,
             @JsonNames("dns_ptr")
             val dnsPtr: String,
@@ -106,7 +106,7 @@ data class Server(
 
         @Serializable
         data class Ipv6(
-            val id: Int,
+            val id: Int? = null,
             val blocked: Boolean,
             @JsonNames("dns_ptr")
             val dnsPtr: List<Map<String, String>>,

@@ -12,15 +12,23 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.request
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
+import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import tech.sco.hetznerkloud.model.read.DataCenter
-import tech.sco.hetznerkloud.response.DataCenterList
+import kotlinx.serialization.json.Json
+import tech.sco.hetznerkloud.model.Datacenter
+import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.HttpMessage
+import tech.sco.hetznerkloud.response.DatacenterList
 import tech.sco.hetznerkloud.response.ImageList
 import tech.sco.hetznerkloud.response.IsoList
+import tech.sco.hetznerkloud.response.ServerCreated
+import tech.sco.hetznerkloud.response.ServerItem
 import tech.sco.hetznerkloud.response.ServerList
 
-private const val URL = "https://api.hetzner.cloud/v1"
+private const val BASE_URL = "https://api.hetzner.cloud/v1"
 
 class CloudApiClient private constructor(
     httpEngine: HttpClientEngine,
@@ -28,7 +36,14 @@ class CloudApiClient private constructor(
 ) {
     private val client =
         HttpClient(httpEngine) {
-            install(ContentNegotiation) { json() }
+            install(ContentNegotiation) {
+                json(
+                    Json {
+//                        ignoreUnknownKeys = true
+//                        isLenient = true
+                    },
+                )
+            }
             install(Auth) {
                 bearer {
                     loadTokens {
@@ -38,33 +53,97 @@ class CloudApiClient private constructor(
             }
         }
 
-    suspend fun servers(): ServerList = request(Route.GET_ALL_SERVERS)
-
-    suspend fun datacenters(): DataCenterList = request(Route.GET_ALL_DATACENTERS)
-
-    suspend fun images(): ImageList = request(Route.GET_ALL_IMAGES)
-
-    suspend fun isos(): IsoList = request(Route.GET_ALL_ISOS)
-
-    suspend fun serverTypes(): DataCenter.ServerTypes = request(Route.GET_ALL_SERVER_TYPES)
-
-    private suspend inline fun <reified T> request(route: Route): T =
-        route.value.let {
-            val (httpMethod, path) = it
-
-            client
-                .request(URL) {
-                    method = httpMethod
-                    url {
-                        appendPathSegments(path)
-                    }
-                }.body()
-        }
-
     companion object {
         fun of(
             token: ApiToken,
             httpEngine: HttpClientEngine = CIO.create(),
         ) = CloudApiClient(httpEngine, token)
     }
+
+    suspend fun servers(): ServerList = request(
+        route = Route.GET_ALL_SERVERS,
+        resourceId = null,
+        body = null,
+    )
+
+    suspend fun server(id: Int): ServerItem = request(
+        route = Route.GET_SERVER,
+        resourceId = id,
+        body = null,
+    )
+
+    suspend fun server(request: CreateServer): ServerCreated = request(
+        route = Route.CREATE_SERVER,
+        resourceId = null,
+        body = request,
+    )
+
+    suspend fun datacenters(): DatacenterList = request(
+        route = Route.GET_ALL_DATACENTERS,
+        resourceId = null,
+        body = null,
+    )
+
+    suspend fun datacenter(id: Int): DatacenterList = request(
+        route = Route.GET_DATACENTER,
+        resourceId = id,
+        body = null,
+    )
+
+    suspend fun images(): ImageList = request(
+        route = Route.GET_ALL_IMAGES,
+        resourceId = null,
+        body = null,
+    )
+
+    suspend fun image(id: Int): ImageList = request(
+        route = Route.GET_IMAGE,
+        resourceId = id,
+        body = null,
+    )
+
+    suspend fun isos(): IsoList = request(
+        route = Route.GET_ALL_ISOS,
+        resourceId = null,
+        body = null,
+    )
+
+    suspend fun iso(id: Int): IsoList = request(
+        route = Route.GET_ISO,
+        resourceId = id,
+        body = null,
+    )
+
+    suspend fun serverTypes(): Datacenter.ServerTypes = request(
+        route = Route.GET_ALL_SERVER_TYPES,
+        resourceId = null,
+        body = null,
+    )
+
+    suspend fun serverType(id: Int): Datacenter.ServerTypes = request(
+        route = Route.GET_SERVER_TYPE,
+        resourceId = id,
+        body = null,
+    )
+
+    private suspend inline fun <reified T> request(route: Route, resourceId: Int?, body: HttpMessage?): T =
+        route.value.let {
+            val (httpMethod, path) = it
+
+            client
+                .request(BASE_URL) {
+                    method = httpMethod
+                    url {
+                        if (resourceId != null) {
+                            appendPathSegments(path.withId(resourceId).value)
+                        } else {
+                            appendPathSegments(path.value)
+                        }
+                    }
+                    if (body != null) {
+                        contentType(ContentType.Application.Json)
+                        setBody(body)
+                    }
+                }.body()
+        }
 }

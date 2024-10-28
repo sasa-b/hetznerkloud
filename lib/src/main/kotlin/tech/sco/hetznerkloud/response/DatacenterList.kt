@@ -1,11 +1,12 @@
 package tech.sco.hetznerkloud.response
 
 import kotlinx.serialization.Serializable
-import tech.sco.hetznerkloud.model.Iso
+import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Meta
 
 @Serializable
-data class IsoList(
+data class DatacenterList(
     val meta: Meta,
-    val isos: List<Iso>,
+    val datacenters: List<Datacenter>,
+    val recommendation: Int,
 )

@@ -1,0 +1,31 @@
+package tech.sco.hetznerkloud.model
+
+import kotlinx.serialization.Serializable
+import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
+import java.time.OffsetDateTime
+
+@Serializable
+data class Action(
+    val id: Int,
+    val command: String,
+    val error: Error? = null,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val finished: OffsetDateTime? = null,
+    val progress: Int = 0,
+    val resources: List<Resource>,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val started: OffsetDateTime,
+    val status: String,
+) {
+    @Serializable
+    data class Resource(
+        val id: Int,
+        val type: String,
+    )
+
+    @Serializable
+    data class Error(
+        val code: String,
+        val message: String,
+    )
+}

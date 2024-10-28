@@ -1,0 +1,32 @@
+{
+  "automount": false,
+  "datacenter": "nbg1-dc3",
+  "firewalls": [
+    {
+      "firewall": 38
+    }
+  ],
+  "image": "ubuntu-20.04",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "location": "nbg1",
+  "name": "my-server",
+  "networks": [
+    456
+  ],
+  "placement_group": 1,
+  "public_net": {
+    "enable_ipv4": false,
+    "enable_ipv6": false,
+    "ipv4": null,
+    "ipv6": null
+  },
+  "server_type": "cpx11",
+  "ssh_keys": ["my-ssh-key"],
+  "start_after_create": true,
+  "user_data": "#cloud-config\nruncmd:\n- [touch, /root/cloud-init-worked]\n",
+  "volumes": [123]
+}

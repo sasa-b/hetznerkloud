@@ -1,7 +1,7 @@
-package tech.sco.hetznerkloud.model.read
+package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.Serializable
-import tech.sco.hetznerkloud.model.read.Server.Deprecation
+import tech.sco.hetznerkloud.model.Server.Deprecation
 
 @Serializable
 data class Iso(

@@ -1,10 +1,12 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tech.sco.hetznerkloud.model.read
+package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+
+typealias Labels = Map<String, String>
 
 @Serializable
 data class Meta(
@@ -36,5 +38,3 @@ data class Meta(
         ): Meta = Meta(Pagination(lastPage, nextPage, page, perPage, previousPage, totalEntries))
     }
 }
-
-typealias Labels = Map<String, String>

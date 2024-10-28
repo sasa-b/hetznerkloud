@@ -1,13 +1,13 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tech.sco.hetznerkloud.model.read
+package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
 @Serializable
-data class DataCenter(
+data class Datacenter(
     val id: Int,
     val description: String,
     val location: Location,
