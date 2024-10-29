@@ -37,7 +37,9 @@ object TimeSeriesValuePairSerializer : KSerializer<ServerMetrics.TimeSeries.Valu
         }
         composite.endStructure(descriptor)
 
-        require(first != null && second != null)
+        require(first != null && second != null) {
+            "Missing one of ServerMetrics.TimeSeries.ValuePair values"
+        }
 
         return ServerMetrics.TimeSeries.ValuePair(first, second)
     }
