@@ -37,7 +37,10 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Lon
         when {
             matchRoute(Route.GET_ALL_SERVERS, test, resourceId) -> response(Route.GET_ALL_SERVERS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_SERVER, test, resourceId) -> response(Route.GET_SERVER, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_SERVER, test, resourceId) -> response(Route.CREATE_SERVER, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_SERVER_METRICS, test, resourceId) -> response(Route.GET_SERVER_METRICS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_SERVER, test, resourceId) -> response(Route.CREATE_SERVER, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_SERVER, test, resourceId) -> response(Route.UPDATE_SERVER, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
 
             matchRoute(Route.GET_ALL_DATACENTERS, test, resourceId) -> response(Route.GET_ALL_DATACENTERS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_DATACENTER, test, resourceId) -> response(Route.GET_DATACENTER, HttpStatusCode.OK, defaultHeaders)
@@ -63,7 +66,10 @@ private fun content(route: Route): String =
     mapOf(
         Route.GET_ALL_SERVERS to "src/test/resources/examples/response/get_all_servers.json",
         Route.GET_SERVER to "src/test/resources/examples/response/get_a_server.json",
+        Route.GET_SERVER_METRICS to "src/test/resources/examples/response/get_server_metrics.json",
         Route.CREATE_SERVER to "src/test/resources/examples/response/create_a_server.json",
+        Route.UPDATE_SERVER to "src/test/resources/examples/response/update_a_server.json",
+        Route.DELETE_SERVER to "src/test/resources/examples/response/delete_a_server.json",
 
         Route.GET_ALL_DATACENTERS to "src/test/resources/examples/response/get_all_datacenters.json",
 

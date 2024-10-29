@@ -28,8 +28,8 @@ data class CreateServer(
     val startAfterCreate: Boolean = true,
     @JsonNames("user_data")
     val userData: String,
-    val volumes: List<Int>,
-) : HttpMessage {
+    val volumes: List<Int> = emptyList(),
+) : HttpBody {
     @Serializable
     data class Firewall(
         @JsonNames("firewall")
@@ -46,3 +46,9 @@ data class CreateServer(
         val ipv6: String? = null,
     )
 }
+
+@Serializable
+data class UpdateServer(
+    val labels: Labels,
+    val name: String,
+) : HttpBody

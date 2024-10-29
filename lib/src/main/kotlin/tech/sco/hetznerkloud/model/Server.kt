@@ -6,29 +6,30 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
+import tech.sco.hetznerkloud.serialization.TimeSeriesValuePairSerializer
 import java.time.OffsetDateTime
 
 @Serializable
 data class Server(
     val id: Long,
     @JsonNames("backup_window")
-    val backupWindow: String,
+    val backupWindow: String?,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val created: OffsetDateTime,
     val datacenter: Datacenter,
-    val image: Image,
+    val image: Image?,
     @JsonNames("included_traffic")
-    val includedTraffic: Long,
+    val includedTraffic: Long?,
     @JsonNames("ingoing_traffic")
-    val ingoingTraffic: Long,
-    val iso: Iso,
+    val ingoingTraffic: Long?,
+    val iso: Iso?,
     val labels: Labels = emptyMap(),
     @JsonNames("load_balancers")
-    val loadBalancers: List<Int>,
+    val loadBalancers: List<Int> = emptyList(),
     val locked: Boolean,
     val name: String,
     @JsonNames("outgoing_traffic")
-    val outgoingTraffic: Long,
+    val outgoingTraffic: Long?,
     @JsonNames("placement_group")
     val placementGroup: PlacementGroup? = null,
     @JsonNames("primary_disk_size")
@@ -112,5 +113,49 @@ data class Server(
             val dnsPtr: List<Map<String, String>>,
             val ip: String,
         )
+    }
+}
+
+@Serializable
+data class ServerMetrics(
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val end: OffsetDateTime,
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val start: OffsetDateTime,
+    val step: Long,
+    @JsonNames("time_series")
+    val timeSeries: TimeSeries,
+) {
+    enum class Type(val value: String) {
+        CPU("cpu"),
+        NETWORK("network"),
+        DISK("disk"),
+    }
+
+    @Serializable
+    data class TimeSeries(
+        val cpu: Element = Element(),
+        @JsonNames("disk.0.iops.read")
+        val diskIoPerSecondsRead: Element = Element(),
+        @JsonNames("disk.0.iops.write")
+        val diskIoPerSecondsWrite: Element = Element(),
+        @JsonNames("disk.0.bandwidth.read")
+        val diskBandwidthRead: Element = Element(),
+        @JsonNames("disk.0.bandwidth.write")
+        val diskBandwidthWrite: Element = Element(),
+        @JsonNames("network.0.pps.in")
+        val networkPacketsPerSecondIn: Element = Element(),
+        @JsonNames("network.0.pps.out")
+        val networkPacketsPerSecondOut: Element = Element(),
+        @JsonNames("network.0.bandwidth.in")
+        val networkBandwidthIn: Element = Element(),
+        @JsonNames("network.0.bandwidth.out")
+        val networkBandwidthOut: Element = Element(),
+    ) {
+        @Serializable
+        data class Element(val values: List<ValuePair> = emptyList())
+
+        @Serializable(with = TimeSeriesValuePairSerializer::class)
+        data class ValuePair(val first: Double, val second: String)
     }
 }

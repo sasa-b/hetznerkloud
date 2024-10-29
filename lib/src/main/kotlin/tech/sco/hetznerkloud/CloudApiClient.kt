@@ -16,18 +16,29 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.request.CreateServer
-import tech.sco.hetznerkloud.request.HttpMessage
+import tech.sco.hetznerkloud.request.HttpBody
+import tech.sco.hetznerkloud.request.UpdateServer
+import tech.sco.hetznerkloud.response.ActionItem
 import tech.sco.hetznerkloud.response.ActionList
+import tech.sco.hetznerkloud.response.DatacenterItem
 import tech.sco.hetznerkloud.response.DatacenterList
+import tech.sco.hetznerkloud.response.ImageItem
 import tech.sco.hetznerkloud.response.ImageList
+import tech.sco.hetznerkloud.response.IsoItem
 import tech.sco.hetznerkloud.response.IsoList
 import tech.sco.hetznerkloud.response.ServerCreated
+import tech.sco.hetznerkloud.response.ServerDeleted
 import tech.sco.hetznerkloud.response.ServerItem
 import tech.sco.hetznerkloud.response.ServerList
+import tech.sco.hetznerkloud.response.ServerMetrics
+import tech.sco.hetznerkloud.response.ServerTypeItem
+import tech.sco.hetznerkloud.response.ServerTypeList
+import tech.sco.hetznerkloud.response.ServerUpdated
+import tech.sco.hetznerkloud.model.ServerMetrics.Type as ServerMetricsType
 
 private const val BASE_URL = "https://api.hetzner.cloud/v1"
 
@@ -40,7 +51,7 @@ class CloudApiClient private constructor(
             install(ContentNegotiation) {
                 json(
                     Json {
-//                        ignoreUnknownKeys = true
+                        ignoreUnknownKeys = true
 //                        isLenient = true
                     },
                 )
@@ -63,31 +74,37 @@ class CloudApiClient private constructor(
 
     suspend fun actions(): ActionList = request(Route.GET_ALL_ACTIONS)
 
-    suspend fun action(id: Long): ActionList = request(Route.GET_ACTION, id)
+    suspend fun actions(id: Long): ActionItem = request(Route.GET_ACTION, id)
 
     suspend fun servers(): ServerList = request(Route.GET_ALL_SERVERS)
 
-    suspend fun server(id: Long): ServerItem = request(Route.GET_SERVER, id)
+    suspend fun servers(id: Long): ServerItem = request(Route.GET_SERVER, id)
 
-    suspend fun server(request: CreateServer): ServerCreated = request(Route.CREATE_SERVER, body = request)
+    suspend fun servers(body: CreateServer): ServerCreated = request(Route.CREATE_SERVER, body = body)
+
+    suspend fun servers(id: Long, body: UpdateServer): ServerUpdated = request(Route.UPDATE_SERVER, id, body)
+
+    suspend fun serverMetrics(id: Long, type: Set<ServerMetricsType>): ServerMetrics = request(Route.GET_SERVER_METRICS, id, queryParams = mapOf("type" to listOf(type.joinToString(","))))
+
+    suspend fun serversDelete(id: Long): ServerDeleted = request(Route.DELETE_SERVER, id)
 
     suspend fun datacenters(): DatacenterList = request(Route.GET_ALL_DATACENTERS)
 
-    suspend fun datacenter(id: Long): DatacenterList = request(Route.GET_DATACENTER, id)
+    suspend fun datacenters(id: Long): DatacenterItem = request(Route.GET_DATACENTER, id)
 
     suspend fun images(): ImageList = request(Route.GET_ALL_IMAGES)
 
-    suspend fun image(id: Long): ImageList = request(Route.GET_IMAGE, id)
+    suspend fun images(id: Long): ImageItem = request(Route.GET_IMAGE, id)
 
     suspend fun isos(): IsoList = request(Route.GET_ALL_ISOS)
 
-    suspend fun iso(id: Long): IsoList = request(Route.GET_ISO, id)
+    suspend fun isos(id: Long): IsoItem = request(Route.GET_ISO, id)
 
-    suspend fun serverTypes(): Datacenter.ServerTypes = request(Route.GET_ALL_SERVER_TYPES)
+    suspend fun serverTypes(): ServerTypeList = request(Route.GET_ALL_SERVER_TYPES)
 
-    suspend fun serverType(id: Long): Datacenter.ServerTypes = request(Route.GET_SERVER_TYPE, id)
+    suspend fun serverTypes(id: Long): ServerTypeItem = request(Route.GET_SERVER_TYPE, id)
 
-    private suspend inline fun <reified T> request(route: Route, resourceId: Long? = null, body: HttpMessage? = null): T =
+    private suspend inline fun <reified T> request(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: Map<String, List<String>> = emptyMap()): T =
         route.value.let {
             val (httpMethod, path) = it
 
@@ -104,6 +121,15 @@ class CloudApiClient private constructor(
                     if (body != null) {
                         contentType(ContentType.Application.Json)
                         setBody(body)
+                    }
+                    if (queryParams.isNotEmpty()) {
+                        parameters {
+                            queryParams.forEach { (key, values) ->
+                                values.forEach { value ->
+                                    append(key, value)
+                                }
+                            }
+                        }
                     }
                 }.body()
         }

@@ -156,7 +156,6 @@ class CloudApiClientTest : AnnotationSpec() {
                                 ),
                                 description = "CPX11",
                                 disk = 40,
-                                includedTraffic = null,
                                 memory = 2,
                                 name = "cpx11",
                                 prices =
@@ -164,9 +163,9 @@ class CloudApiClientTest : AnnotationSpec() {
                                     ServerType.Price(
                                         includedTraffic = 654321,
                                         location = "fsn1",
-                                        priceHourly = ServerType.Price.Amount(gross = 1.19, net = 1.0),
-                                        priceMonthly = ServerType.Price.Amount(gross = 1.19, net = 1.0),
-                                        pricePerTbTraffic = ServerType.Price.Amount(gross = 1.19, net = 1.0),
+                                        priceHourly = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
+                                        priceMonthly = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
+                                        pricePerTbTraffic = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
                                     ),
                                 ),
                                 storageType = "local",

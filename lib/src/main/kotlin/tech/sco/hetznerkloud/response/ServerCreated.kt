@@ -14,6 +14,6 @@ data class ServerCreated(
     @JsonNames("next_actions")
     val nextActions: List<Action>,
     @JsonNames("root_password")
-    val rootPassword: String,
+    val rootPassword: String?,
     val server: Server,
 )

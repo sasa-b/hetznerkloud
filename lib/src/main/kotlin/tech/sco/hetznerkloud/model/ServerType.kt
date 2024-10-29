@@ -18,8 +18,6 @@ data class ServerType(
     val deprecation: Deprecation? = null,
     val description: String,
     val disk: Int,
-    @JsonNames("included_traffic")
-    val includedTraffic: Long? = null,
     val memory: Int,
     val name: String,
     val prices: List<Price>,
@@ -40,8 +38,8 @@ data class ServerType(
     ) {
         @Serializable
         data class Amount(
-            val gross: Double,
-            val net: Double,
+            val gross: String,
+            val net: String,
         )
     }
 }

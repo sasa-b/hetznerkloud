@@ -16,7 +16,10 @@ enum class Route(
 
     GET_ALL_SERVERS(Pair(HttpMethod.Get, Path("/servers"))),
     GET_SERVER(Pair(HttpMethod.Get, Path("/servers/{id}"))),
+    GET_SERVER_METRICS(Pair(HttpMethod.Get, Path("/servers/{id}/metrics"))),
     CREATE_SERVER(Pair(HttpMethod.Post, Path("/servers"))),
+    UPDATE_SERVER(Pair(HttpMethod.Patch, Path("/servers/{id}"))),
+    DELETE_SERVER(Pair(HttpMethod.Delete, Path("/servers/{id}"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),
