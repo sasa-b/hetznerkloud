@@ -36,6 +36,9 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         val test = HttpMethodAndPath(request.method, Path("/$testPath"))
 
         when {
+            matchRoute(Route.GET_ALL_ACTIONS, test, resourceId) -> response(Route.GET_ALL_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_ACTION, test, resourceId) -> response(Route.GET_ACTION, HttpStatusCode.OK, defaultHeaders)
+
             matchRoute(Route.GET_ALL_SERVERS, test, resourceId) -> response(Route.GET_ALL_SERVERS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_SERVER, test, resourceId) -> response(Route.GET_SERVER, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_SERVER_METRICS, test, resourceId) -> response(Route.GET_SERVER_METRICS, HttpStatusCode.OK, defaultHeaders)
@@ -70,6 +73,9 @@ private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?)
 
 private fun content(route: Route): String =
     mapOf(
+        Route.GET_ALL_ACTIONS to "src/test/resources/examples/response/get_all_actions.json",
+        Route.GET_ACTION to "src/test/resources/examples/response/get_an_action.json",
+
         Route.GET_ALL_SERVERS to "src/test/resources/examples/response/get_all_servers.json",
         Route.GET_SERVER to "src/test/resources/examples/response/get_a_server.json",
         Route.GET_SERVER_METRICS to "src/test/resources/examples/response/get_server_metrics.json",
