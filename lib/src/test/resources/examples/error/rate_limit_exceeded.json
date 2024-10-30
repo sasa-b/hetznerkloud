@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Error when sending too many requests"
+  }
+}

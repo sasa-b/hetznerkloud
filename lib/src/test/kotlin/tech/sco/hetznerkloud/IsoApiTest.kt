@@ -16,7 +16,7 @@ class IsoApiTest :
         val mockEngine = createMockEngine(apiToken) { isoId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
-        context("Iso resource read API") {
+        context("Iso repository read API") {
 
             val expectedIso = Iso(
                 id = 42,
@@ -32,7 +32,7 @@ class IsoApiTest :
             )
 
             should("get all Isos") {
-                underTest.isos() shouldBe
+                underTest.isos.all() shouldBe
                     IsoList(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                         isos = listOf(expectedIso),
@@ -40,7 +40,7 @@ class IsoApiTest :
             }
 
             should("get Iso by id") {
-                underTest.isos(isoId) shouldBe IsoItem(expectedIso)
+                underTest.isos.find(isoId) shouldBe IsoItem(expectedIso)
             }
         }
     })

@@ -23,7 +23,7 @@ class ImageApiTest :
         }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
-        context("Image resource read API") {
+        context("Image repository read API") {
             val expectedImage = Image(
                 id = 42,
                 architecture = "x86",
@@ -46,7 +46,7 @@ class ImageApiTest :
             )
 
             should("get all Images") {
-                underTest.images() shouldBe
+                underTest.images.all() shouldBe
                     ImageList(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                         images =
@@ -55,11 +55,11 @@ class ImageApiTest :
             }
 
             should("get Image by id") {
-                underTest.images(id = imageId) shouldBe ImageItem(expectedImage)
+                underTest.images.find(id = imageId) shouldBe ImageItem(expectedImage)
             }
         }
 
-        context("Image resource write API") {
+        context("Image repository write API") {
 
             should("update an Image") {
                 val updateRequest = UpdateImage(
@@ -68,7 +68,7 @@ class ImageApiTest :
                     labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
                 )
 
-                underTest.images(updateImageId, updateRequest) shouldBe ImageItem(
+                underTest.images.update(updateImageId, updateRequest) shouldBe ImageItem(
                     Image(
                         id = 4711,
                         architecture = "x86",
@@ -93,7 +93,7 @@ class ImageApiTest :
             }
 
             should("delete an Image") {
-                underTest.imagesDelete(imageId) shouldBe Unit
+                underTest.images.delete(imageId) shouldBe Unit
             }
         }
     })

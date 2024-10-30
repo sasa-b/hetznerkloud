@@ -8,14 +8,14 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.response.DatacenterItem
 import tech.sco.hetznerkloud.response.DatacenterList
 
-class DataCenterApiTest :
+class DatacenterApiTest :
     ShouldSpec({
         val datacenterId = 42L
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { datacenterId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
-        context("Datacenter resource read API") {
+        context("Datacenter repository read API") {
 
             val expectedDatacenter = Datacenter(
                 id = 42,
@@ -41,7 +41,7 @@ class DataCenterApiTest :
             )
 
             should("get all Datacenters") {
-                underTest.datacenters() shouldBe
+                underTest.datacenters.all() shouldBe
                     DatacenterList(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                         datacenters =
@@ -51,7 +51,7 @@ class DataCenterApiTest :
             }
 
             should("get Datacenter by id") {
-                underTest.datacenters(datacenterId) shouldBe DatacenterItem(expectedDatacenter)
+                underTest.datacenters.find(datacenterId) shouldBe DatacenterItem(expectedDatacenter)
             }
         }
     })

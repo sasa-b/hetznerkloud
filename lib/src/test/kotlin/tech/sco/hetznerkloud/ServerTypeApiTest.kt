@@ -44,11 +44,11 @@ class ServerTypeApiTest :
             storageType = "local",
         )
 
-        context("ServerType resource read API") {
+        context("ServerType repository read API") {
 
             should("get all ServerTypes") {
 
-                underTest.serverTypes() shouldBe ServerTypeList(
+                underTest.serverTypes.all() shouldBe ServerTypeList(
                     Meta.of(
                         lastPage = 4,
                         nextPage = 4,
@@ -62,7 +62,7 @@ class ServerTypeApiTest :
             }
 
             should("get a ServerType by id") {
-                underTest.serverTypes(id = serverTypeId) shouldBe ServerTypeItem(expectedServerType)
+                underTest.serverTypes.find(id = serverTypeId) shouldBe ServerTypeItem(expectedServerType)
             }
         }
     })

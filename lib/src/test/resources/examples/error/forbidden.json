@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "Request was made with an invalid or unknown token"
+  }
+}

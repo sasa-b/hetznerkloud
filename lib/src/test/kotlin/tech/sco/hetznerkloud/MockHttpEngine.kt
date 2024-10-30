@@ -11,14 +11,14 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headers
 import io.ktor.http.toURI
 import io.ktor.utils.io.ByteReadChannel
+import tech.sco.hetznerkloud.model.ErrorCode
 import java.io.File
-import java.nio.file.Paths
 
 internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) =
     MockEngine { request ->
 
         if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
-            return@MockEngine respondError(HttpStatusCode.Unauthorized)
+            return@MockEngine errorResponse(ErrorCode.UNAUTHORIZED, HttpStatusCode.Unauthorized, mapOf(HttpHeaders.ContentType to "application/json"))
         }
 
         val defaultHeaders =
@@ -71,36 +71,56 @@ private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?)
     route.value == test
 }
 
-private fun content(route: Route): String =
-    mapOf(
-        Route.GET_ALL_ACTIONS to "src/test/resources/examples/response/get_all_actions.json",
-        Route.GET_ACTION to "src/test/resources/examples/response/get_an_action.json",
+private fun content(route: Route): String = when (route) {
+    Route.GET_ALL_ACTIONS -> "src/test/resources/examples/response/get_all_actions.json"
+    Route.GET_ACTION -> "src/test/resources/examples/response/get_an_action.json"
 
-        Route.GET_ALL_SERVERS to "src/test/resources/examples/response/get_all_servers.json",
-        Route.GET_SERVER to "src/test/resources/examples/response/get_a_server.json",
-        Route.GET_SERVER_METRICS to "src/test/resources/examples/response/get_server_metrics.json",
-        Route.CREATE_SERVER to "src/test/resources/examples/response/create_a_server.json",
-        Route.UPDATE_SERVER to "src/test/resources/examples/response/update_a_server.json",
-        Route.DELETE_SERVER to "src/test/resources/examples/response/delete_a_server.json",
+    Route.GET_ALL_SERVERS -> "src/test/resources/examples/response/get_all_servers.json"
+    Route.GET_SERVER -> "src/test/resources/examples/response/get_a_server.json"
+    Route.GET_SERVER_METRICS -> "src/test/resources/examples/response/get_server_metrics.json"
+    Route.CREATE_SERVER -> "src/test/resources/examples/response/create_a_server.json"
+    Route.UPDATE_SERVER -> "src/test/resources/examples/response/update_a_server.json"
+    Route.DELETE_SERVER -> "src/test/resources/examples/response/delete_a_server.json"
 
-        Route.GET_ALL_SERVER_TYPES to "src/test/resources/examples/response/get_all_server_types.json",
-        Route.GET_SERVER_TYPE to "src/test/resources/examples/response/get_a_server_type.json",
+    Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
+    Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"
 
-        Route.GET_ALL_DATACENTERS to "src/test/resources/examples/response/get_all_datacenters.json",
-        Route.GET_DATACENTER to "src/test/resources/examples/response/get_a_datacenter.json",
+    Route.GET_ALL_DATACENTERS -> "src/test/resources/examples/response/get_all_datacenters.json"
+    Route.GET_DATACENTER -> "src/test/resources/examples/response/get_a_datacenter.json"
 
-        Route.GET_ALL_ISOS to "src/test/resources/examples/response/get_all_isos.json",
-        Route.GET_ISO to "src/test/resources/examples/response/get_an_iso.json",
+    Route.GET_ALL_ISOS -> "src/test/resources/examples/response/get_all_isos.json"
+    Route.GET_ISO -> "src/test/resources/examples/response/get_an_iso.json"
 
-        Route.GET_ALL_IMAGES to "src/test/resources/examples/response/get_all_images.json",
-        Route.GET_IMAGE to "src/test/resources/examples/response/get_an_image.json",
-        Route.UPDATE_IMAGE to "src/test/resources/examples/response/update_an_image.json",
-        Route.DELETE_IMAGE to "src/test/resources/examples/response/no_content.json",
-    ).let {
-        val filePath = Paths.get(it[route]!!).toAbsolutePath().toString()
+    Route.GET_ALL_IMAGES -> "src/test/resources/examples/response/get_all_images.json"
+    Route.GET_IMAGE -> "src/test/resources/examples/response/get_an_image.json"
+    Route.UPDATE_IMAGE -> "src/test/resources/examples/response/update_an_image.json"
+    Route.DELETE_IMAGE -> "src/test/resources/examples/response/no_content.json"
+}.let {
+    File(it).readText(Charsets.UTF_8)
+}
 
-        File(filePath).readText(Charsets.UTF_8)
-    }
+private fun error(code: ErrorCode): String = when (code) {
+    ErrorCode.NOT_FOUND -> "src/test/resources/examples/error/not_found.json"
+    ErrorCode.FORBIDDEN -> "src/test/resources/examples/error/forbidden.json"
+    ErrorCode.UNAUTHORIZED -> "src/test/resources/examples/error/unauthorized.json"
+    ErrorCode.INVALID_INPUT -> "src/test/resources/examples/error/invalid_input.json"
+    ErrorCode.JSON_ERROR -> "src/test/resources/examples/error/json_error.json"
+    ErrorCode.LOCKED -> "src/test/resources/examples/error/locked.json"
+    ErrorCode.RATE_LIMIT_EXCEEDED -> "src/test/resources/examples/error/rate_limit_exceeded.json"
+    ErrorCode.RESOURCE_LIMIT_EXCEEDED -> "src/test/resources/examples/error/resource_limit_exceeded.json"
+    ErrorCode.RESOURCE_UNAVAILABLE -> "src/test/resources/examples/error/resource_unavailable.json"
+    ErrorCode.SERVER_ERROR -> "src/test/resources/examples/error/server_error.json"
+    ErrorCode.SERVICE_ERROR -> "src/test/resources/examples/error/service_error.json"
+    ErrorCode.UNIQUENESS_ERROR -> "src/test/resources/examples/error/uniqueness_error.json"
+    ErrorCode.PROTECTED -> "src/test/resources/examples/error/protected.json"
+    ErrorCode.MAINTENANCE -> "src/test/resources/examples/error/maintenance.json"
+    ErrorCode.CONFLICT -> "src/test/resources/examples/error/conflict.json"
+    ErrorCode.UNSUPPORTED_ERROR -> "src/test/resources/examples/error/unsupported_error.json"
+    ErrorCode.TOKEN_READONLY -> "src/test/resources/examples/error/token_readonly.json"
+    ErrorCode.UNAVAILABLE -> "src/test/resources/examples/error/unavailable.json"
+}.let {
+    File(it).readText(Charsets.UTF_8)
+}
 
 private fun MockRequestHandleScope.response(
     route: Route,
@@ -109,6 +129,22 @@ private fun MockRequestHandleScope.response(
 ): HttpResponseData =
     respond(
         content = ByteReadChannel(content(route)),
+        status = statusCode,
+        headers =
+        headers {
+            headers.forEach {
+                append(it.key, it.value)
+            }
+        },
+    )
+
+private fun MockRequestHandleScope.errorResponse(
+    error: ErrorCode,
+    statusCode: HttpStatusCode,
+    headers: Map<String, String>,
+): HttpResponseData =
+    respond(
+        content = ByteReadChannel(error(error)),
         status = statusCode,
         headers =
         headers {

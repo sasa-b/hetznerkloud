@@ -2,13 +2,13 @@ package tech.sco.hetznerkloud
 
 import io.ktor.http.HttpMethod
 
-typealias HttpMethodAndPath = Pair<HttpMethod, Path>
+internal typealias HttpMethodAndPath = Pair<HttpMethod, Path>
 
-data class Path(val value: String) {
+internal data class Path(val value: String) {
     fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
 }
 
-enum class Route(
+internal enum class Route(
     val value: HttpMethodAndPath,
 ) {
     GET_ALL_ACTIONS(Pair(HttpMethod.Get, Path("/actions"))),

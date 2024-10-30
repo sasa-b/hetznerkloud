@@ -11,7 +11,7 @@ import java.time.OffsetDateTime
 class ActionApiTest :
     ShouldSpec({
 
-        context("Action resource read API") {
+        context("Action repository read API") {
             val actionId = 42L
             val apiToken = ApiToken("foo")
             val mockEngine = createMockEngine(apiToken) { actionId }
@@ -33,7 +33,7 @@ class ActionApiTest :
 
             should("get all Actions") {
 
-                underTest.actions() shouldBe ActionList(
+                underTest.actions.all() shouldBe ActionList(
                     meta = Meta.of(
                         lastPage = 4,
                         nextPage = 4,
@@ -47,7 +47,7 @@ class ActionApiTest :
             }
 
             should("get Action by id") {
-                underTest.actions(actionId) shouldBe ActionItem(expectedAction)
+                underTest.actions.find(actionId) shouldBe ActionItem(expectedAction)
             }
         }
     })

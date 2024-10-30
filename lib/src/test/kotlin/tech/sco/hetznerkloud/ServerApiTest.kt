@@ -168,9 +168,9 @@ class ServerApiTest :
             volumes = listOf(0),
         )
 
-        context("Server resource read API") {
+        context("Server repository read API") {
             should("get all Servers") {
-                underTest.servers() shouldBe ServerList(
+                underTest.servers.all() shouldBe ServerList(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                     servers =
                     listOf(expectedServer),
@@ -178,7 +178,7 @@ class ServerApiTest :
             }
 
             should("get a Server by id") {
-                underTest.servers(serverId) shouldBe ServerItem(expectedServer)
+                underTest.servers.find(serverId) shouldBe ServerItem(expectedServer)
             }
 
             should("get Server metrics") {
@@ -245,13 +245,13 @@ class ServerApiTest :
                         ),
                     ),
                 )
-                underTest.serverMetrics(42, setOf(ServerMetrics.Type.CPU, ServerMetrics.Type.DISK, ServerMetrics.Type.NETWORK)) shouldBe ServerMetricsResponse(
+                underTest.servers.metrics(42, setOf(ServerMetrics.Type.CPU, ServerMetrics.Type.DISK, ServerMetrics.Type.NETWORK)) shouldBe ServerMetricsResponse(
                     expectedMetrics,
                 )
             }
         }
 
-        context("Server resource write API") {
+        context("Server repository write API") {
             should("create a Server") {
 
                 val requestBody = CreateServer(
@@ -281,7 +281,7 @@ class ServerApiTest :
                     volumes = listOf(123),
                 )
 
-                underTest.servers(requestBody) shouldBe ServerCreated(
+                underTest.servers.create(requestBody) shouldBe ServerCreated(
                     action = Action(
                         id = 1,
                         command = "create_server",
@@ -437,11 +437,11 @@ class ServerApiTest :
                     name = "my-server",
                 )
 
-                underTest.servers(serverId, requestBody) shouldBe ServerUpdated(expectedServer)
+                underTest.servers.update(serverId, requestBody) shouldBe ServerUpdated(expectedServer)
             }
 
             should("delete a Server") {
-                underTest.serversDelete(serverId) shouldBe ServerDeleted(
+                underTest.servers.delete(serverId) shouldBe ServerDeleted(
                     Action(
                         id = 42,
                         command = "start_resource",
