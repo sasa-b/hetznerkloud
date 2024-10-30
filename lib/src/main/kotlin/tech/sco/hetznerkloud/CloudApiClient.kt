@@ -34,47 +34,38 @@ class CloudApiClient private constructor(
     val datacenters: Datacenters,
 ) {
     companion object {
-        fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient {
-            val httpClient = HttpClient(httpEngine) {
-                expectSuccess = true
+        fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
+            expectSuccess = true
 
-                install(ContentNegotiation) {
-                    json(
-                        Json {
-//                        classDiscriminator = "type"
-                            ignoreUnknownKeys = true
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
 //                        isLenient = true
-//                        serializersModule = SerializersModule {
-//                            polymorphic(Error::class) {
-//                                subclass(UnauthorizedError::class)
-//                                subclass(InvalidInputError::class)
-//                            }
-//                        }
-                        },
-                    )
-                }
+                    },
+                )
+            }
 
-                install(Auth) {
-                    bearer {
-                        loadTokens {
-                            BearerTokens(accessToken = token.value, refreshToken = null)
-                        }
-                    }
-                }
-
-                HttpResponseValidator {
-                    handleResponseExceptionWithRequest { exception, request ->
-                        when (exception) {
-                            is ClientRequestException -> {
-                                val response: ErrorResponse = exception.response.body()
-                                throw response.error
-                            }
-                        }
+            install(Auth) {
+                bearer {
+                    loadTokens {
+                        BearerTokens(accessToken = token.value, refreshToken = null)
                     }
                 }
             }
 
-            return CloudApiClient(
+            HttpResponseValidator {
+                handleResponseExceptionWithRequest { exception, request ->
+                    when (exception) {
+                        is ClientRequestException -> {
+                            val response: ErrorResponse = exception.response.body()
+                            throw response.error
+                        }
+                    }
+                }
+            }
+        }.let { httpClient ->
+            CloudApiClient(
                 actions = Actions(httpClient),
                 servers = Servers(httpClient),
                 serverTypes = ServerTypes(httpClient),
