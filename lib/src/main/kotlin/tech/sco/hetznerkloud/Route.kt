@@ -26,6 +26,8 @@ enum class Route(
 
     GET_ALL_IMAGES(Pair(HttpMethod.Get, Path("/images"))),
     GET_IMAGE(Pair(HttpMethod.Get, Path("/images/{id}"))),
+    UPDATE_IMAGE(Pair(HttpMethod.Patch, Path("/images/{id}"))),
+    DELETE_IMAGE(Pair(HttpMethod.Delete, Path("/images/{id}"))),
 
     GET_ALL_ISOS(Pair(HttpMethod.Get, Path("/isos"))),
     GET_ISO(Pair(HttpMethod.Get, Path("/isos/{id}"))),

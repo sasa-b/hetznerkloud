@@ -1,0 +1,37 @@
+{
+  "server_type": {
+    "architecture": "x86",
+    "cores": 2,
+    "cpu_type": "shared",
+    "deprecated": false,
+    "deprecation": {
+      "announced": "2023-06-01T00:00:00+00:00",
+      "unavailable_after": "2023-09-01T00:00:00+00:00"
+    },
+    "description": "CPX11",
+    "disk": 40,
+    "id": 1,
+    "included_traffic": null,
+    "memory": 2,
+    "name": "cpx11",
+    "prices": [
+      {
+        "included_traffic": 654321,
+        "location": "fsn1",
+        "price_hourly": {
+          "gross": "1.1900",
+          "net": "1.0000"
+        },
+        "price_monthly": {
+          "gross": "1.1900",
+          "net": "1.0000"
+        },
+        "price_per_tb_traffic": {
+          "gross": "1.1900",
+          "net": "1.0000"
+        }
+      }
+    ],
+    "storage_type": "local"
+  }
+}

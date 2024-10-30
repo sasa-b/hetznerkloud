@@ -25,7 +25,7 @@ class ServerApiTest :
     ShouldSpec({
         val serverId = 42L
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken, { serverId })
+        val mockEngine = createMockEngine(apiToken) { serverId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedServer = Server(
@@ -169,8 +169,7 @@ class ServerApiTest :
         )
 
         context("Server resource read API") {
-
-            should("get all Server resources") {
+            should("get all Servers") {
                 underTest.servers() shouldBe ServerList(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                     servers =
@@ -178,8 +177,8 @@ class ServerApiTest :
                 )
             }
 
-            should("get a Server resource by id") {
-                underTest.servers(42) shouldBe ServerItem(expectedServer)
+            should("get a Server by id") {
+                underTest.servers(serverId) shouldBe ServerItem(expectedServer)
             }
 
             should("get Server metrics") {
@@ -438,11 +437,11 @@ class ServerApiTest :
                     name = "my-server",
                 )
 
-                underTest.servers(42L, requestBody) shouldBe ServerUpdated(expectedServer)
+                underTest.servers(serverId, requestBody) shouldBe ServerUpdated(expectedServer)
             }
 
             should("delete a Server") {
-                underTest.serversDelete(42L) shouldBe ServerDeleted(
+                underTest.serversDelete(serverId) shouldBe ServerDeleted(
                     Action(
                         id = 42,
                         command = "start_resource",

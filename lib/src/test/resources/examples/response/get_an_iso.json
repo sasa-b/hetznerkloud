@@ -1,0 +1,13 @@
+{
+  "iso": {
+    "architecture": "x86",
+    "deprecation": {
+      "announced": "2023-06-01T00:00:00+00:00",
+      "unavailable_after": "2023-09-01T00:00:00+00:00"
+    },
+    "description": "FreeBSD 11.0 x64",
+    "id": 42,
+    "name": "FreeBSD-11.0-RELEASE-amd64-dvd1",
+    "type": "public"
+  }
+}

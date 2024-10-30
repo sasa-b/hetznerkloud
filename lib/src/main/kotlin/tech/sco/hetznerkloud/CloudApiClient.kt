@@ -21,6 +21,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.HttpBody
+import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.request.UpdateServer
 import tech.sco.hetznerkloud.response.ActionItem
 import tech.sco.hetznerkloud.response.ActionList
@@ -84,9 +85,13 @@ class CloudApiClient private constructor(
 
     suspend fun servers(id: Long, body: UpdateServer): ServerUpdated = request(Route.UPDATE_SERVER, id, body)
 
+    suspend fun serversDelete(id: Long): ServerDeleted = request(Route.DELETE_SERVER, id)
+
     suspend fun serverMetrics(id: Long, type: Set<ServerMetricsType>): ServerMetrics = request(Route.GET_SERVER_METRICS, id, queryParams = mapOf("type" to listOf(type.joinToString(","))))
 
-    suspend fun serversDelete(id: Long): ServerDeleted = request(Route.DELETE_SERVER, id)
+    suspend fun serverTypes(): ServerTypeList = request(Route.GET_ALL_SERVER_TYPES)
+
+    suspend fun serverTypes(id: Long): ServerTypeItem = request(Route.GET_SERVER_TYPE, id)
 
     suspend fun datacenters(): DatacenterList = request(Route.GET_ALL_DATACENTERS)
 
@@ -96,13 +101,13 @@ class CloudApiClient private constructor(
 
     suspend fun images(id: Long): ImageItem = request(Route.GET_IMAGE, id)
 
+    suspend fun images(id: Long, body: UpdateImage): ImageItem = request(Route.UPDATE_IMAGE, id, body)
+
+    suspend fun imagesDelete(id: Long): Unit = request(Route.DELETE_IMAGE, id)
+
     suspend fun isos(): IsoList = request(Route.GET_ALL_ISOS)
 
     suspend fun isos(id: Long): IsoItem = request(Route.GET_ISO, id)
-
-    suspend fun serverTypes(): ServerTypeList = request(Route.GET_ALL_SERVER_TYPES)
-
-    suspend fun serverTypes(id: Long): ServerTypeItem = request(Route.GET_SERVER_TYPE, id)
 
     private suspend inline fun <reified T> request(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: Map<String, List<String>> = emptyMap()): T =
         route.value.let {

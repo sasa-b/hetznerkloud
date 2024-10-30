@@ -1,0 +1,9 @@
+{
+  "description": "My new Image description",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "type": "snapshot"
+}

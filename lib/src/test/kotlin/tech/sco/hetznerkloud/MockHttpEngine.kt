@@ -4,6 +4,7 @@ import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockRequestHandleScope
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.engine.mock.respondError
+import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -13,7 +14,7 @@ import io.ktor.utils.io.ByteReadChannel
 import java.io.File
 import java.nio.file.Paths
 
-internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Long)? = null) =
+internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) =
     MockEngine { request ->
 
         if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
@@ -26,7 +27,7 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Lon
                 HttpHeaders.Authorization to apiToken.toString(),
             )
 
-        val resourceId = resourceIdProvider?.invoke()
+        val resourceId = resourceIdProvider?.invoke(request)
 
         val testPath = request.url.toURI().path
             .replace("{id}", resourceId?.toString() ?: "<none>")
@@ -42,11 +43,16 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: (() -> Lon
             matchRoute(Route.UPDATE_SERVER, test, resourceId) -> response(Route.UPDATE_SERVER, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
+
             matchRoute(Route.GET_ALL_DATACENTERS, test, resourceId) -> response(Route.GET_ALL_DATACENTERS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_DATACENTER, test, resourceId) -> response(Route.GET_DATACENTER, HttpStatusCode.OK, defaultHeaders)
 
             matchRoute(Route.GET_ALL_IMAGES, test, resourceId) -> response(Route.GET_ALL_IMAGES, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_IMAGE, test, resourceId) -> response(Route.GET_IMAGE, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.UPDATE_IMAGE, test, resourceId) -> response(Route.UPDATE_IMAGE, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_IMAGE, test, resourceId) -> response(Route.DELETE_IMAGE, HttpStatusCode.NoContent, defaultHeaders)
 
             matchRoute(Route.GET_ALL_ISOS, test, resourceId) -> response(Route.GET_ALL_ISOS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_ISO, test, resourceId) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
@@ -71,11 +77,19 @@ private fun content(route: Route): String =
         Route.UPDATE_SERVER to "src/test/resources/examples/response/update_a_server.json",
         Route.DELETE_SERVER to "src/test/resources/examples/response/delete_a_server.json",
 
+        Route.GET_ALL_SERVER_TYPES to "src/test/resources/examples/response/get_all_server_types.json",
+        Route.GET_SERVER_TYPE to "src/test/resources/examples/response/get_a_server_type.json",
+
         Route.GET_ALL_DATACENTERS to "src/test/resources/examples/response/get_all_datacenters.json",
+        Route.GET_DATACENTER to "src/test/resources/examples/response/get_a_datacenter.json",
 
         Route.GET_ALL_ISOS to "src/test/resources/examples/response/get_all_isos.json",
+        Route.GET_ISO to "src/test/resources/examples/response/get_an_iso.json",
 
         Route.GET_ALL_IMAGES to "src/test/resources/examples/response/get_all_images.json",
+        Route.GET_IMAGE to "src/test/resources/examples/response/get_an_image.json",
+        Route.UPDATE_IMAGE to "src/test/resources/examples/response/update_an_image.json",
+        Route.DELETE_IMAGE to "src/test/resources/examples/response/no_content.json",
     ).let {
         val filePath = Paths.get(it[route]!!).toAbsolutePath().toString()
 
