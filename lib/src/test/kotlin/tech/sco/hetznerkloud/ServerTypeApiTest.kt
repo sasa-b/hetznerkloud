@@ -11,13 +11,13 @@ import java.time.OffsetDateTime
 
 class ServerTypeApiTest :
     ShouldSpec({
-        val serverTypeId = 42L
+        val serverTypeId = ServerType.Id(42)
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { serverTypeId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedServerType = ServerType(
-            id = 1,
+            id = ServerType.Id(1),
             architecture = "x86",
             cores = 2,
             cpuType = "shared",

@@ -8,11 +8,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.parameters
+import tech.sco.hetznerkloud.model.ResourceId
 import tech.sco.hetznerkloud.request.HttpBody
 
 typealias QueryParams = List<Pair<String, String>>
 
-internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T =
+internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: ResourceId? = null, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T =
     route.value.let {
         val (httpMethod, path) = it
 

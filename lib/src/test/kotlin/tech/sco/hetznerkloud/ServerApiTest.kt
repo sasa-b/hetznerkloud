@@ -23,7 +23,7 @@ import tech.sco.hetznerkloud.response.ServerMetrics as ServerMetricsResponse
 
 class ServerApiTest :
     ShouldSpec({
-        val serverId = 42L
+        val serverId = Server.Id(42)
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { serverId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
@@ -34,11 +34,11 @@ class ServerApiTest :
             created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
             datacenter =
             Datacenter(
-                id = 42,
+                id = Datacenter.Id(42),
                 description = "Falkenstein DC Park 8",
                 location =
                 Location(
-                    id = 42,
+                    id = Location.Id(42),
                     city = "Falkenstein",
                     country = "DE",
                     description = "Falkenstein DC Park 1",
@@ -57,7 +57,7 @@ class ServerApiTest :
             ),
             image =
             Image(
-                id = 42,
+                id = Image.Id(42),
                 architecture = "x86",
                 boundTo = null,
                 created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
@@ -80,7 +80,7 @@ class ServerApiTest :
             ingoingTraffic = 123456,
             iso =
             Iso(
-                id = 42,
+                id = Iso.Id(42),
                 architecture = "x86",
                 deprecation =
                 Server.Deprecation(
@@ -138,7 +138,7 @@ class ServerApiTest :
             rescueEnabled = false,
             serverType =
             ServerType(
-                id = 1,
+                id = ServerType.Id(1),
                 architecture = "x86",
                 cores = 2,
                 cpuType = "shared",
@@ -245,7 +245,7 @@ class ServerApiTest :
                         ),
                     ),
                 )
-                underTest.servers.metrics(42, setOf(ServerMetrics.Type.CPU, ServerMetrics.Type.DISK, ServerMetrics.Type.NETWORK)) shouldBe ServerMetricsResponse(
+                underTest.servers.metrics(Server.Id(42), setOf(ServerMetrics.Type.CPU, ServerMetrics.Type.DISK, ServerMetrics.Type.NETWORK)) shouldBe ServerMetricsResponse(
                     expectedMetrics,
                 )
             }
@@ -283,7 +283,7 @@ class ServerApiTest :
 
                 underTest.servers.create(requestBody) shouldBe ServerCreated(
                     action = Action(
-                        id = 1,
+                        id = Action.Id(1),
                         command = "create_server",
                         Action.Error(
                             code = "action_failed",
@@ -302,7 +302,7 @@ class ServerApiTest :
                     ),
                     nextActions = listOf(
                         Action(
-                            id = 13,
+                            id = Action.Id(13),
                             command = "start_server",
                             error = Action.Error(code = "action_failed", message = "Action failed"),
                             finished = null,
@@ -314,14 +314,14 @@ class ServerApiTest :
                     ),
                     rootPassword = "YItygq1v3GYjjMomLaKc",
                     server = Server(
-                        id = 42,
+                        id = Server.Id(42),
                         backupWindow = "22-02",
                         created = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         datacenter = Datacenter(
-                            id = 1,
+                            id = Datacenter.Id(1),
                             description = "Falkenstein 1 DC 8",
                             location = Location(
-                                id = 1,
+                                id = Location.Id(1),
                                 city = "Falkenstein",
                                 country = "DE",
                                 description = "Falkenstein DC Park 1",
@@ -338,7 +338,7 @@ class ServerApiTest :
                             ),
                         ),
                         image = Image(
-                            id = 4711,
+                            id = Image.Id(4711),
                             architecture = "x86",
                             boundTo = null,
                             created = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -360,7 +360,7 @@ class ServerApiTest :
                         includedTraffic = 654321,
                         ingoingTraffic = 123456,
                         iso = Iso(
-                            id = 4711,
+                            id = Iso.Id(4711),
                             architecture = "x86",
                             deprecation = Server.Deprecation(
                                 announced = OffsetDateTime.parse("2018-02-28T00:00Z"),
@@ -399,7 +399,7 @@ class ServerApiTest :
                         ),
                         rescueEnabled = false,
                         serverType = ServerType(
-                            id = 1,
+                            id = ServerType.Id(1),
                             architecture = "x86",
                             cores = 2,
                             cpuType = "shared",
@@ -443,7 +443,7 @@ class ServerApiTest :
             should("delete a Server") {
                 underTest.servers.delete(serverId) shouldBe ServerDeleted(
                     Action(
-                        id = 42,
+                        id = Action.Id(42),
                         command = "start_resource",
                         Action.Error(
                             code = "action_failed",

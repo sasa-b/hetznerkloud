@@ -6,10 +6,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Server.Deprecation
+import tech.sco.hetznerkloud.serialization.ServerTypeIdSerializer
 
 @Serializable
 data class ServerType(
-    val id: Long,
+    val id: Id,
     val architecture: String,
     val cores: Int,
     @JsonNames("cpu_type")
@@ -24,6 +25,9 @@ data class ServerType(
     @JsonNames("storage_type")
     val storageType: String,
 ) {
+    @Serializable(with = ServerTypeIdSerializer::class)
+    data class Id(override val value: Long) : ResourceId()
+
     @Serializable
     data class Price(
         @JsonNames("included_traffic")

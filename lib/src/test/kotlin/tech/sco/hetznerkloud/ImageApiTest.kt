@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpMethod
 import tech.sco.hetznerkloud.model.Image
+import tech.sco.hetznerkloud.model.Image.Id
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.response.ImageItem
@@ -12,8 +13,8 @@ import java.time.OffsetDateTime
 
 class ImageApiTest :
     ShouldSpec({
-        val imageId = 42L
-        val updateImageId = 4711L
+        val imageId = Id(42)
+        val updateImageId = Id(4711)
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { request ->
             when {
@@ -25,7 +26,7 @@ class ImageApiTest :
 
         context("Image repository read API") {
             val expectedImage = Image(
-                id = 42,
+                id = Id(42),
                 architecture = "x86",
                 boundTo = null,
                 created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
@@ -70,7 +71,7 @@ class ImageApiTest :
 
                 underTest.images.update(updateImageId, updateRequest) shouldBe ImageItem(
                     Image(
-                        id = 4711,
+                        id = Id(4711),
                         architecture = "x86",
                         boundTo = null,
                         created = OffsetDateTime.parse("2016-01-30T23:50Z"),

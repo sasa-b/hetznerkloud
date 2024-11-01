@@ -5,12 +5,13 @@ package tech.sco.hetznerkloud.model
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.serialization.ImageIdSerializer
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
 
 @Serializable
 data class Image(
-    val id: Long,
+    val id: Id,
     val architecture: String,
     @JsonNames("bound_to")
     val boundTo: Long?,
@@ -39,6 +40,10 @@ data class Image(
     val status: String,
     val type: String,
 ) {
+
+    @Serializable(with = ImageIdSerializer::class)
+    data class Id(override val value: Long) : ResourceId()
+
     @Serializable
     data class CreatedFrom(
         val id: Long,

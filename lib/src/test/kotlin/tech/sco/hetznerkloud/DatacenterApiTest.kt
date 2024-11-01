@@ -10,7 +10,7 @@ import tech.sco.hetznerkloud.response.DatacenterList
 
 class DatacenterApiTest :
     ShouldSpec({
-        val datacenterId = 42L
+        val datacenterId = Datacenter.Id(42)
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { datacenterId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
@@ -18,11 +18,11 @@ class DatacenterApiTest :
         context("Datacenter repository read API") {
 
             val expectedDatacenter = Datacenter(
-                id = 42,
+                id = datacenterId,
                 description = "Falkenstein DC Park 8",
                 location =
                 Location(
-                    id = 42,
+                    id = Location.Id(42),
                     city = "Falkenstein",
                     country = "DE",
                     description = "Falkenstein DC Park 1",

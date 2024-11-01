@@ -13,7 +13,7 @@ private const val TEST_TOKEN = "foo"
 
 class CloudApiClientTest : AnnotationSpec() {
     private val apiToken = ApiToken(TEST_TOKEN)
-    private val mockEngine = createMockEngine(apiToken, { 42 })
+    private val mockEngine = createMockEngine(apiToken)
 
     @Test
     fun shouldThrowUnauthorizedError() {

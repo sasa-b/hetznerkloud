@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Error
+import tech.sco.hetznerkloud.model.Server.Id
 import tech.sco.hetznerkloud.model.ServerMetrics.Type
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.Pagination
@@ -25,17 +26,17 @@ class Servers(private val httpClient: HttpClient) {
     ): ServerList = httpClient.makeRequest(Route.GET_ALL_SERVERS, queryParams = sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Long): ServerItem = httpClient.makeRequest(Route.GET_SERVER, id)
+    suspend fun find(id: Id): ServerItem = httpClient.makeRequest(Route.GET_SERVER, id)
 
     @Throws(Error::class)
     suspend fun create(body: CreateServer): ServerCreated = httpClient.makeRequest(Route.CREATE_SERVER, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Long, body: UpdateServer): ServerUpdated = httpClient.makeRequest(Route.UPDATE_SERVER, id, body)
+    suspend fun update(id: Id, body: UpdateServer): ServerUpdated = httpClient.makeRequest(Route.UPDATE_SERVER, id, body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Long): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id)
+    suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id)
 
     @Throws(Error::class)
-    suspend fun metrics(id: Long, type: Set<Type>): ServerMetrics = httpClient.makeRequest(Route.GET_SERVER_METRICS, id, queryParams = listOf(Pair("type", type.joinToString(","))))
+    suspend fun metrics(id: Id, type: Set<Type>): ServerMetrics = httpClient.makeRequest(Route.GET_SERVER_METRICS, id, queryParams = listOf(Pair("type", type.joinToString(","))))
 }

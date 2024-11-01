@@ -11,17 +11,17 @@ import java.time.OffsetDateTime
 
 object ServerFixture {
 
-    fun create(serverId: Long): Server = Server(
+    fun create(serverId: Server.Id): Server = Server(
         id = serverId,
         backupWindow = "22-02",
         created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
         datacenter =
         Datacenter(
-            id = 42,
+            id = Datacenter.Id(42),
             description = "Falkenstein DC Park 8",
             location =
             Location(
-                id = 42,
+                id = Location.Id(42),
                 city = "Falkenstein",
                 country = "DE",
                 description = "Falkenstein DC Park 1",
@@ -40,7 +40,7 @@ object ServerFixture {
         ),
         image =
         Image(
-            id = 42,
+            id = Image.Id(42),
             architecture = "x86",
             boundTo = null,
             created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
@@ -63,7 +63,7 @@ object ServerFixture {
         ingoingTraffic = 123456,
         iso =
         Iso(
-            id = 42,
+            id = Iso.Id(42),
             architecture = "x86",
             deprecation =
             Server.Deprecation(
@@ -121,7 +121,7 @@ object ServerFixture {
         rescueEnabled = false,
         serverType =
         ServerType(
-            id = 1,
+            id = ServerType.Id(1),
             architecture = "x86",
             cores = 2,
             cpuType = "shared",
@@ -163,7 +163,7 @@ object ActionFixture {
         started: OffsetDateTime = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
         status: String = "running",
     ) = Action(
-        id = id,
+        id = Action.Id(id),
         command = command,
         error ?: Action.Error(
             code = "action_failed",

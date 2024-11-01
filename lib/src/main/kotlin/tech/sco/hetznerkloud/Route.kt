@@ -1,11 +1,12 @@
 package tech.sco.hetznerkloud
 
 import io.ktor.http.HttpMethod
+import tech.sco.hetznerkloud.model.ResourceId
 
 internal typealias HttpMethodAndPath = Pair<HttpMethod, Path>
 
 internal data class Path(val value: String) {
-    fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
+    fun withId(id: ResourceId) = Path(value.replace("{id}", id.toString()))
 }
 
 internal enum class Route(

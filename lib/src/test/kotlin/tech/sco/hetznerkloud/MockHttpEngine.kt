@@ -12,9 +12,11 @@ import io.ktor.http.headers
 import io.ktor.http.toURI
 import io.ktor.utils.io.ByteReadChannel
 import tech.sco.hetznerkloud.model.ErrorCode
+import tech.sco.hetznerkloud.model.ResourceId
 import java.io.File
 
-internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) =
+@Suppress("CyclomaticComplexMethod")
+internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> ResourceId)? = null) =
     MockEngine { request ->
 
         if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
@@ -64,13 +66,14 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         }
     }
 
-private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?) = if (resourceId != null) {
+private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: ResourceId?) = if (resourceId != null) {
     val (httpMethod, path) = route.value
     httpMethod == test.first && path.withId(resourceId).value == test.second.value
 } else {
     route.value == test
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun content(route: Route): String = when (route) {
     Route.GET_ALL_ACTIONS -> "src/test/resources/examples/response/get_all_actions.json"
     Route.GET_ACTION -> "src/test/resources/examples/response/get_an_action.json"
@@ -99,6 +102,7 @@ private fun content(route: Route): String = when (route) {
     File(it).readText(Charsets.UTF_8)
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.NOT_FOUND -> "src/test/resources/examples/error/not_found.json"
     ErrorCode.FORBIDDEN -> "src/test/resources/examples/error/forbidden.json"

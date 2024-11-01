@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Iso
+import tech.sco.hetznerkloud.model.Iso.Id
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.response.IsoItem
@@ -11,7 +12,7 @@ import java.time.OffsetDateTime
 
 class IsoApiTest :
     ShouldSpec({
-        val isoId = 42L
+        val isoId = Id(42)
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { isoId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
@@ -19,7 +20,7 @@ class IsoApiTest :
         context("Iso repository read API") {
 
             val expectedIso = Iso(
-                id = 42,
+                id = Id(42),
                 architecture = "x86",
                 deprecation =
                 Server.Deprecation(

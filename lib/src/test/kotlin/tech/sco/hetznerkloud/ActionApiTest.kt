@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.Action.Id
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.response.ActionItem
 import tech.sco.hetznerkloud.response.ActionList
@@ -12,13 +13,13 @@ class ActionApiTest :
     ShouldSpec({
 
         context("Action repository read API") {
-            val actionId = 42L
+            val actionId = Id(42)
             val apiToken = ApiToken("foo")
             val mockEngine = createMockEngine(apiToken) { actionId }
             val underTest = CloudApiClient.of(apiToken, mockEngine)
 
             val expectedAction = Action(
-                id = 42,
+                id = Id(42),
                 command = "start_resource",
                 error = Action.Error(
                     code = "action_failed",
