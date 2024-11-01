@@ -15,16 +15,16 @@ data class Meta(
     @Serializable
     data class Pagination(
         @JsonNames("last_page")
-        val lastPage: Int,
+        val lastPage: Int?,
         @JsonNames("next_page")
-        val nextPage: Int,
+        val nextPage: Int?,
         val page: Int,
         @JsonNames("per_page")
         val perPage: Int,
         @JsonNames("previous_page")
-        val previousPage: Int,
+        val previousPage: Int?,
         @JsonNames("total_entries")
-        val totalEntries: Int,
+        val totalEntries: Int?,
     )
 
     companion object {
