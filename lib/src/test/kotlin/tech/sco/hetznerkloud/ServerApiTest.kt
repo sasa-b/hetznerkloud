@@ -8,6 +8,7 @@ import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
+import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
@@ -97,12 +98,12 @@ class ServerApiTest :
             name = "my-resource",
             outgoingTraffic = 123456,
             placementGroup =
-            Server.PlacementGroup(
-                id = 42,
+            PlacementGroup(
+                id = PlacementGroup.Id(42),
                 created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                 labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
                 name = "my-resource",
-                servers = listOf(42),
+                servers = listOf(Server.Id(42)),
                 type = "spread",
             ),
             primaryDiskSize = 50,
@@ -168,7 +169,7 @@ class ServerApiTest :
             volumes = listOf(0),
         )
 
-        context("Server repository read API") {
+        context("Server resource read API") {
             should("get all Servers") {
                 underTest.servers.all() shouldBe ServerList(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
@@ -251,7 +252,7 @@ class ServerApiTest :
             }
         }
 
-        context("Server repository write API") {
+        context("Server resource write API") {
             should("create a Server") {
 
                 val requestBody = CreateServer(
@@ -267,7 +268,7 @@ class ServerApiTest :
                     location = "nbg1",
                     name = "my-server",
                     networks = listOf(456),
-                    placementGroup = 1,
+                    placementGroup = PlacementGroup.Id(1),
                     publicNetwork = CreateServer.PublicNetwork(
                         enableIpv4 = false,
                         enableIpv6 = false,

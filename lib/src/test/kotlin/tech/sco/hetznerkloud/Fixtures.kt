@@ -5,6 +5,7 @@ import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
+import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerType
 import java.time.OffsetDateTime
@@ -80,12 +81,12 @@ object ServerFixture {
         name = "my-resource",
         outgoingTraffic = 123456,
         placementGroup =
-        Server.PlacementGroup(
-            id = 42,
+        PlacementGroup(
+            id = PlacementGroup.Id(42),
             created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
             labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
             name = "my-resource",
-            servers = listOf(42),
+            servers = listOf(Server.Id(42)),
             type = "spread",
         ),
         primaryDiskSize = 50,

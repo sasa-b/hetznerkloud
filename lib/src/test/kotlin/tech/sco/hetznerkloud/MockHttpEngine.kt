@@ -62,6 +62,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.GET_ALL_ISOS, test, resourceId) -> response(Route.GET_ALL_ISOS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_ISO, test, resourceId) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_PLACEMENT_GROUPS, test, resourceId) -> response(Route.GET_ALL_PLACEMENT_GROUPS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_A_PLACEMENT_GROUP, test, resourceId) -> response(Route.GET_A_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.CREATE_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.UPDATE_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_PLACEMENT_GROUP, test, resourceId) -> response(Route.DELETE_PLACEMENT_GROUP, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -98,6 +104,12 @@ private fun content(route: Route): String = when (route) {
     Route.GET_IMAGE -> "src/test/resources/examples/response/get_an_image.json"
     Route.UPDATE_IMAGE -> "src/test/resources/examples/response/update_an_image.json"
     Route.DELETE_IMAGE -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_PLACEMENT_GROUPS -> "src/test/resources/examples/response/get_all_placement_groups.json"
+    Route.GET_A_PLACEMENT_GROUP -> "src/test/resources/examples/response/get_a_placement_group.json"
+    Route.CREATE_PLACEMENT_GROUP -> "src/test/resources/examples/response/create_a_placement_group.json"
+    Route.UPDATE_PLACEMENT_GROUP -> "src/test/resources/examples/response/update_a_placement_group.json"
+    Route.DELETE_PLACEMENT_GROUP -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

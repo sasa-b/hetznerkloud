@@ -15,7 +15,7 @@ class DatacenterApiTest :
         val mockEngine = createMockEngine(apiToken) { datacenterId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
-        context("Datacenter repository read API") {
+        context("Datacenter resource read API") {
 
             val expectedDatacenter = Datacenter(
                 id = datacenterId,

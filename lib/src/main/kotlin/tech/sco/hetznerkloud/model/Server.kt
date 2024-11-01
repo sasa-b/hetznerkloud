@@ -60,17 +60,6 @@ data class Server(
     )
 
     @Serializable
-    data class PlacementGroup(
-        val id: Long,
-        @Serializable(with = OffsetDateTimeSerializer::class)
-        val created: OffsetDateTime,
-        val labels: Labels,
-        val name: String,
-        val servers: List<Int>,
-        val type: String,
-    )
-
-    @Serializable
     data class PrivateNetwork(
         @JsonNames("alias_ips")
         val aliasIps: List<String>,

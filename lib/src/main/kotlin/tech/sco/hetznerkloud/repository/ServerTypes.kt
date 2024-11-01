@@ -13,8 +13,14 @@ import tech.sco.hetznerkloud.response.ServerTypeList
 
 class ServerTypes(private val httpClient: HttpClient) {
     @Throws(Error::class)
-    suspend fun all(filter: Set<ServerTypeFilter> = emptySet(), pagination: Pagination = Pagination()): ServerTypeList =
-        httpClient.makeRequest(Route.GET_ALL_SERVER_TYPES, queryParams = filter.toQueryParams() + pagination.toQueryParams())
+    suspend fun all(
+        filter: Set<ServerTypeFilter> = emptySet(),
+        pagination: Pagination = Pagination(),
+    ): ServerTypeList =
+        httpClient.makeRequest(
+            Route.GET_ALL_SERVER_TYPES,
+            queryParams = filter.toQueryParams() + pagination.toQueryParams(),
+        )
 
     @Throws(Error::class)
     suspend fun find(id: Id): ServerTypeItem = httpClient.makeRequest(Route.GET_SERVER_TYPE, id)

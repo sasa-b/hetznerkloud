@@ -1,0 +1,8 @@
+{
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "name": "my Placement Group"
+}

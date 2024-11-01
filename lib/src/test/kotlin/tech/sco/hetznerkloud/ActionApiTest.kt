@@ -12,7 +12,7 @@ import java.time.OffsetDateTime
 class ActionApiTest :
     ShouldSpec({
 
-        context("Action repository read API") {
+        context("Action resource read API") {
             val actionId = Id(42)
             val apiToken = ApiToken("foo")
             val mockEngine = createMockEngine(apiToken) { actionId }

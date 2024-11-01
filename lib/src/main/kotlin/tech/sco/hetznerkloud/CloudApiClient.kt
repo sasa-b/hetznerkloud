@@ -19,6 +19,7 @@ import tech.sco.hetznerkloud.repository.Actions
 import tech.sco.hetznerkloud.repository.Datacenters
 import tech.sco.hetznerkloud.repository.Images
 import tech.sco.hetznerkloud.repository.Isos
+import tech.sco.hetznerkloud.repository.PlacementGroups
 import tech.sco.hetznerkloud.repository.ServerTypes
 import tech.sco.hetznerkloud.repository.Servers
 import tech.sco.hetznerkloud.response.ErrorResponse
@@ -32,6 +33,7 @@ class CloudApiClient private constructor(
     val images: Images,
     val isos: Isos,
     val datacenters: Datacenters,
+    val placementGroups: PlacementGroups,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
@@ -74,6 +76,7 @@ class CloudApiClient private constructor(
                 images = Images(httpClient),
                 isos = Isos(httpClient),
                 datacenters = Datacenters(httpClient),
+                placementGroups = PlacementGroups(httpClient),
             )
         }
     }

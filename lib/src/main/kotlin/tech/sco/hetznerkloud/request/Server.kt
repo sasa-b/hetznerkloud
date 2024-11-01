@@ -6,18 +6,21 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Labels
+import tech.sco.hetznerkloud.model.PlacementGroup
+
+// TODO: check which values can be omitted and which ones can be sent as null
 
 @Serializable
 data class CreateServer(
     val automount: Boolean = false,
     val datacenter: String,
-    val firewalls: List<Firewall>,
+    val firewalls: List<Firewall> = emptyList(),
     val image: String,
-    val labels: Labels,
+    val labels: Labels = emptyMap(),
     val location: String,
     val name: String,
-    val networks: List<Int>,
-    val placementGroup: Int,
+    val networks: List<Int> = emptyList(),
+    val placementGroup: PlacementGroup.Id? = null,
     @JsonNames("public_net")
     val publicNetwork: PublicNetwork,
     @JsonNames("server_type")
@@ -39,9 +42,9 @@ data class CreateServer(
     @Serializable
     data class PublicNetwork(
         @JsonNames("enable_ipv4")
-        val enableIpv4: Boolean = false,
+        val enableIpv4: Boolean = true,
         @JsonNames("enable_ipv6")
-        val enableIpv6: Boolean = false,
+        val enableIpv6: Boolean = true,
         val ipv4: String? = null,
         val ipv6: String? = null,
     )

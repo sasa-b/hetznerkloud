@@ -33,6 +33,12 @@ internal enum class Route(
     GET_ALL_ISOS(Pair(HttpMethod.Get, Path("/isos"))),
     GET_ISO(Pair(HttpMethod.Get, Path("/isos/{id}"))),
 
-    GET_ALL_SERVER_TYPES(Pair(HttpMethod.Get, Path("/server-types"))),
-    GET_SERVER_TYPE(Pair(HttpMethod.Get, Path("/server-types/{id}"))),
+    GET_ALL_SERVER_TYPES(Pair(HttpMethod.Get, Path("/server_types"))),
+    GET_SERVER_TYPE(Pair(HttpMethod.Get, Path("/server_types/{id}"))),
+
+    GET_ALL_PLACEMENT_GROUPS(Pair(HttpMethod.Get, Path("/placement_groups"))),
+    GET_A_PLACEMENT_GROUP(Pair(HttpMethod.Get, Path("/placement_groups/{id}"))),
+    CREATE_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/placement_groups"))),
+    UPDATE_PLACEMENT_GROUP(Pair(HttpMethod.Patch, Path("/placement_groups/{id}"))),
+    DELETE_PLACEMENT_GROUP(Pair(HttpMethod.Delete, Path("/placement_groups/{id}"))),
 }

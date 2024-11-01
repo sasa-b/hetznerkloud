@@ -17,7 +17,7 @@ class IsoApiTest :
         val mockEngine = createMockEngine(apiToken) { isoId }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
-        context("Iso repository read API") {
+        context("Iso resource read API") {
 
             val expectedIso = Iso(
                 id = Id(42),

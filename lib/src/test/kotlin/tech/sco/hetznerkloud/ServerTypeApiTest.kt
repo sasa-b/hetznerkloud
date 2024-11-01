@@ -44,7 +44,7 @@ class ServerTypeApiTest :
             storageType = "local",
         )
 
-        context("ServerType repository read API") {
+        context("ServerType resource read API") {
 
             should("get all ServerTypes") {
 

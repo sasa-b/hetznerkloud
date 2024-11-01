@@ -24,7 +24,7 @@ class ImageApiTest :
         }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
-        context("Image repository read API") {
+        context("Image resource read API") {
             val expectedImage = Image(
                 id = Id(42),
                 architecture = "x86",
@@ -60,7 +60,7 @@ class ImageApiTest :
             }
         }
 
-        context("Image repository write API") {
+        context("Image resource write API") {
 
             should("update an Image") {
                 val updateRequest = UpdateImage(

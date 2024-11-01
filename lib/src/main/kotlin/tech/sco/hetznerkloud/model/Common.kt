@@ -33,12 +33,12 @@ data class Meta(
 
     companion object {
         fun of(
-            lastPage: Int,
-            nextPage: Int,
+            lastPage: Int?,
+            nextPage: Int?,
             page: Int,
             perPage: Int,
-            previousPage: Int,
-            totalEntries: Int,
+            previousPage: Int?,
+            totalEntries: Int?,
         ): Meta = Meta(Pagination(lastPage, nextPage, page, perPage, previousPage, totalEntries))
     }
 }

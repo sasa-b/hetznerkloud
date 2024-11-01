@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "pagination": {
+      "last_page": 1,
+      "next_page": null,
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "total_entries": 21
+    }
+  },
+  "placement_groups": [
+    {
+      "created": "2019-01-08T12:10:00+00:00",
+      "id": 897,
+      "labels": {
+        "key": "value"
+      },
+      "name": "my Placement Group",
+      "servers": [
+        4711,
+        4712
+      ],
+      "type": "spread"
+    }
+  ]
+}
