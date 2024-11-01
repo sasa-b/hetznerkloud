@@ -6,7 +6,10 @@ import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.ServerMetrics.Type
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.Pagination
+import tech.sco.hetznerkloud.request.ServerSorting
 import tech.sco.hetznerkloud.request.UpdateServer
+import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
 import tech.sco.hetznerkloud.response.ServerItem
@@ -16,7 +19,10 @@ import tech.sco.hetznerkloud.response.ServerUpdated
 
 class Servers(private val httpClient: HttpClient) {
     @Throws(Error::class)
-    suspend fun all(): ServerList = httpClient.makeRequest(Route.GET_ALL_SERVERS)
+    suspend fun all(
+        sorting: Set<ServerSorting> = emptySet(),
+        pagination: Pagination = Pagination(),
+    ): ServerList = httpClient.makeRequest(Route.GET_ALL_SERVERS, queryParams = sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
     suspend fun find(id: Long): ServerItem = httpClient.makeRequest(Route.GET_SERVER, id)
@@ -31,5 +37,5 @@ class Servers(private val httpClient: HttpClient) {
     suspend fun delete(id: Long): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id)
 
     @Throws(Error::class)
-    suspend fun metrics(id: Long, type: Set<Type>): ServerMetrics = httpClient.makeRequest(Route.GET_SERVER_METRICS, id, queryParams = mapOf("type" to listOf(type.joinToString(","))))
+    suspend fun metrics(id: Long, type: Set<Type>): ServerMetrics = httpClient.makeRequest(Route.GET_SERVER_METRICS, id, queryParams = listOf(Pair("type", type.joinToString(","))))
 }

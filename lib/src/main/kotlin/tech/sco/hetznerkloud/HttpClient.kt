@@ -10,7 +10,9 @@ import io.ktor.http.contentType
 import io.ktor.http.parameters
 import tech.sco.hetznerkloud.request.HttpBody
 
-internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: Map<String, List<String>> = emptyMap()): T =
+typealias QueryParams = List<Pair<String, String>>
+
+internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T =
     route.value.let {
         val (httpMethod, path) = it
 
@@ -30,11 +32,7 @@ internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, res
                 }
                 if (queryParams.isNotEmpty()) {
                     parameters {
-                        queryParams.forEach { (key, values) ->
-                            values.forEach { value ->
-                                append(key, value)
-                            }
-                        }
+                        queryParams.forEach { (key, value) -> append(key, value) }
                     }
                 }
             }.body()

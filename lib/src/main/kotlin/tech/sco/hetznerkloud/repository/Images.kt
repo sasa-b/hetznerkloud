@@ -4,13 +4,22 @@ import io.ktor.client.HttpClient
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Error
+import tech.sco.hetznerkloud.request.ImageFilter
+import tech.sco.hetznerkloud.request.ImageSorting
+import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.UpdateImage
+import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.ImageItem
 import tech.sco.hetznerkloud.response.ImageList
 
 class Images(private val httpClient: HttpClient) {
     @Throws(Error::class)
-    suspend fun all(): ImageList = httpClient.makeRequest(Route.GET_ALL_IMAGES)
+    suspend fun all(
+        filter: Set<ImageFilter> = emptySet(),
+        sorting: Set<ImageSorting> = emptySet(),
+        pagination: Pagination = Pagination(),
+    ): ImageList =
+        httpClient.makeRequest(Route.GET_ALL_IMAGES, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
     suspend fun find(id: Long): ImageItem = httpClient.makeRequest(Route.GET_IMAGE, id)
