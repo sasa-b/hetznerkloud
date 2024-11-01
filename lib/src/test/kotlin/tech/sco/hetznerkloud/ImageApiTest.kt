@@ -6,6 +6,7 @@ import io.ktor.http.HttpMethod
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Image.Id
 import tech.sco.hetznerkloud.model.Meta
+import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.response.ImageItem
 import tech.sco.hetznerkloud.response.ImageList
@@ -40,7 +41,7 @@ class ImageApiTest :
                 name = "ubuntu-20.04",
                 osFlavor = "ubuntu",
                 osVersion = "20.04",
-                protection = Image.Protection(delete = false),
+                protection = Protection(delete = false),
                 rapidDeploy = false,
                 status = "available",
                 type = "snapshot",
@@ -85,7 +86,7 @@ class ImageApiTest :
                         name = null,
                         osFlavor = "ubuntu",
                         osVersion = "20.04",
-                        protection = Image.Protection(delete = false),
+                        protection = Protection(delete = false),
                         rapidDeploy = false,
                         status = "available",
                         type = "snapshot",

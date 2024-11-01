@@ -1,0 +1,10 @@
+{
+  "automount": false,
+  "format": "xfs",
+  "labels": {
+    "labelkey": "value"
+  },
+  "location": "nbg1",
+  "name": "test-database",
+  "size": 42
+}

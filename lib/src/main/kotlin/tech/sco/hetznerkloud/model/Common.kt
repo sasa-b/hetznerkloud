@@ -42,3 +42,25 @@ data class Meta(
         ): Meta = Meta(Pagination(lastPage, nextPage, page, perPage, previousPage, totalEntries))
     }
 }
+
+@Serializable
+data class Price(
+    @JsonNames("included_traffic")
+    val includedTraffic: Long,
+    val location: String,
+    @JsonNames("price_hourly")
+    val priceHourly: Amount,
+    @JsonNames("price_monthly")
+    val priceMonthly: Amount,
+    @JsonNames("price_per_tb_traffic")
+    val pricePerTbTraffic: Amount,
+) {
+    @Serializable
+    data class Amount(
+        val gross: String,
+        val net: String,
+    )
+}
+
+@Serializable
+data class Protection(val delete: Boolean)

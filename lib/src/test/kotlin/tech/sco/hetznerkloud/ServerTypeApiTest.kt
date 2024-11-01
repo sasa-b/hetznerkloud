@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Meta
+import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.response.ServerTypeItem
@@ -33,12 +34,12 @@ class ServerTypeApiTest :
             name = "cpx11",
             prices =
             listOf(
-                ServerType.Price(
+                Price(
                     includedTraffic = 654321,
                     location = "fsn1",
-                    priceHourly = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
-                    priceMonthly = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
-                    pricePerTbTraffic = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
+                    priceHourly = Price.Amount(gross = "1.1900", net = "1.0000"),
+                    priceMonthly = Price.Amount(gross = "1.1900", net = "1.0000"),
+                    pricePerTbTraffic = Price.Amount(gross = "1.1900", net = "1.0000"),
                 ),
             ),
             storageType = "local",

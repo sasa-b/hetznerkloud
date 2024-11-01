@@ -9,6 +9,8 @@ import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.PlacementGroup
+import tech.sco.hetznerkloud.model.Price
+import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
@@ -72,7 +74,7 @@ class ServerApiTest :
                 name = "ubuntu-20.04",
                 osFlavor = "ubuntu",
                 osVersion = "20.04",
-                protection = Image.Protection(delete = false),
+                protection = Protection(delete = false),
                 rapidDeploy = false,
                 status = "available",
                 type = "snapshot",
@@ -155,12 +157,12 @@ class ServerApiTest :
                 name = "cpx11",
                 prices =
                 listOf(
-                    ServerType.Price(
+                    Price(
                         includedTraffic = 654321,
                         location = "fsn1",
-                        priceHourly = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
-                        priceMonthly = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
-                        pricePerTbTraffic = ServerType.Price.Amount(gross = "1.1900", net = "1.0000"),
+                        priceHourly = Price.Amount(gross = "1.1900", net = "1.0000"),
+                        priceMonthly = Price.Amount(gross = "1.1900", net = "1.0000"),
+                        pricePerTbTraffic = Price.Amount(gross = "1.1900", net = "1.0000"),
                     ),
                 ),
                 storageType = "local",
@@ -353,7 +355,7 @@ class ServerApiTest :
                             name = "ubuntu-20.04",
                             osFlavor = "ubuntu",
                             osVersion = "20.04",
-                            protection = Image.Protection(delete = false),
+                            protection = Protection(delete = false),
                             rapidDeploy = false,
                             status = "available",
                             type = "snapshot",
@@ -411,12 +413,12 @@ class ServerApiTest :
                             memory = 2,
                             name = "cpx11",
                             prices = listOf(
-                                ServerType.Price(
+                                Price(
                                     includedTraffic = 21990232555520,
                                     location = "fsn1",
-                                    priceHourly = ServerType.Price.Amount(gross = "1.1900000000000000", net = "1.0000000000"),
-                                    priceMonthly = ServerType.Price.Amount(gross = "1.1900000000000000", net = "1.0000000000"),
-                                    pricePerTbTraffic = ServerType.Price.Amount(gross = "1.1900000000000000", net = "1.0000000000"),
+                                    priceHourly = Price.Amount(gross = "1.1900000000000000", net = "1.0000000000"),
+                                    priceMonthly = Price.Amount(gross = "1.1900000000000000", net = "1.0000000000"),
+                                    pricePerTbTraffic = Price.Amount(gross = "1.1900000000000000", net = "1.0000000000"),
                                 ),
                             ),
                             storageType = "local",

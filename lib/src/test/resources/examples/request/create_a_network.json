@@ -1,0 +1,24 @@
+{
+  "expose_routes_to_vswitch": false,
+  "ip_range": "10.0.0.0/16",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "name": "mynet",
+  "routes": [
+    {
+      "destination": "10.100.1.0/24",
+      "gateway": "10.0.1.1"
+    }
+  ],
+  "subnets": [
+    {
+      "ip_range": "10.0.1.0/24",
+      "network_zone": "eu-central",
+      "type": "cloud",
+      "vswitch_id": 1000
+    }
+  ]
+}

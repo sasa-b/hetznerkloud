@@ -1,0 +1,30 @@
+{
+  "volume": {
+    "created": "2016-01-30T23:55:00+00:00",
+    "format": "xfs",
+    "id": 42,
+    "labels": {
+      "environment": "prod",
+      "example.com/my": "label",
+      "just-a-key": ""
+    },
+    "linux_device": "/dev/disk/by-id/scsi-0HC_Volume_4711",
+    "location": {
+      "city": "Falkenstein",
+      "country": "DE",
+      "description": "Falkenstein DC Park 1",
+      "id": 42,
+      "latitude": 50.47612,
+      "longitude": 12.370071,
+      "name": "fsn1",
+      "network_zone": "eu-central"
+    },
+    "name": "my-resource",
+    "protection": {
+      "delete": false
+    },
+    "server": 12,
+    "size": 42,
+    "status": "available"
+  }
+}

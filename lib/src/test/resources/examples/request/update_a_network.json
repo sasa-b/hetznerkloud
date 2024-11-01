@@ -1,0 +1,9 @@
+{
+  "expose_routes_to_vswitch": false,
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "name": "new-name"
+}

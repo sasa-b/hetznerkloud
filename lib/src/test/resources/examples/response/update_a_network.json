@@ -1,0 +1,35 @@
+{
+  "network": {
+    "created": "2016-01-30T23:50:00+00:00",
+    "expose_routes_to_vswitch": true,
+    "id": 4711,
+    "ip_range": "10.0.0.0/16",
+    "labels": {
+      "labelkey": "value"
+    },
+    "load_balancers": [
+      42
+    ],
+    "name": "new-name",
+    "protection": {
+      "delete": false
+    },
+    "routes": [
+      {
+        "destination": "10.100.1.0/24",
+        "gateway": "10.0.1.1"
+      }
+    ],
+    "servers": [
+      42
+    ],
+    "subnets": [
+      {
+        "gateway": "10.0.0.1",
+        "ip_range": "10.0.1.0/24",
+        "network_zone": "eu-central",
+        "type": "cloud"
+      }
+    ]
+  }
+}

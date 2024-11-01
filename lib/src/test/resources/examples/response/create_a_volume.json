@@ -1,0 +1,74 @@
+{
+  "action": {
+    "command": "create_volume",
+    "error": {
+      "code": "action_failed",
+      "message": "Action failed"
+    },
+    "finished": null,
+    "id": 13,
+    "progress": 0,
+    "resources": [
+      {
+        "id": 42,
+        "type": "server"
+      },
+      {
+        "id": 554,
+        "type": "volume"
+      }
+    ],
+    "started": "2016-01-30T23:50:00+00:00",
+    "status": "running"
+  },
+  "next_actions": [
+    {
+      "command": "attach_volume",
+      "error": {
+        "code": "action_failed",
+        "message": "Action failed"
+      },
+      "finished": null,
+      "id": 13,
+      "progress": 0,
+      "resources": [
+        {
+          "id": 42,
+          "type": "server"
+        },
+        {
+          "id": 554,
+          "type": "volume"
+        }
+      ],
+      "started": "2016-01-30T23:50:00+00:00",
+      "status": "running"
+    }
+  ],
+  "volume": {
+    "created": "2016-01-30T23:50:11+00:00",
+    "format": "xfs",
+    "id": 4711,
+    "labels": {
+      "env": "dev"
+    },
+    "linux_device": "/dev/disk/by-id/scsi-0HC_Volume_4711",
+    "location": {
+      "city": "Falkenstein",
+      "country": "DE",
+      "description": "Falkenstein DC Park 1",
+      "id": 1,
+      "latitude": 50.47612,
+      "longitude": 12.370071,
+      "name": "fsn1",
+      "network_zone": "eu-central"
+    },
+    "name": "database-storage",
+    "protection": {
+      "delete": false
+    },
+    "server": 12,
+    "size": 42,
+    "status": "available"
+  }
+}

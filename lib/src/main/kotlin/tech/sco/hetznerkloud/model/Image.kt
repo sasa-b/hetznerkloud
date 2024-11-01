@@ -49,9 +49,4 @@ data class Image(
         val id: Long,
         val name: String,
     )
-
-    @Serializable
-    data class Protection(
-        val delete: Boolean,
-    )
 }

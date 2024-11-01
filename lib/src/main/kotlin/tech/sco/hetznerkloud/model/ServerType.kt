@@ -27,23 +27,4 @@ data class ServerType(
 ) {
     @Serializable(with = ServerTypeIdSerializer::class)
     data class Id(override val value: Long) : ResourceId()
-
-    @Serializable
-    data class Price(
-        @JsonNames("included_traffic")
-        val includedTraffic: Long,
-        val location: String,
-        @JsonNames("price_hourly")
-        val priceHourly: Amount,
-        @JsonNames("price_monthly")
-        val priceMonthly: Amount,
-        @JsonNames("price_per_tb_traffic")
-        val pricePerTbTraffic: Amount,
-    ) {
-        @Serializable
-        data class Amount(
-            val gross: String,
-            val net: String,
-        )
-    }
 }
