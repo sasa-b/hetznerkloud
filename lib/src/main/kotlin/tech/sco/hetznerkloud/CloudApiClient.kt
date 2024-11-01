@@ -35,6 +35,8 @@ class CloudApiClient private constructor(
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
+            // throws RedirectResponseException, ClientRequestException, ServerResponseException
+            // on 3xx, 4xx and 5xx status codes
             expectSuccess = true
 
             install(ContentNegotiation) {
