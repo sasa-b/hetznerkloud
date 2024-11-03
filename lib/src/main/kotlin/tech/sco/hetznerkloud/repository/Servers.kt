@@ -5,10 +5,11 @@ import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Server.Id
-import tech.sco.hetznerkloud.model.ServerMetrics.Type
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.ServerFilter
+import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.ServerSorting
 import tech.sco.hetznerkloud.request.UpdateServer
 import tech.sco.hetznerkloud.request.toQueryParams
@@ -43,10 +44,15 @@ class Servers(private val httpClient: HttpClient) {
     suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id)
 
     @Throws(Error::class)
-    suspend fun metrics(id: Id, type: Set<Type>): ServerMetrics =
-        httpClient.makeRequest(
+    suspend fun metrics(id: Id, filter: Set<ServerMetricsFilter>): ServerMetrics {
+        val (types, other) = filter.partition { it.first == FilterFields.ServerMetrics.TYPE }
+
+        return httpClient.makeRequest(
             Route.GET_SERVER_METRICS,
             id,
-            queryParams = listOf(Pair("type", type.joinToString(","))),
+            queryParams = listOf(
+                Pair("type", types.joinToString(",") { it.second }),
+            ) + other.toQueryParams(),
         )
+    }
 }

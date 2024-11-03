@@ -41,4 +41,10 @@ internal enum class Route(
     CREATE_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/placement_groups"))),
     UPDATE_PLACEMENT_GROUP(Pair(HttpMethod.Patch, Path("/placement_groups/{id}"))),
     DELETE_PLACEMENT_GROUP(Pair(HttpMethod.Delete, Path("/placement_groups/{id}"))),
+
+    GET_ALL_NETWORKS(Pair(HttpMethod.Get, Path("/networks"))),
+    GET_NETWORK(Pair(HttpMethod.Get, Path("/networks/{id}"))),
+    CREATE_NETWORK(Pair(HttpMethod.Post, Path("/networks"))),
+    UPDATE_NETWORK(Pair(HttpMethod.Patch, Path("/networks/{id}"))),
+    DELETE_NETWORK(Pair(HttpMethod.Delete, Path("/networks/{id}"))),
 }

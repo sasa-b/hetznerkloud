@@ -3,6 +3,7 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.NetworkIdSerializer
@@ -40,11 +41,37 @@ data class Network(
     data class Subnet(
         val gateway: String,
         @JsonNames("ip_range")
-        val ipRange: String,
+        val ipRange: String? = null,
         @JsonNames("network_zone")
-        val networkZone: String,
-        val type: String,
+        val networkZone: Zone,
+        val type: Type,
         @JsonNames("vswitch_id")
-        val vSwitchId: Long,
+        val vSwitchId: Long? = null,
     )
+
+    enum class Type {
+        @SerialName("cloud")
+        CLOUD,
+
+        @Deprecated("was used to connect only cloud Servers into your Network. This type is deprecated and is replaced by type cloud")
+        @SerialName("server")
+        SERVER,
+
+        @SerialName("vswitch")
+        V_SWITCH,
+    }
+
+    enum class Zone {
+        @SerialName("eu-central")
+        EU_CENTRAL,
+
+        @SerialName("us-east")
+        US_EAST,
+
+        @SerialName("us-west")
+        US_WEST,
+
+        @SerialName("ap-southeast")
+        AP_SOUTHEAST,
+    }
 }

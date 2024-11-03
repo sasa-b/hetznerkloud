@@ -68,6 +68,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.UPDATE_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_PLACEMENT_GROUP, test, resourceId) -> response(Route.DELETE_PLACEMENT_GROUP, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_NETWORKS, test, resourceId) -> response(Route.GET_ALL_NETWORKS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_NETWORK, test, resourceId) -> response(Route.GET_NETWORK, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_NETWORK, test, resourceId) -> response(Route.CREATE_NETWORK, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_NETWORK, test, resourceId) -> response(Route.UPDATE_NETWORK, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_NETWORK, test, resourceId) -> response(Route.DELETE_NETWORK, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -110,6 +116,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_PLACEMENT_GROUP -> "src/test/resources/examples/response/create_a_placement_group.json"
     Route.UPDATE_PLACEMENT_GROUP -> "src/test/resources/examples/response/update_a_placement_group.json"
     Route.DELETE_PLACEMENT_GROUP -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_NETWORKS -> "src/test/resources/examples/response/get_all_networks.json"
+    Route.GET_NETWORK -> "src/test/resources/examples/response/get_a_network.json"
+    Route.CREATE_NETWORK -> "src/test/resources/examples/response/create_a_network.json"
+    Route.UPDATE_NETWORK -> "src/test/resources/examples/response/update_a_network.json"
+    Route.DELETE_NETWORK -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

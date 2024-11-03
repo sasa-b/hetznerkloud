@@ -15,6 +15,8 @@ import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.FilterFields
+import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.UpdateServer
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
@@ -248,7 +250,31 @@ class ServerApiTest :
                         ),
                     ),
                 )
-                underTest.servers.metrics(Server.Id(42), setOf(ServerMetrics.Type.CPU, ServerMetrics.Type.DISK, ServerMetrics.Type.NETWORK)) shouldBe ServerMetricsResponse(
+
+                val requiredFilters = setOf(
+                    ServerMetricsFilter(
+                        FilterFields.ServerMetrics.TYPE,
+                        ServerMetrics.Type.CPU.value,
+                    ),
+                    ServerMetricsFilter(
+                        FilterFields.ServerMetrics.TYPE,
+                        ServerMetrics.Type.DISK.value,
+                    ),
+                    ServerMetricsFilter(
+                        FilterFields.ServerMetrics.TYPE,
+                        ServerMetrics.Type.NETWORK.value,
+                    ),
+                    ServerMetricsFilter(
+                        FilterFields.ServerMetrics.START,
+                        "2017-01-01T00:00:00+00:00",
+                    ),
+                    ServerMetricsFilter(
+                        FilterFields.ServerMetrics.END,
+                        "2017-01-01T23:00:00+00:00",
+                    ),
+                )
+
+                underTest.servers.metrics(Server.Id(42), requiredFilters) shouldBe ServerMetricsResponse(
                     expectedMetrics,
                 )
             }

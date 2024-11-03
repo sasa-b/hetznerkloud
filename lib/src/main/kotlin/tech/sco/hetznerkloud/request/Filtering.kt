@@ -5,10 +5,12 @@ import tech.sco.hetznerkloud.QueryParams
 typealias Filter = Pair<FilterField, String>
 typealias ActionFilter = Pair<FilterFields.Action, String>
 typealias ServerFilter = Pair<FilterFields.Server, String>
+typealias ServerMetricsFilter = Pair<FilterFields.ServerMetrics, String>
 typealias ServerTypeFilter = Pair<FilterFields.ServerType, String>
 typealias DatacenterFilter = Pair<FilterFields.Datacenter, String>
 typealias ImageFilter = Pair<FilterFields.Image, String>
 typealias IsoFilter = Pair<FilterFields.Iso, String>
+typealias NetworkFilter = Pair<FilterFields.Network, String>
 
 sealed interface FilterField {
     val value: String
@@ -26,6 +28,13 @@ object FilterFields {
         NAME("name"),
         LABEL_SELECTOR("label_selector"),
         STATUS("status"),
+    }
+
+    enum class ServerMetrics(override val value: String) : FilterField {
+        TYPE("type"),
+        START("start"),
+        END("end"),
+        STEP("step"),
     }
 
     enum class ServerType(override val value: String) : FilterField {
@@ -50,5 +59,10 @@ object FilterFields {
         NAME("name"),
         ARCHITECTURE("architecture"),
         INCLUDE_ARCHITECTURE_WILDCARD("include_architecture_wildcard"),
+    }
+
+    enum class Network(override val value: String) : FilterField {
+        NAME("name"),
+        LABEL_SELECTOR("label_selector"),
     }
 }

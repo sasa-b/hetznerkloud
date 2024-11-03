@@ -20,9 +20,7 @@
         "example.com/my": "label",
         "just-a-key": ""
       },
-      "load_balancers": [
-        42
-      ],
+      "load_balancers": [42],
       "name": "mynet",
       "protection": {
         "delete": false

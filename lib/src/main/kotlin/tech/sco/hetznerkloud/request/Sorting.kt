@@ -45,4 +45,6 @@ object SortingFields {
         NAME("name"),
         CREATED("created"),
     }
+
+    enum class Network(override val value: String) : SortingField
 }
