@@ -8,8 +8,8 @@ import tech.sco.hetznerkloud.model.Image.Id
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.request.UpdateImage
-import tech.sco.hetznerkloud.response.ImageItem
-import tech.sco.hetznerkloud.response.ImageList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
 class ImageApiTest :
@@ -49,15 +49,14 @@ class ImageApiTest :
 
             should("get all Images") {
                 underTest.images.all() shouldBe
-                    ImageList(
+                    Items(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
-                        images =
-                        listOf(expectedImage),
+                        items = listOf(expectedImage),
                     )
             }
 
             should("get Image by id") {
-                underTest.images.find(id = imageId) shouldBe ImageItem(expectedImage)
+                underTest.images.find(id = imageId) shouldBe Item(expectedImage)
             }
         }
 
@@ -70,7 +69,7 @@ class ImageApiTest :
                     labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
                 )
 
-                underTest.images.update(updateImageId, updateRequest) shouldBe ImageItem(
+                underTest.images.update(updateImageId, updateRequest) shouldBe Item(
                     Image(
                         id = Id(4711),
                         architecture = "x86",

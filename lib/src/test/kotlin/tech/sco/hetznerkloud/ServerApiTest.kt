@@ -19,13 +19,12 @@ import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.UpdateServer
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
-import tech.sco.hetznerkloud.response.ServerItem
-import tech.sco.hetznerkloud.response.ServerList
 import tech.sco.hetznerkloud.response.ServerUpdated
 import java.time.OffsetDateTime
-import tech.sco.hetznerkloud.response.ServerMetrics as ServerMetricsResponse
 
 class ServerApiTest :
     ShouldSpec({
@@ -176,15 +175,14 @@ class ServerApiTest :
 
         context("Server resource read API") {
             should("get all Servers") {
-                underTest.servers.all() shouldBe ServerList(
+                underTest.servers.all() shouldBe Items(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
-                    servers =
-                    listOf(expectedServer),
+                    items = listOf(expectedServer),
                 )
             }
 
             should("get a Server by id") {
-                underTest.servers.find(serverId) shouldBe ServerItem(expectedServer)
+                underTest.servers.find(serverId) shouldBe Item(expectedServer)
             }
 
             should("get Server metrics") {
@@ -275,7 +273,7 @@ class ServerApiTest :
                     ),
                 )
 
-                underTest.servers.metrics(Server.Id(42), requiredFilters) shouldBe ServerMetricsResponse(
+                underTest.servers.metrics(Server.Id(42), requiredFilters) shouldBe Item(
                     expectedMetrics,
                 )
             }

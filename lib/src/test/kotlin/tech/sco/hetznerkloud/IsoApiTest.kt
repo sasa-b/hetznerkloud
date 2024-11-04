@@ -6,8 +6,8 @@ import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Iso.Id
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Server
-import tech.sco.hetznerkloud.response.IsoItem
-import tech.sco.hetznerkloud.response.IsoList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
 class IsoApiTest :
@@ -34,14 +34,14 @@ class IsoApiTest :
 
             should("get all Isos") {
                 underTest.isos.all() shouldBe
-                    IsoList(
+                    Items(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
-                        isos = listOf(expectedIso),
+                        items = listOf(expectedIso),
                     )
             }
 
             should("get Iso by id") {
-                underTest.isos.find(isoId) shouldBe IsoItem(expectedIso)
+                underTest.isos.find(isoId) shouldBe Item(expectedIso)
             }
         }
     })

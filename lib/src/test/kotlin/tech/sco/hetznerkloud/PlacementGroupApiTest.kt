@@ -7,8 +7,8 @@ import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreatePlacementGroup
 import tech.sco.hetznerkloud.request.UpdatePlacementGroup
-import tech.sco.hetznerkloud.response.PlacementGroupItem
-import tech.sco.hetznerkloud.response.PlacementGroupList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
 class PlacementGroupApiTest :
@@ -34,14 +34,14 @@ class PlacementGroupApiTest :
 
             should("get all Placement Groups") {
 
-                underTest.placementGroups.all() shouldBe PlacementGroupList(
-                    placementGroups = listOf(expectedPlacementGroup),
+                underTest.placementGroups.all() shouldBe Items(
+                    items = listOf(expectedPlacementGroup),
                     meta = Meta.of(lastPage = 1, nextPage = null, page = 1, perPage = 25, previousPage = null, totalEntries = 21),
                 )
             }
 
             should("get Placement group by id") {
-                underTest.placementGroups.find(placementGroupId) shouldBe PlacementGroupItem(expectedPlacementGroup)
+                underTest.placementGroups.find(placementGroupId) shouldBe Item(expectedPlacementGroup)
             }
         }
 
@@ -54,7 +54,7 @@ class PlacementGroupApiTest :
                     "spread",
                 )
 
-                underTest.placementGroups.create(createRequest) shouldBe PlacementGroupItem(
+                underTest.placementGroups.create(createRequest) shouldBe Item(
                     PlacementGroup(
                         id = placementGroupId,
                         created = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),
@@ -73,7 +73,7 @@ class PlacementGroupApiTest :
                     mapOf("key" to "value"),
                 )
 
-                underTest.placementGroups.update(placementGroupId, createRequest) shouldBe PlacementGroupItem(
+                underTest.placementGroups.update(placementGroupId, createRequest) shouldBe Item(
                     PlacementGroup(
                         id = placementGroupId,
                         created = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),

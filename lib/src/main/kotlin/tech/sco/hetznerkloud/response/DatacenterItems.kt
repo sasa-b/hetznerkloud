@@ -5,12 +5,13 @@ package tech.sco.hetznerkloud.response
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Meta
-import tech.sco.hetznerkloud.model.ServerType
 
 @Serializable
-data class ServerTypeList(
+data class DatacenterItems(
     val meta: Meta,
-    @JsonNames("server_types")
-    val serverTypes: List<ServerType>,
-)
+    @JsonNames("datacenters")
+    val items: List<Datacenter>,
+    val recommendation: Long,
+) : Collection<Datacenter> by items

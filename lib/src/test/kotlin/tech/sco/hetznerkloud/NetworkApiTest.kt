@@ -10,8 +10,8 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateNetwork
 import tech.sco.hetznerkloud.request.UpdateNetwork
-import tech.sco.hetznerkloud.response.NetworkItem
-import tech.sco.hetznerkloud.response.NetworkList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
 class NetworkApiTest :
@@ -55,15 +55,15 @@ class NetworkApiTest :
 
             should("get all networks") {
 
-                underTest.networks.all() shouldBe NetworkList(
+                underTest.networks.all() shouldBe Items(
                     meta = Meta.of(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100),
-                    networks = listOf(expectedNetwork),
+                    items = listOf(expectedNetwork),
                 )
             }
 
             should("get network by id") {
 
-                underTest.networks.find(networkId) shouldBe NetworkItem(expectedNetwork)
+                underTest.networks.find(networkId) shouldBe Item(expectedNetwork)
             }
         }
 
@@ -96,7 +96,7 @@ class NetworkApiTest :
                     ),
                 )
 
-                underTest.networks.create(createRequest) shouldBe NetworkItem(expectedNetwork)
+                underTest.networks.create(createRequest) shouldBe Item(expectedNetwork)
             }
 
             should("update a Network") {
@@ -111,7 +111,7 @@ class NetworkApiTest :
                     name = "new-name",
                 )
 
-                underTest.networks.update(networkId, updateRequest) shouldBe NetworkItem(
+                underTest.networks.update(networkId, updateRequest) shouldBe Item(
                     Network(
                         id = networkId,
                         created = OffsetDateTime.parse("2016-01-30T23:50Z"),

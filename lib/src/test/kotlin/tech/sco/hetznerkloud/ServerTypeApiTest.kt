@@ -6,8 +6,8 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerType
-import tech.sco.hetznerkloud.response.ServerTypeItem
-import tech.sco.hetznerkloud.response.ServerTypeList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
 class ServerTypeApiTest :
@@ -49,8 +49,8 @@ class ServerTypeApiTest :
 
             should("get all ServerTypes") {
 
-                underTest.serverTypes.all() shouldBe ServerTypeList(
-                    Meta.of(
+                underTest.serverTypes.all() shouldBe Items(
+                    meta = Meta.of(
                         lastPage = 4,
                         nextPage = 4,
                         page = 3,
@@ -58,12 +58,12 @@ class ServerTypeApiTest :
                         previousPage = 2,
                         totalEntries = 100,
                     ),
-                    listOf(expectedServerType),
+                    items = listOf(expectedServerType),
                 )
             }
 
             should("get a ServerType by id") {
-                underTest.serverTypes.find(id = serverTypeId) shouldBe ServerTypeItem(expectedServerType)
+                underTest.serverTypes.find(id = serverTypeId) shouldBe Item(expectedServerType)
             }
         }
     })

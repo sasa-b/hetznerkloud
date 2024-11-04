@@ -5,8 +5,8 @@ import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Action.Id
 import tech.sco.hetznerkloud.model.Meta
-import tech.sco.hetznerkloud.response.ActionItem
-import tech.sco.hetznerkloud.response.ActionList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
 class ActionApiTest :
@@ -34,7 +34,7 @@ class ActionApiTest :
 
             should("get all Actions") {
 
-                underTest.actions.all() shouldBe ActionList(
+                underTest.actions.all() shouldBe Items(
                     meta = Meta.of(
                         lastPage = 4,
                         nextPage = 4,
@@ -43,12 +43,12 @@ class ActionApiTest :
                         previousPage = 2,
                         totalEntries = 100,
                     ),
-                    actions = listOf(expectedAction),
+                    items = listOf(expectedAction),
                 )
             }
 
             should("get Action by id") {
-                underTest.actions.find(actionId) shouldBe ActionItem(expectedAction)
+                underTest.actions.find(actionId) shouldBe Item(expectedAction)
             }
         }
     })

@@ -12,6 +12,7 @@ typealias ImageFilter = Pair<FilterFields.Image, String>
 typealias IsoFilter = Pair<FilterFields.Iso, String>
 typealias NetworkFilter = Pair<FilterFields.Network, String>
 typealias LoadBalancerFilter = Pair<FilterFields.LoadBalancer, String>
+typealias LoadBalancerTypeFilter = Pair<FilterFields.LoadBalancerType, String>
 
 sealed interface FilterField {
     val value: String
@@ -70,5 +71,9 @@ object FilterFields {
     enum class LoadBalancer(override val value: String) : FilterField {
         NAME("name"),
         LABEL_SELECTOR("label_selector"),
+    }
+
+    enum class LoadBalancerType(override val value: String) : FilterField {
+        NAME("name"),
     }
 }

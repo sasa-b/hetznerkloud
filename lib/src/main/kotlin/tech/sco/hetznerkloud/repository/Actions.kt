@@ -3,14 +3,15 @@ package tech.sco.hetznerkloud.repository
 import io.ktor.client.HttpClient
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
+import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Action.Id
 import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.request.ActionFilter
 import tech.sco.hetznerkloud.request.ActionSorting
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.toQueryParams
-import tech.sco.hetznerkloud.response.ActionItem
-import tech.sco.hetznerkloud.response.ActionList
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 
 class Actions(private val httpClient: HttpClient) {
 
@@ -19,8 +20,8 @@ class Actions(private val httpClient: HttpClient) {
         filter: Set<ActionFilter> = emptySet(),
         sorting: Set<ActionSorting> = emptySet(),
         pagination: Pagination = Pagination(),
-    ): ActionList = httpClient.makeRequest(Route.GET_ALL_ACTIONS, queryParams = (filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams()))
+    ): Items<Action> = httpClient.makeRequest(Route.GET_ALL_ACTIONS, queryParams = (filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams()))
 
     @Throws(Error::class)
-    suspend fun find(id: Id): ActionItem = httpClient.makeRequest(Route.GET_ACTION, id)
+    suspend fun find(id: Id): Item<Action> = httpClient.makeRequest(Route.GET_ACTION, id)
 }

@@ -15,9 +15,9 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.UpdateLoadBalancer
+import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.LoadBalancerCreated
-import tech.sco.hetznerkloud.response.LoadBalancerItem
-import tech.sco.hetznerkloud.response.LoadBalancerList
 import java.time.OffsetDateTime
 
 class LoadBalancerApiTest :
@@ -175,17 +175,15 @@ class LoadBalancerApiTest :
 
             should("get all Load balancers") {
 
-                underTest.loadBalancers.all() shouldBe LoadBalancerList(
+                underTest.loadBalancers.all() shouldBe Items(
                     meta = Meta.of(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100),
-                    loadBalancers = listOf(expectedLoadBalancer),
+                    items = listOf(expectedLoadBalancer),
                 )
             }
 
             should("get Load balancer by id") {
 
-                underTest.loadBalancers.find(loadBalancerId) shouldBe LoadBalancerItem(
-                    loadBalancer = expectedLoadBalancer,
-                )
+                underTest.loadBalancers.find(loadBalancerId) shouldBe Item(expectedLoadBalancer)
             }
         }
 
@@ -411,8 +409,8 @@ class LoadBalancerApiTest :
                     name = "new-name",
                 )
 
-                underTest.loadBalancers.update(loadBalancerId, updateRequest) shouldBe LoadBalancerItem(
-                    loadBalancer = expectedLoadBalancer.copy(
+                underTest.loadBalancers.update(loadBalancerId, updateRequest) shouldBe Item(
+                    expectedLoadBalancer.copy(
                         labels = mapOf("labelkey" to "value"),
                         name = "new-name",
                         targets = listOf(

@@ -80,6 +80,9 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_LOAD_BALANCER, test, resourceId) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_LOAD_BALANCER, test, resourceId) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_LOAD_BALANCER_TYPES, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCER_TYPES, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_LOAD_BALANCER_TYPE, test, resourceId) -> response(Route.GET_LOAD_BALANCER_TYPE, HttpStatusCode.OK, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -134,6 +137,9 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_LOAD_BALANCER -> "src/test/resources/examples/response/create_a_load_balancer.json"
     Route.UPDATE_LOAD_BALANCER -> "src/test/resources/examples/response/update_a_load_balancer.json"
     Route.DELETE_LOAD_BALANCER -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_LOAD_BALANCER_TYPES -> "src/test/resources/examples/response/get_all_load_balancer_types.json"
+    Route.GET_LOAD_BALANCER_TYPE -> "src/test/resources/examples/response/get_a_load_balancer_type.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

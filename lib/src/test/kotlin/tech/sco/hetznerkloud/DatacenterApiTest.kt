@@ -6,8 +6,8 @@ import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
-import tech.sco.hetznerkloud.response.DatacenterItem
-import tech.sco.hetznerkloud.response.DatacenterList
+import tech.sco.hetznerkloud.response.DatacenterItems
+import tech.sco.hetznerkloud.response.Item
 
 class DatacenterApiTest :
     ShouldSpec({
@@ -43,16 +43,15 @@ class DatacenterApiTest :
 
             should("get all Datacenters") {
                 underTest.datacenters.all() shouldBe
-                    DatacenterList(
+                    DatacenterItems(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
-                        datacenters =
-                        listOf(expectedDatacenter),
+                        items = listOf(expectedDatacenter),
                         recommendation = 1,
                     )
             }
 
             should("get Datacenter by id") {
-                underTest.datacenters.find(datacenterId) shouldBe DatacenterItem(expectedDatacenter)
+                underTest.datacenters.find(datacenterId) shouldBe Item(expectedDatacenter)
             }
         }
     })
