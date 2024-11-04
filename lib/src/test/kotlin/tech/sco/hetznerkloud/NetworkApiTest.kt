@@ -8,6 +8,7 @@ import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateNetwork
+import tech.sco.hetznerkloud.request.UpdateNetwork
 import tech.sco.hetznerkloud.response.NetworkItem
 import tech.sco.hetznerkloud.response.NetworkList
 import java.time.OffsetDateTime
@@ -95,6 +96,53 @@ class NetworkApiTest :
                 )
 
                 underTest.networks.create(createRequest) shouldBe NetworkItem(expectedNetwork)
+            }
+
+            should("update a Network") {
+
+                val updateRequest = UpdateNetwork(
+                    exposeRoutesToVSwitch = true,
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
+                    name = "new-name",
+                )
+
+                underTest.networks.update(networkId, updateRequest) shouldBe NetworkItem(
+                    Network(
+                        id = networkId,
+                        created = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        exposeRoutesToVSwitch = true,
+                        ipRange = "10.0.0.0/16",
+                        labels = mapOf(
+                            "labelkey" to "value",
+                        ),
+                        loadBalancers = listOf(LoadBalancer.Id(42L)),
+                        name = "new-name",
+                        protection = Protection(delete = false),
+                        routes = listOf(
+                            Network.Route(destination = "10.100.1.0/24", gateway = "10.0.1.1"),
+                        ),
+                        servers = listOf(
+                            Server.Id(42),
+                        ),
+                        subnets = listOf(
+                            Network.Subnet(
+                                gateway = "10.0.0.1",
+                                ipRange = "10.0.1.0/24",
+                                networkZone = Network.Zone.EU_CENTRAL,
+                                type = Network.Type.CLOUD,
+                                vSwitchId = null,
+                            ),
+                        ),
+                    ),
+                )
+            }
+
+            should("delete a Network") {
+                underTest.networks.delete(networkId) shouldBe Unit
             }
         }
     })

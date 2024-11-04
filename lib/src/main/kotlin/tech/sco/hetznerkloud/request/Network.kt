@@ -19,3 +19,11 @@ data class CreateNetwork(
     val routes: List<Network.Route>,
     val subnets: List<Network.Subnet>,
 ) : HttpBody
+
+@Serializable
+data class UpdateNetwork(
+    @JsonNames("expose_routes_to_vswitch")
+    val exposeRoutesToVSwitch: Boolean,
+    val labels: Labels,
+    val name: String,
+) : HttpBody
