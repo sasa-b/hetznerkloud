@@ -11,7 +11,7 @@ import java.time.OffsetDateTime
 
 class LoadBalancerTypeApiTest :
     ShouldSpec({
-        context("Load balancer type read API") {
+        context("Load balancer type resoruce read API") {
 
             val loadBalancerTypeId = LoadBalancerType.Id(42)
             val apiToken = ApiToken("foo")

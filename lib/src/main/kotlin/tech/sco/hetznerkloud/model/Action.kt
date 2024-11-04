@@ -21,6 +21,7 @@ data class Action(
     @Serializable(with = ActionIdSerializer::class)
     data class Id(override val value: Long) : ResourceId()
 
+    // TODO: add a sealed interface serialization approach for the resource
     @Serializable
     data class Resource(
         val id: Long,

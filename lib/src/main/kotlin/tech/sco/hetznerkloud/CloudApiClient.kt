@@ -23,6 +23,7 @@ import tech.sco.hetznerkloud.repository.LoadBalancerTypes
 import tech.sco.hetznerkloud.repository.LoadBalancers
 import tech.sco.hetznerkloud.repository.Networks
 import tech.sco.hetznerkloud.repository.PlacementGroups
+import tech.sco.hetznerkloud.repository.SSHKeys
 import tech.sco.hetznerkloud.repository.ServerTypes
 import tech.sco.hetznerkloud.repository.Servers
 import tech.sco.hetznerkloud.response.Failure
@@ -40,6 +41,7 @@ class CloudApiClient private constructor(
     val networks: Networks,
     val loadBalancers: LoadBalancers,
     val loadBalancerTypes: LoadBalancerTypes,
+    val sshKeys: SSHKeys,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
@@ -86,6 +88,7 @@ class CloudApiClient private constructor(
                 networks = Networks(httpClient),
                 loadBalancers = LoadBalancers(httpClient),
                 loadBalancerTypes = LoadBalancerTypes(httpClient),
+                sshKeys = SSHKeys(httpClient),
             )
         }
     }

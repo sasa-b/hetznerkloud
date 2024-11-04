@@ -1,0 +1,108 @@
+{
+  "pricing": {
+    "currency": "EUR",
+    "floating_ip": {
+      "price_monthly": {
+        "gross": "1.1900",
+        "net": "1.0000"
+      }
+    },
+    "floating_ips": [
+      {
+        "prices": [
+          {
+            "location": "fsn1",
+            "price_monthly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            }
+          }
+        ],
+        "type": "ipv4"
+      }
+    ],
+    "image": {
+      "price_per_gb_month": {
+        "gross": "1.1900",
+        "net": "1.0000"
+      }
+    },
+    "load_balancer_types": [
+      {
+        "id": 1,
+        "name": "lb11",
+        "prices": [
+          {
+            "included_traffic": 654321,
+            "location": "fsn1",
+            "price_hourly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            },
+            "price_monthly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            },
+            "price_per_tb_traffic": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            }
+          }
+        ]
+      }
+    ],
+    "primary_ips": [
+      {
+        "prices": [
+          {
+            "location": "fsn1",
+            "price_hourly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            },
+            "price_monthly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            }
+          }
+        ],
+        "type": "ipv4"
+      }
+    ],
+    "server_backup": {
+      "percentage": "20.00"
+    },
+    "server_types": [
+      {
+        "id": 104,
+        "name": "cpx11",
+        "prices": [
+          {
+            "included_traffic": 654321,
+            "location": "fsn1",
+            "price_hourly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            },
+            "price_monthly": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            },
+            "price_per_tb_traffic": {
+              "gross": "1.1900",
+              "net": "1.0000"
+            }
+          }
+        ]
+      }
+    ],
+    "traffic": {},
+    "vat_rate": "19.00",
+    "volume": {
+      "price_per_gb_month": {
+        "gross": "1.1900",
+        "net": "1.0000"
+      }
+    }
+  }
+}

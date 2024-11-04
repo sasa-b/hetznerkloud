@@ -56,4 +56,10 @@ internal enum class Route(
 
     GET_ALL_LOAD_BALANCER_TYPES(Pair(HttpMethod.Get, Path("/load_balancer_types"))),
     GET_LOAD_BALANCER_TYPE(Pair(HttpMethod.Get, Path("/load_balancer_types/{id}"))),
+
+    GET_ALL_SSH_KEYS(Pair(HttpMethod.Get, Path("/ssh_keys"))),
+    GET_SSH_KEY(Pair(HttpMethod.Get, Path("/ssh_keys/{id}"))),
+    CREATE_SSH_KEY(Pair(HttpMethod.Post, Path("/ssh_keys"))),
+    UPDATE_SSH_KEY(Pair(HttpMethod.Patch, Path("/ssh_keys/{id}"))),
+    DELETE_SSH_KEY(Pair(HttpMethod.Delete, Path("/ssh_keys/{id}"))),
 }

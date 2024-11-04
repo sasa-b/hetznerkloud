@@ -22,6 +22,12 @@ data class Items<out T>(
         "datacenters",
         "load_balancers",
         "load_balancer_types",
+        "volumes",
+        "ssh_keys",
+        "primary_ips",
+        "floating_ips",
+        "firewalls",
+        "certificates",
     )
     val items: List<T>,
 ) : Collection<T> by items
@@ -40,6 +46,12 @@ data class Item<out T>(
         "load_balancer",
         "load_balancer_type",
         "metrics",
+        "volume",
+        "ssh_key",
+        "primary_ip",
+        "floating_ip",
+        "firewall",
+        "certificate",
     )
     val value: T,
 )

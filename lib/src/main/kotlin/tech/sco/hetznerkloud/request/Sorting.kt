@@ -8,6 +8,7 @@ typealias ServerSorting = Pair<SortingFields.Server, SortingDirection>
 typealias DatacenterSorting = Pair<SortingFields.Datacenter, SortingDirection>
 typealias ImageSorting = Pair<SortingFields.Image, SortingDirection>
 typealias LoadBalancerSorting = Pair<SortingFields.LoadBalancer, SortingDirection>
+typealias SSHKeySorting = Pair<SortingFields.SSHKey, SortingDirection>
 
 enum class SortingDirection(val value: String) {
     ASC("asc"),
@@ -51,5 +52,10 @@ object SortingFields {
         ID("id"),
         NAME("name"),
         CREATED("created"),
+    }
+
+    enum class SSHKey(override val value: String) : SortingField {
+        ID("id"),
+        NAME("name"),
     }
 }

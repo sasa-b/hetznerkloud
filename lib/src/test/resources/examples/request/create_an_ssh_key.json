@@ -1,0 +1,9 @@
+{
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "name": "My ssh key",
+  "public_key": "ssh-rsa AAAjjk76kgf...Xt"
+}

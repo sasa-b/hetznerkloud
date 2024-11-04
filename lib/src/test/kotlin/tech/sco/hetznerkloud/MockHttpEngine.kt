@@ -83,6 +83,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.GET_ALL_LOAD_BALANCER_TYPES, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCER_TYPES, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_LOAD_BALANCER_TYPE, test, resourceId) -> response(Route.GET_LOAD_BALANCER_TYPE, HttpStatusCode.OK, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_SSH_KEYS, test, resourceId) -> response(Route.GET_ALL_SSH_KEYS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_SSH_KEY, test, resourceId) -> response(Route.GET_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_SSH_KEY, test, resourceId) -> response(Route.CREATE_SSH_KEY, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_SSH_KEY, test, resourceId) -> response(Route.UPDATE_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_SSH_KEY, test, resourceId) -> response(Route.DELETE_SSH_KEY, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -140,6 +146,12 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_LOAD_BALANCER_TYPES -> "src/test/resources/examples/response/get_all_load_balancer_types.json"
     Route.GET_LOAD_BALANCER_TYPE -> "src/test/resources/examples/response/get_a_load_balancer_type.json"
+
+    Route.GET_ALL_SSH_KEYS -> "src/test/resources/examples/response/get_all_ssh_keys.json"
+    Route.GET_SSH_KEY -> "src/test/resources/examples/response/get_an_ssh_key.json"
+    Route.CREATE_SSH_KEY -> "src/test/resources/examples/response/create_an_ssh_key.json"
+    Route.UPDATE_SSH_KEY -> "src/test/resources/examples/response/update_an_ssh_key.json"
+    Route.DELETE_SSH_KEY -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }
