@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
+import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.response.DatacenterItem
 import tech.sco.hetznerkloud.response.DatacenterList
 
@@ -29,7 +30,7 @@ class DatacenterApiTest :
                     latitude = 50.47612,
                     longitude = 12.370071,
                     name = "fsn1",
-                    networkZone = "eu-central",
+                    networkZone = NetworkZone.EU_CENTRAL,
                 ),
                 name = "fsn1-dc8",
                 serverTypes =

@@ -7,6 +7,7 @@ typealias ActionSorting = Pair<SortingFields.Action, SortingDirection>
 typealias ServerSorting = Pair<SortingFields.Server, SortingDirection>
 typealias DatacenterSorting = Pair<SortingFields.Datacenter, SortingDirection>
 typealias ImageSorting = Pair<SortingFields.Image, SortingDirection>
+typealias LoadBalancerSorting = Pair<SortingFields.LoadBalancer, SortingDirection>
 
 enum class SortingDirection(val value: String) {
     ASC("asc"),
@@ -46,5 +47,9 @@ object SortingFields {
         CREATED("created"),
     }
 
-    enum class Network(override val value: String) : SortingField
+    enum class LoadBalancer(override val value: String) : SortingField {
+        ID("id"),
+        NAME("name"),
+        CREATED("created"),
+    }
 }

@@ -17,7 +17,7 @@ data class Location(
     val longitude: Double,
     val name: String,
     @JsonNames("network_zone")
-    val networkZone: String,
+    val networkZone: NetworkZone,
 ) {
     @Serializable(with = LocationIdSerializer::class)
     data class Id(override val value: Long) : ResourceId()

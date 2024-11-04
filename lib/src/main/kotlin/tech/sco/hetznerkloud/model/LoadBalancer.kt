@@ -3,11 +3,13 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.LoadBalancerIdSerializer
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
+import tech.sco.hetznerkloud.model.Server.Id as ServerId
 
 @Serializable
 data class LoadBalancer(
@@ -18,18 +20,19 @@ data class LoadBalancer(
     @JsonNames("included_traffic")
     val includedTraffic: Long,
     @JsonNames("ingoing_traffic")
-    val ingoingTraffic: Long,
+    val ingoingTraffic: Long?,
     val labels: Labels,
     @JsonNames("load_balancer_type")
     val loadBalancerType: LoadBalancerType,
     val location: Location,
     val name: String,
+    // This one is marked as required in API docs ???
     val outgoingTraffic: Long? = null,
     @JsonNames("private_net")
     val privateNet: List<PrivateNetwork>,
     val protection: Protection,
     @JsonNames("public_net")
-    val publicNet: List<PrivateNetwork>,
+    val publicNet: PublicNetwork,
     val services: List<Service>,
     val targets: List<Target>,
 ) {
@@ -39,9 +42,12 @@ data class LoadBalancer(
     @Serializable
     data class Algorithm(val type: Type) {
 
-        enum class Type(val value: String) {
-            ROUND_ROBIN("round_robin"),
-            LEAST_CONNECTIONS("least_connections"),
+        enum class Type {
+            @SerialName("round_robin")
+            ROUND_ROBIN,
+
+            @SerialName("least_connections")
+            LEAST_CONNECTIONS,
         }
     }
 
@@ -61,8 +67,8 @@ data class LoadBalancer(
         @Serializable
         data class Ip(
             @JsonNames("dns_ptr")
-            val dnsPtr: String,
-            val ip: String,
+            val dnsPtr: String? = null,
+            val ip: String? = null,
         )
     }
 
@@ -72,10 +78,10 @@ data class LoadBalancer(
         val destinationPort: Int,
         @JsonNames("health_check")
         val healthCheck: HealthCheck,
-        val http: Http,
+        val http: Http? = null,
         @JsonNames("listen_port")
         val listenPort: Int,
-        val protocol: String,
+        val protocol: Protocol,
         @JsonNames("proxyprotocol")
         val proxyProtocol: Boolean,
     ) {
@@ -84,13 +90,13 @@ data class LoadBalancer(
             val http: Http,
             val interval: Int,
             val port: Int,
-            val protocol: String,
+            val protocol: Protocol,
             val retries: Int,
             val timeout: Int,
         ) {
             @Serializable
             data class Http(
-                val domain: String,
+                val domain: String?,
                 val path: String,
                 val response: String,
                 @JsonNames("status_codes")
@@ -103,27 +109,39 @@ data class LoadBalancer(
         data class Http(
             val certificates: List<Certificate.Id>,
             @JsonNames("cookie_lifetime")
-            val cookieLifetime: Int,
+            val cookieLifetime: Int = 300,
             @JsonNames("cookie_name")
-            val cookieName: String,
+            val cookieName: String = "HCLBSTICKY",
             @JsonNames("redirect_http")
-            val redirectHttp: Boolean,
-            @JsonNames("sticky_session")
-            val stickySession: Boolean,
+            val redirectHttp: Boolean = false,
+            @JsonNames("sticky_sessions")
+            val stickySessions: Boolean = false,
         )
+
+        enum class Protocol {
+            @SerialName("tcp")
+            TCP,
+
+            @SerialName("http")
+            HTTP,
+
+            @SerialName("https")
+            HTTPS,
+        }
     }
 
     @Serializable
     data class Target(
-        val healthStatus: HealthStatus,
-        val ip: Ip,
+        @JsonNames("health_status")
+        val healthStatus: List<HealthStatus> = emptyList(),
+        val ip: Ip? = null,
         @JsonNames("label_selector")
-        val labelSelector: Map<String, String>,
-        val server: Server,
-        val targets: List<Target>,
-        val type: String,
+        val labelSelector: Map<String, String> = emptyMap(),
+        val server: Server? = null,
+        val targets: List<Target> = emptyList(),
+        val type: Type,
         @JsonNames("use_private_ip")
-        val usePrivateIp: Boolean,
+        val usePrivateIp: Boolean = false,
     ) {
         @Serializable
         data class HealthStatus(
@@ -136,6 +154,17 @@ data class LoadBalancer(
         data class Ip(val ip: String)
 
         @Serializable
-        data class Server(val id: Long)
+        data class Server(val id: ServerId)
+
+        enum class Type {
+            @SerialName("server")
+            SERVER,
+
+            @SerialName("ip")
+            IP,
+
+            @SerialName("label_selector")
+            LABEL_SELECTOR,
+        }
     }
 }

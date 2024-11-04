@@ -74,6 +74,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_NETWORK, test, resourceId) -> response(Route.UPDATE_NETWORK, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_NETWORK, test, resourceId) -> response(Route.DELETE_NETWORK, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_LOAD_BALANCERS, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCERS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_LOAD_BALANCER, test, resourceId) -> response(Route.GET_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_LOAD_BALANCER, test, resourceId) -> response(Route.CREATE_LOAD_BALANCER, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_LOAD_BALANCER, test, resourceId) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_LOAD_BALANCER, test, resourceId) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -122,6 +128,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_NETWORK -> "src/test/resources/examples/response/create_a_network.json"
     Route.UPDATE_NETWORK -> "src/test/resources/examples/response/update_a_network.json"
     Route.DELETE_NETWORK -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_LOAD_BALANCERS -> "src/test/resources/examples/response/get_all_load_balancers.json"
+    Route.GET_LOAD_BALANCER -> "src/test/resources/examples/response/get_a_load_balancer.json"
+    Route.CREATE_LOAD_BALANCER -> "src/test/resources/examples/response/create_a_load_balancer.json"
+    Route.UPDATE_LOAD_BALANCER -> "src/test/resources/examples/response/update_a_load_balancer.json"
+    Route.DELETE_LOAD_BALANCER -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

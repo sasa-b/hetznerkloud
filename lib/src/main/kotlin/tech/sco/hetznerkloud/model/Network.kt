@@ -43,7 +43,7 @@ data class Network(
         @JsonNames("ip_range")
         val ipRange: String? = null,
         @JsonNames("network_zone")
-        val networkZone: Zone,
+        val networkZone: NetworkZone,
         val type: Type,
         @JsonNames("vswitch_id")
         val vSwitchId: Long? = null,
@@ -59,19 +59,5 @@ data class Network(
 
         @SerialName("vswitch")
         V_SWITCH,
-    }
-
-    enum class Zone {
-        @SerialName("eu-central")
-        EU_CENTRAL,
-
-        @SerialName("us-east")
-        US_EAST,
-
-        @SerialName("us-west")
-        US_WEST,
-
-        @SerialName("ap-southeast")
-        AP_SOUTHEAST,
     }
 }

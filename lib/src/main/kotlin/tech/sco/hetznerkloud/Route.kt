@@ -47,4 +47,10 @@ internal enum class Route(
     CREATE_NETWORK(Pair(HttpMethod.Post, Path("/networks"))),
     UPDATE_NETWORK(Pair(HttpMethod.Patch, Path("/networks/{id}"))),
     DELETE_NETWORK(Pair(HttpMethod.Delete, Path("/networks/{id}"))),
+
+    GET_ALL_LOAD_BALANCERS(Pair(HttpMethod.Get, Path("/load_balancers"))),
+    GET_LOAD_BALANCER(Pair(HttpMethod.Get, Path("/load_balancers/{id}"))),
+    CREATE_LOAD_BALANCER(Pair(HttpMethod.Post, Path("/load_balancers"))),
+    UPDATE_LOAD_BALANCER(Pair(HttpMethod.Patch, Path("/load_balancers/{id}"))),
+    DELETE_LOAD_BALANCER(Pair(HttpMethod.Delete, Path("/load_balancers/{id}"))),
 }

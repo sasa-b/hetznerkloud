@@ -13,7 +13,7 @@ import java.time.OffsetDateTime
 data class LoadBalancerType(
     val id: Id,
     @Serializable(with = OffsetDateTimeSerializer::class)
-    val deprecated: OffsetDateTime,
+    val deprecated: OffsetDateTime?,
     val description: String,
     @JsonNames("max_assigned_certificates")
     val maxAssignedCertificates: Int,

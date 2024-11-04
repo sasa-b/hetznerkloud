@@ -5,6 +5,7 @@ import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
+import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
@@ -31,7 +32,7 @@ object ServerFixture {
                 latitude = 50.47612,
                 longitude = 12.370071,
                 name = "fsn1",
-                networkZone = "eu-central",
+                networkZone = NetworkZone.EU_CENTRAL,
             ),
             name = "fsn1-dc8",
             serverTypes =

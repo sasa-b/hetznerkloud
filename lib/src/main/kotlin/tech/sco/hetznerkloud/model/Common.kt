@@ -3,6 +3,7 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
@@ -64,3 +65,17 @@ data class Price(
 
 @Serializable
 data class Protection(val delete: Boolean)
+
+enum class NetworkZone {
+    @SerialName("eu-central")
+    EU_CENTRAL,
+
+    @SerialName("us-east")
+    US_EAST,
+
+    @SerialName("us-west")
+    US_WEST,
+
+    @SerialName("ap-southeast")
+    AP_SOUTHEAST,
+}

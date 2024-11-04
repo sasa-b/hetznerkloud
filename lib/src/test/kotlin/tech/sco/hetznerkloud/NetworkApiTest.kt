@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Network
+import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateNetwork
@@ -43,7 +44,7 @@ class NetworkApiTest :
                 Network.Subnet(
                     gateway = "10.0.0.1",
                     ipRange = "10.0.1.0/24",
-                    networkZone = Network.Zone.EU_CENTRAL,
+                    networkZone = NetworkZone.EU_CENTRAL,
                     type = Network.Type.CLOUD,
                     vSwitchId = 1000,
                 ),
@@ -87,7 +88,7 @@ class NetworkApiTest :
                     subnets = listOf(
                         Network.Subnet(
                             ipRange = "10.0.1.0/24",
-                            networkZone = Network.Zone.EU_CENTRAL,
+                            networkZone = NetworkZone.EU_CENTRAL,
                             type = Network.Type.CLOUD,
                             vSwitchId = 1000,
                             gateway = "10.0.0.1",
@@ -132,7 +133,7 @@ class NetworkApiTest :
                             Network.Subnet(
                                 gateway = "10.0.0.1",
                                 ipRange = "10.0.1.0/24",
-                                networkZone = Network.Zone.EU_CENTRAL,
+                                networkZone = NetworkZone.EU_CENTRAL,
                                 type = Network.Type.CLOUD,
                                 vSwitchId = null,
                             ),
