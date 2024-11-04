@@ -25,7 +25,7 @@ import tech.sco.hetznerkloud.repository.Networks
 import tech.sco.hetznerkloud.repository.PlacementGroups
 import tech.sco.hetznerkloud.repository.ServerTypes
 import tech.sco.hetznerkloud.repository.Servers
-import tech.sco.hetznerkloud.response.ErrorResponse
+import tech.sco.hetznerkloud.response.Failure
 
 internal const val BASE_URL = "https://api.hetzner.cloud/v1"
 
@@ -68,7 +68,7 @@ class CloudApiClient private constructor(
                 handleResponseExceptionWithRequest { exception, request ->
                     when (exception) {
                         is ClientRequestException -> {
-                            val response: ErrorResponse = exception.response.body()
+                            val response: Failure = exception.response.body()
                             throw response.error
                         }
                     }

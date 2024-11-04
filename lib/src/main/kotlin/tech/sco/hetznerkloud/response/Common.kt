@@ -5,6 +5,7 @@ package tech.sco.hetznerkloud.response
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Meta
 
 @Serializable
@@ -42,3 +43,6 @@ data class Item<out T>(
     )
     val value: T,
 )
+
+@Serializable
+data class Failure(val error: Error)
