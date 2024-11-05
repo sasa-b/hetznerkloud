@@ -13,8 +13,8 @@ import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.UpdateLoadBalancer
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
-import tech.sco.hetznerkloud.response.LoadBalancerCreated
 
 class LoadBalancers(private val httpClient: HttpClient) {
 
@@ -32,7 +32,7 @@ class LoadBalancers(private val httpClient: HttpClient) {
     suspend fun find(id: Id): Item<LoadBalancer> = httpClient.makeRequest(Route.GET_LOAD_BALANCER, resourceId = id)
 
     @Throws(Error::class)
-    suspend fun create(body: CreateLoadBalancer): LoadBalancerCreated = httpClient.makeRequest(Route.CREATE_LOAD_BALANCER, body = body)
+    suspend fun create(body: CreateLoadBalancer): ItemCreated<LoadBalancer> = httpClient.makeRequest(Route.CREATE_LOAD_BALANCER, body = body)
 
     @Throws(Error::class)
     suspend fun update(id: Id, body: UpdateLoadBalancer): Item<LoadBalancer> = httpClient.makeRequest(Route.UPDATE_LOAD_BALANCER, resourceId = id, body = body)

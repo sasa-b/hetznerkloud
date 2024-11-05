@@ -1,7 +1,9 @@
 package tech.sco.hetznerkloud
 
 import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailed
 import tech.sco.hetznerkloud.model.Datacenter
+import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
@@ -9,6 +11,7 @@ import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerType
 import java.time.OffsetDateTime
@@ -159,18 +162,17 @@ object ServerFixture {
 object ActionFixture {
     fun create(
         id: Long = 1,
-        error: Action.Error? = null,
+        error: Error? = null,
         command: String = "create_server",
         finished: OffsetDateTime? = null,
         progress: Int = 0,
-        resources: List<Action.Resource> = listOf(Action.Resource(id = 42, type = "server")),
+        resources: List<Resource> = listOf(Resource(id = 42, type = "server")),
         started: OffsetDateTime = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
         status: String = "running",
     ) = Action(
         id = Action.Id(id),
         command = command,
-        error ?: Action.Error(
-            code = "action_failed",
+        error ?: ActionFailed(
             message = "Action failed",
         ),
         finished = finished,

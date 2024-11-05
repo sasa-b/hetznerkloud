@@ -3,17 +3,19 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailed
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.Volume
 import tech.sco.hetznerkloud.request.CreateVolume
 import tech.sco.hetznerkloud.request.UpdateVolume
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
-import tech.sco.hetznerkloud.response.VolumeCreated
 import java.time.OffsetDateTime
 
 class VolumeApiTest :
@@ -105,19 +107,16 @@ class VolumeApiTest :
                     size = 42,
                 )
 
-                underTest.volumes.create(createRequest) shouldBe VolumeCreated(
+                underTest.volumes.create(createRequest) shouldBe ItemCreated(
                     action = Action(
                         id = Action.Id(13),
                         command = "create_volume",
-                        error = Action.Error(
-                            code = "action_failed",
-                            message = "Action failed",
-                        ),
+                        error = ActionFailed(message = "Action failed"),
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Action.Resource(id = 42, type = "server"),
-                            Action.Resource(id = 554, type = "volume"),
+                            Resource(id = 42, type = "server"),
+                            Resource(id = 554, type = "volume"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
                         status = "running",
@@ -126,21 +125,18 @@ class VolumeApiTest :
                         Action(
                             id = Action.Id(13),
                             command = "attach_volume",
-                            error = Action.Error(
-                                code = "action_failed",
-                                message = "Action failed",
-                            ),
+                            error = ActionFailed(message = "Action failed"),
                             finished = null,
                             progress = 0,
                             resources = listOf(
-                                Action.Resource(id = 42, type = "server"),
-                                Action.Resource(id = 554, type = "volume"),
+                                Resource(id = 42, type = "server"),
+                                Resource(id = 554, type = "volume"),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
                             status = "running",
                         ),
                     ),
-                    volume = expectedVolume,
+                    item = expectedVolume,
                 )
             }
 

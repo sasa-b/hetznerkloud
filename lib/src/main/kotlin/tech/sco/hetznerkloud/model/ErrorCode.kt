@@ -20,4 +20,5 @@ enum class ErrorCode(val value: String) {
     TOKEN_READONLY("token_readonly"),
     UNAVAILABLE("unavailable"),
     NO_SPACE_LEFT_IN_LOCATION("no_space_left_in_location"),
+    ACTION_FAILED("action_failed "),
 }

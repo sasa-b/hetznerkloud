@@ -79,3 +79,10 @@ enum class NetworkZone {
     @SerialName("ap-southeast")
     AP_SOUTHEAST,
 }
+
+// TODO: add a sealed interface serialization approach for the resource
+@Serializable
+data class Resource(
+    val id: Long,
+    val type: String,
+)

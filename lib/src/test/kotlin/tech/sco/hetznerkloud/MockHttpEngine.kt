@@ -23,11 +23,10 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             return@MockEngine errorResponse(ErrorCode.UNAUTHORIZED, HttpStatusCode.Unauthorized, mapOf(HttpHeaders.ContentType to "application/json"))
         }
 
-        val defaultHeaders =
-            mapOf(
-                HttpHeaders.ContentType to "application/json",
-                HttpHeaders.Authorization to apiToken.toString(),
-            )
+        val defaultHeaders = mapOf(
+            HttpHeaders.ContentType to "application/json",
+            HttpHeaders.Authorization to apiToken.toString(),
+        )
 
         val resourceId = resourceIdProvider?.invoke(request)
 
@@ -94,6 +93,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.CREATE_VOLUME, test, resourceId) -> response(Route.CREATE_VOLUME, HttpStatusCode.Created, defaultHeaders)
             matchRoute(Route.UPDATE_VOLUME, test, resourceId) -> response(Route.UPDATE_VOLUME, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_VOLUME, test, resourceId) -> response(Route.DELETE_VOLUME, HttpStatusCode.NoContent, defaultHeaders)
+
+            matchRoute(Route.GET_ALL_CERTIFICATES, test, resourceId) -> response(Route.GET_ALL_CERTIFICATES, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_CERTIFICATE, test, resourceId) -> response(Route.GET_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_CERTIFICATE, test, resourceId) -> response(Route.CREATE_CERTIFICATE, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_CERTIFICATE, test, resourceId) -> response(Route.UPDATE_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_CERTIFICATE, test, resourceId) -> response(Route.DELETE_CERTIFICATE, HttpStatusCode.NoContent, defaultHeaders)
 
             else -> respondError(HttpStatusCode.NotFound)
         }
@@ -164,6 +169,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_VOLUME -> "src/test/resources/examples/response/create_a_volume.json"
     Route.UPDATE_VOLUME -> "src/test/resources/examples/response/update_a_volume.json"
     Route.DELETE_VOLUME -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_CERTIFICATES -> "src/test/resources/examples/response/get_all_certificates.json"
+    Route.GET_CERTIFICATE -> "src/test/resources/examples/response/get_a_certificate.json"
+    Route.CREATE_CERTIFICATE -> "src/test/resources/examples/response/create_a_managed_certificate.json"
+    Route.UPDATE_CERTIFICATE -> "src/test/resources/examples/response/update_a_certificate.json"
+    Route.DELETE_CERTIFICATE -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }
@@ -189,6 +200,7 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.TOKEN_READONLY -> "src/test/resources/examples/error/token_readonly.json"
     ErrorCode.UNAVAILABLE -> "src/test/resources/examples/error/unavailable.json"
     ErrorCode.NO_SPACE_LEFT_IN_LOCATION -> "src/test/resources/examples/error/no_space_left_in_location.json"
+    ErrorCode.ACTION_FAILED -> "src/test/resources/examples/error/action_failed.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

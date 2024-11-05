@@ -68,4 +68,10 @@ internal enum class Route(
     CREATE_VOLUME(Pair(HttpMethod.Post, Path("/volumes"))),
     UPDATE_VOLUME(Pair(HttpMethod.Patch, Path("/volumes/{id}"))),
     DELETE_VOLUME(Pair(HttpMethod.Delete, Path("/volumes/{id}"))),
+
+    GET_ALL_CERTIFICATES(Pair(HttpMethod.Get, Path("/certificates"))),
+    GET_CERTIFICATE(Pair(HttpMethod.Get, Path("/certificates/{id}"))),
+    CREATE_CERTIFICATE(Pair(HttpMethod.Post, Path("/certificates"))),
+    UPDATE_CERTIFICATE(Pair(HttpMethod.Patch, Path("/certificates/{id}"))),
+    DELETE_CERTIFICATE(Pair(HttpMethod.Delete, Path("/certificates/{id}"))),
 }

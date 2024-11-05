@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailed
 import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
@@ -12,6 +13,7 @@ import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
@@ -312,14 +314,13 @@ class ServerApiTest :
                     action = Action(
                         id = Action.Id(1),
                         command = "create_server",
-                        Action.Error(
-                            code = "action_failed",
+                        ActionFailed(
                             message = "Action failed",
                         ),
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Action.Resource(
+                            Resource(
                                 id = 42,
                                 type = "server",
                             ),
@@ -331,10 +332,10 @@ class ServerApiTest :
                         Action(
                             id = Action.Id(13),
                             command = "start_server",
-                            error = Action.Error(code = "action_failed", message = "Action failed"),
+                            error = ActionFailed(message = "Action failed"),
                             finished = null,
                             progress = 0,
-                            resources = listOf(Action.Resource(id = 42, type = "server")),
+                            resources = listOf(Resource(id = 42, type = "server")),
                             started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                             status = "running",
                         ),
@@ -472,17 +473,11 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",
-                        Action.Error(
-                            code = "action_failed",
-                            message = "Action failed",
-                        ),
+                        ActionFailed(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         progress = 100,
                         listOf(
-                            Action.Resource(
-                                id = 42,
-                                type = "server",
-                            ),
+                            Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         status = "running",

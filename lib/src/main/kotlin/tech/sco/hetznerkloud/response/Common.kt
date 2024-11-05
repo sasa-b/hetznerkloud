@@ -5,6 +5,7 @@ package tech.sco.hetznerkloud.response
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Meta
 
@@ -54,6 +55,33 @@ data class Item<out T>(
         "certificate",
     )
     val value: T,
+)
+
+@Serializable
+data class ItemCreated<out T>(
+    val action: Action,
+    @JsonNames("next_actions")
+    val nextActions: List<Action> = emptyList(),
+    @JsonNames(
+        "action",
+        "server",
+        "server_type",
+        "network",
+        "placement_group",
+        "image",
+        "iso",
+        "datacenter",
+        "load_balancer",
+        "load_balancer_type",
+        "metrics",
+        "volume",
+        "ssh_key",
+        "primary_ip",
+        "floating_ip",
+        "firewall",
+        "certificate",
+    )
+    val item: T,
 )
 
 @Serializable

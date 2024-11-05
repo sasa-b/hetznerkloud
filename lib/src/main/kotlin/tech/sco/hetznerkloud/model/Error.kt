@@ -173,3 +173,19 @@ data class UnavailableError(
 ) : Error() {
     override val errorCode = ErrorCode.UNAVAILABLE
 }
+
+@Serializable
+@SerialName("no_space_left_in_location")
+data class NoSpaceLeftInLocation(
+    override val message: String,
+) : Error() {
+    override val errorCode = ErrorCode.NO_SPACE_LEFT_IN_LOCATION
+}
+
+@Serializable
+@SerialName("action_failed")
+data class ActionFailed(
+    override val message: String,
+) : Error() {
+    override val errorCode = ErrorCode.ACTION_FAILED
+}

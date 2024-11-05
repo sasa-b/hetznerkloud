@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailed
 import tech.sco.hetznerkloud.model.Certificate
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.LoadBalancerType
@@ -12,12 +13,13 @@ import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.UpdateLoadBalancer
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
-import tech.sco.hetznerkloud.response.LoadBalancerCreated
 import java.time.OffsetDateTime
 
 class LoadBalancerApiTest :
@@ -378,23 +380,22 @@ class LoadBalancerApiTest :
                     ),
                 )
 
-                underTest.loadBalancers.create(createRequest) shouldBe LoadBalancerCreated(
+                underTest.loadBalancers.create(createRequest) shouldBe ItemCreated(
                     action = Action(
                         id = Action.Id(13),
                         command = "create_load_balancer",
-                        error = Action.Error(
-                            code = "action_failed",
+                        error = ActionFailed(
                             message = "Action failed",
                         ),
                         finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
                         progress = 100,
                         resources = listOf(
-                            Action.Resource(id = 4711L, "load_balancer"),
+                            Resource(id = 4711L, "load_balancer"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = "success",
                     ),
-                    loadBalancer = expectedLoadBalancer,
+                    item = expectedLoadBalancer,
                 )
             }
 

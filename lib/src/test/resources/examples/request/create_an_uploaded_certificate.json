@@ -1,0 +1,6 @@
+{
+  "certificate": "-----BEGIN CERTIFICATE-----\n...",
+  "name": "my website cert",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n...",
+  "type": "uploaded"
+}

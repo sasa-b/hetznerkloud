@@ -1,0 +1,49 @@
+{
+  "action": {
+    "command": "create_certificate",
+    "error": {
+      "code": "action_failed",
+      "message": "Action failed"
+    },
+    "finished": null,
+    "id": 13,
+    "progress": 0,
+    "resources": [
+      {
+        "id": 879,
+        "type": "certificate"
+      }
+    ],
+    "started": "2019-01-08T12:10:00+00:00",
+    "status": "running"
+  },
+  "certificate": {
+    "certificate": null,
+    "created": "2019-01-08T12:10:00+00:00",
+    "domain_names": [
+      "example.com",
+      "webmail.example.com",
+      "www.example.com"
+    ],
+    "fingerprint": null,
+    "id": 897,
+    "labels": {
+      "env": "dev"
+    },
+    "name": "my website cert",
+    "not_valid_after": null,
+    "not_valid_before": null,
+    "status": {
+      "error": null,
+      "issuance": "pending",
+      "renewal": "unavailable"
+    },
+    "type": "managed",
+    "used_by": [
+      {
+        "id": 4711,
+        "type": "load_balancer"
+      }
+    ]
+  }
+}

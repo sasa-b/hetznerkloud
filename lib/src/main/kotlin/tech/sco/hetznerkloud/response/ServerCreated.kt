@@ -8,6 +8,7 @@ import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Server
 
+// TODO: use JsonTransformingSerializer to unwrap in combination with ItemCreated
 @Serializable
 data class ServerCreated(
     val action: Action,

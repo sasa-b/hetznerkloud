@@ -1,0 +1,9 @@
+{
+  "domain_names": [
+    "example.com",
+    "webmail.example.com",
+    "www.example.com"
+  ],
+  "name": "my website cert",
+  "type": "managed"
+}

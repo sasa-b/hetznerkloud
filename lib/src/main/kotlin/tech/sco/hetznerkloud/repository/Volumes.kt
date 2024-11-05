@@ -13,8 +13,8 @@ import tech.sco.hetznerkloud.request.VolumeFilter
 import tech.sco.hetznerkloud.request.VolumeSorting
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
-import tech.sco.hetznerkloud.response.VolumeCreated
 
 class Volumes(private val httpClient: HttpClient) {
     @Throws(Error::class)
@@ -28,7 +28,7 @@ class Volumes(private val httpClient: HttpClient) {
     suspend fun find(id: Id): Item<Volume> = httpClient.makeRequest(Route.GET_VOLUME, resourceId = id)
 
     @Throws(Error::class)
-    suspend fun create(body: CreateVolume): VolumeCreated = httpClient.makeRequest(Route.CREATE_VOLUME, body = body)
+    suspend fun create(body: CreateVolume): ItemCreated<Volume> = httpClient.makeRequest(Route.CREATE_VOLUME, body = body)
 
     @Throws(Error::class)
     suspend fun update(id: Id, body: UpdateVolume): Item<Volume> = httpClient.makeRequest(Route.UPDATE_VOLUME, resourceId = id, body = body)

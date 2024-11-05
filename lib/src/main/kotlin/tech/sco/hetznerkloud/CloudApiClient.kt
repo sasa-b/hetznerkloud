@@ -16,6 +16,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import tech.sco.hetznerkloud.repository.Actions
+import tech.sco.hetznerkloud.repository.Certificates
 import tech.sco.hetznerkloud.repository.Datacenters
 import tech.sco.hetznerkloud.repository.Images
 import tech.sco.hetznerkloud.repository.Isos
@@ -44,6 +45,7 @@ class CloudApiClient private constructor(
     val loadBalancerTypes: LoadBalancerTypes,
     val sshKeys: SSHKeys,
     val volumes: Volumes,
+    val certificates: Certificates,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
@@ -92,6 +94,7 @@ class CloudApiClient private constructor(
                 loadBalancerTypes = LoadBalancerTypes(httpClient),
                 sshKeys = SSHKeys(httpClient),
                 volumes = Volumes(httpClient),
+                certificates = Certificates(httpClient),
             )
         }
     }
