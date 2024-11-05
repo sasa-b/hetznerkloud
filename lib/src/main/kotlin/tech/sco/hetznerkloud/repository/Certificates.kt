@@ -10,7 +10,7 @@ import tech.sco.hetznerkloud.request.CertificateFilter
 import tech.sco.hetznerkloud.request.CertificateSorting
 import tech.sco.hetznerkloud.request.CreateCertificate
 import tech.sco.hetznerkloud.request.Pagination
-import tech.sco.hetznerkloud.request.UpdateCertificate
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
@@ -32,7 +32,7 @@ class Certificates(private val httpClient: HttpClient) {
     suspend fun create(body: CreateCertificate): ItemCreated<Certificate> = httpClient.makeRequest(Route.CREATE_CERTIFICATE, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateCertificate): Item<Certificate> = httpClient.makeRequest(Route.UPDATE_CERTIFICATE, resourceId = id.value, body = body)
+    suspend fun update(id: Id, body: UpdateResource): Item<Certificate> = httpClient.makeRequest(Route.UPDATE_CERTIFICATE, resourceId = id.value, body = body)
 
     @Throws(Error::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_CERTIFICATE)

@@ -20,7 +20,7 @@ import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
-import tech.sco.hetznerkloud.request.UpdateServer
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerCreated
@@ -456,7 +456,7 @@ class ServerApiTest :
 
             should("update a Server") {
 
-                val requestBody = UpdateServer(
+                val requestBody = UpdateResource(
                     labels = mapOf(
                         "environment" to "prod",
                         "example.com/my" to "label",

@@ -10,7 +10,7 @@ import tech.sco.hetznerkloud.request.CreateSSHKey
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.SSHKeyFilter
 import tech.sco.hetznerkloud.request.SSHKeySorting
-import tech.sco.hetznerkloud.request.UpdateSSHKey
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -32,7 +32,7 @@ class SSHKeys(private val httpClient: HttpClient) {
     suspend fun create(body: CreateSSHKey): Item<SSHKey> = httpClient.makeRequest(Route.CREATE_SSH_KEY, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateSSHKey): Item<SSHKey> = httpClient.makeRequest(Route.UPDATE_SSH_KEY, resourceId = id.value, body = body)
+    suspend fun update(id: Id, body: UpdateResource): Item<SSHKey> = httpClient.makeRequest(Route.UPDATE_SSH_KEY, resourceId = id.value, body = body)
 
     @Throws(Error::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_SSH_KEY, resourceId = id.value)

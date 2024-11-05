@@ -242,8 +242,7 @@ private fun MockRequestHandleScope.response(
     respond(
         content = ByteReadChannel(content(route)),
         status = statusCode,
-        headers =
-        headers {
+        headers = headers {
             headers.forEach {
                 append(it.key, it.value)
             }
@@ -258,8 +257,7 @@ private fun MockRequestHandleScope.errorResponse(
     respond(
         content = ByteReadChannel(error(error)),
         status = statusCode,
-        headers =
-        headers {
+        headers = headers {
             headers.forEach {
                 append(it.key, it.value)
             }

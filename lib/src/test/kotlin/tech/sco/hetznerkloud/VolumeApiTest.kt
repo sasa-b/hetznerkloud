@@ -12,7 +12,7 @@ import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.Volume
 import tech.sco.hetznerkloud.request.CreateVolume
-import tech.sco.hetznerkloud.request.UpdateVolume
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
@@ -142,7 +142,7 @@ class VolumeApiTest :
 
             should("update a Volume") {
 
-                val updateRequest = UpdateVolume(
+                val updateRequest = UpdateResource(
                     labels = mapOf(
                         "labelkey" to "value",
                         "example.com/my" to "label",

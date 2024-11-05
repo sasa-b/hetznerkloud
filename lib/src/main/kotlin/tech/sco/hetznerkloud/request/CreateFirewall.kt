@@ -19,11 +19,6 @@ data class CreateFirewall(
     @Serializable
     data class ApplyTo(
         val server: Firewall.AppliedTo.ServerResource,
+        val type: String,
     )
 }
-
-@Serializable
-data class UpdateFirewall(
-    val name: String,
-    val labels: Labels,
-) : HttpBody

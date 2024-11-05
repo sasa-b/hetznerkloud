@@ -12,7 +12,7 @@ import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.UploadedCertificate
 import tech.sco.hetznerkloud.request.CreateManagedCertificate
 import tech.sco.hetznerkloud.request.CreateUploadedCertificate
-import tech.sco.hetznerkloud.request.UpdateCertificate
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
@@ -202,7 +202,7 @@ class CertificateApiTest :
             }
 
             should("update a Certificate") {
-                val updateRequest = UpdateCertificate(
+                val updateRequest = UpdateResource(
                     labels = mapOf(
                         "labelkey" to "value",
                     ),

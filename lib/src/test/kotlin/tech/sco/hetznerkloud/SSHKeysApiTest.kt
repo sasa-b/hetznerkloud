@@ -5,7 +5,7 @@ import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.SSHKey
 import tech.sco.hetznerkloud.request.CreateSSHKey
-import tech.sco.hetznerkloud.request.UpdateSSHKey
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
@@ -64,7 +64,7 @@ class SSHKeysApiTest :
 
             should("update an ssh key") {
 
-                val updateRequest = UpdateSSHKey(
+                val updateRequest = UpdateResource(
                     labels = mapOf(),
                     name = "My ssh key",
                 )

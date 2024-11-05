@@ -12,6 +12,7 @@ import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 
 class LoadBalancerTypes(private val httpClient: HttpClient) {
+
     @Throws(Error::class)
     suspend fun all(
         filter: Set<LoadBalancerTypeFilter> = emptySet(),

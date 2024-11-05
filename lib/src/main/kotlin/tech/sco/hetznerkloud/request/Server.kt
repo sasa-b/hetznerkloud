@@ -49,9 +49,3 @@ data class CreateServer(
         val ipv6: String? = null,
     )
 }
-
-@Serializable
-data class UpdateServer(
-    val labels: Labels,
-    val name: String,
-) : HttpBody

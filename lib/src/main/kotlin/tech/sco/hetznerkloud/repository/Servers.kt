@@ -13,7 +13,7 @@ import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.ServerFilter
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.ServerSorting
-import tech.sco.hetznerkloud.request.UpdateServer
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -38,7 +38,7 @@ class Servers(private val httpClient: HttpClient) {
     suspend fun create(body: CreateServer): ServerCreated = httpClient.makeRequest(Route.CREATE_SERVER, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateServer): Item<Server> = httpClient.makeRequest(Route.UPDATE_SERVER, resourceId = id.value, body = body)
+    suspend fun update(id: Id, body: UpdateResource): Item<Server> = httpClient.makeRequest(Route.UPDATE_SERVER, resourceId = id.value, body = body)
 
     @Throws(Error::class)
     suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id.value)

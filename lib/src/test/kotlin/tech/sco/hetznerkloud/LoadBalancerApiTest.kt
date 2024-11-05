@@ -16,7 +16,7 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
-import tech.sco.hetznerkloud.request.UpdateLoadBalancer
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
@@ -401,7 +401,7 @@ class LoadBalancerApiTest :
 
             should("update a Load balancer") {
 
-                val updateRequest = UpdateLoadBalancer(
+                val updateRequest = UpdateResource(
                     labels = mapOf(
                         "environment" to "prod",
                         "example.com/my" to "label",

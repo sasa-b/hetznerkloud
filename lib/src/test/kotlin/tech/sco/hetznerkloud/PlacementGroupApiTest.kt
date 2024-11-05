@@ -6,7 +6,7 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreatePlacementGroup
-import tech.sco.hetznerkloud.request.UpdatePlacementGroup
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
@@ -68,7 +68,7 @@ class PlacementGroupApiTest :
 
             should("update a Placement Group") {
 
-                val createRequest = UpdatePlacementGroup(
+                val createRequest = UpdateResource(
                     "my Placement Group",
                     mapOf("key" to "value"),
                 )

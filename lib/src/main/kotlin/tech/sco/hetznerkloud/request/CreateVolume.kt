@@ -12,9 +12,3 @@ data class CreateVolume(
     val name: String,
     val size: Long,
 ) : HttpBody
-
-@Serializable
-data class UpdateVolume(
-    val labels: Labels,
-    val name: String,
-) : HttpBody

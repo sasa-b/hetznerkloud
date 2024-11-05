@@ -10,7 +10,7 @@ import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.LoadBalancerFilter
 import tech.sco.hetznerkloud.request.LoadBalancerSorting
 import tech.sco.hetznerkloud.request.Pagination
-import tech.sco.hetznerkloud.request.UpdateLoadBalancer
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
@@ -35,7 +35,7 @@ class LoadBalancers(private val httpClient: HttpClient) {
     suspend fun create(body: CreateLoadBalancer): ItemCreated<LoadBalancer> = httpClient.makeRequest(Route.CREATE_LOAD_BALANCER, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateLoadBalancer): Item<LoadBalancer> = httpClient.makeRequest(Route.UPDATE_LOAD_BALANCER, resourceId = id.value, body = body)
+    suspend fun update(id: Id, body: UpdateResource): Item<LoadBalancer> = httpClient.makeRequest(Route.UPDATE_LOAD_BALANCER, resourceId = id.value, body = body)
 
     @Throws(Error::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_LOAD_BALANCER, resourceId = id.value)

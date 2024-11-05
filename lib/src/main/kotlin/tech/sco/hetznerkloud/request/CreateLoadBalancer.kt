@@ -25,9 +25,3 @@ data class CreateLoadBalancer(
     val services: List<LoadBalancer.Service>,
     val targets: List<LoadBalancer.Target>,
 ) : HttpBody
-
-@Serializable
-data class UpdateLoadBalancer(
-    val labels: Labels,
-    val name: String,
-) : HttpBody

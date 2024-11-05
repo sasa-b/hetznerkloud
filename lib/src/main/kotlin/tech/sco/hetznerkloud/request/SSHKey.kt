@@ -14,9 +14,3 @@ data class CreateSSHKey(
     @JsonNames("public_key")
     val publicKey: String,
 ) : HttpBody
-
-@Serializable
-data class UpdateSSHKey(
-    val labels: Labels,
-    val name: String,
-) : HttpBody
