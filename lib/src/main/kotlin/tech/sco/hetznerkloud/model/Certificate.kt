@@ -6,14 +6,14 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.serialization.CertificateIdSerializer
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
 
 @Serializable
 sealed interface Certificate {
-    @Serializable(with = CertificateIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 
     @Serializable
     data class Status(val error: Error?, val issuance: String, val renewal: String)

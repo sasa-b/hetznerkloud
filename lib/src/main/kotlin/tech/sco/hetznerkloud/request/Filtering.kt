@@ -16,6 +16,7 @@ typealias LoadBalancerTypeFilter = Pair<FilterFields.LoadBalancerType, String>
 typealias SSHKeyFilter = Pair<FilterFields.SSHKey, String>
 typealias VolumeFilter = Pair<FilterFields.Volume, String>
 typealias CertificateFilter = Pair<FilterFields.Certificate, String>
+typealias FirewallFilter = Pair<FilterFields.Firewall, String>
 
 sealed interface FilterField {
     val value: String
@@ -95,6 +96,11 @@ object FilterFields {
     enum class Certificate(override val value: String) : FilterField {
         NAME("name"),
         TYPE("type"),
+        LABEL_SELECTOR("label_selector"),
+    }
+
+    enum class Firewall(override val value: String) : FilterField {
+        NAME("name"),
         LABEL_SELECTOR("label_selector"),
     }
 }

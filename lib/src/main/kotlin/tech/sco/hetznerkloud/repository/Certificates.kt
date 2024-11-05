@@ -26,13 +26,13 @@ class Certificates(private val httpClient: HttpClient) {
     ): Items<Certificate> = httpClient.makeRequest(Route.GET_ALL_CERTIFICATES, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Certificate> = httpClient.makeRequest(Route.GET_CERTIFICATE, id)
+    suspend fun find(id: Id): Item<Certificate> = httpClient.makeRequest(Route.GET_CERTIFICATE, id.value)
 
     @Throws(Error::class)
     suspend fun create(body: CreateCertificate): ItemCreated<Certificate> = httpClient.makeRequest(Route.CREATE_CERTIFICATE, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateCertificate): Item<Certificate> = httpClient.makeRequest(Route.UPDATE_CERTIFICATE, resourceId = id, body = body)
+    suspend fun update(id: Id, body: UpdateCertificate): Item<Certificate> = httpClient.makeRequest(Route.UPDATE_CERTIFICATE, resourceId = id.value, body = body)
 
     @Throws(Error::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_CERTIFICATE)

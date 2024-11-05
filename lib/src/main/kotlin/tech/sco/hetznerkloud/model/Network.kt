@@ -6,7 +6,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.serialization.NetworkIdSerializer
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
 
@@ -28,8 +27,9 @@ data class Network(
     val servers: List<Server.Id>,
     val subnets: List<Subnet>,
 ) {
-    @Serializable(with = NetworkIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 
     @Serializable
     data class Route(

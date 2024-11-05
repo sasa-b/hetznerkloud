@@ -2,7 +2,6 @@ package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.Serializable
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
-import tech.sco.hetznerkloud.serialization.PlacementGroupIdSerializer
 import java.time.OffsetDateTime
 
 @Serializable
@@ -15,6 +14,7 @@ data class PlacementGroup(
     val servers: List<Server.Id>,
     val type: String,
 ) {
-    @Serializable(with = PlacementGroupIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 }

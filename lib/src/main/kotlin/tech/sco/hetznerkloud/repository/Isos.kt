@@ -16,5 +16,5 @@ class Isos(private val httpClient: HttpClient) {
     suspend fun all(filter: Set<IsoFilter> = emptySet()): Items<Iso> = httpClient.makeRequest(Route.GET_ALL_ISOS, queryParams = filter.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Iso> = httpClient.makeRequest(Route.GET_ISO, id)
+    suspend fun find(id: Id): Item<Iso> = httpClient.makeRequest(Route.GET_ISO, id.value)
 }

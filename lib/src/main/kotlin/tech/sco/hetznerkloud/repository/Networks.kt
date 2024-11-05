@@ -23,14 +23,14 @@ class Networks(private val httpClient: HttpClient) {
     ): Items<Network> = httpClient.makeRequest(Route.GET_ALL_NETWORKS, queryParams = filter.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Network> = httpClient.makeRequest(Route.GET_NETWORK, resourceId = id)
+    suspend fun find(id: Id): Item<Network> = httpClient.makeRequest(Route.GET_NETWORK, resourceId = id.value)
 
     @Throws(Error::class)
     suspend fun create(body: CreateNetwork): Item<Network> = httpClient.makeRequest(Route.CREATE_NETWORK, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateNetwork): Item<Network> = httpClient.makeRequest(Route.UPDATE_NETWORK, resourceId = id, body = body)
+    suspend fun update(id: Id, body: UpdateNetwork): Item<Network> = httpClient.makeRequest(Route.UPDATE_NETWORK, resourceId = id.value, body = body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_NETWORK, resourceId = id)
+    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_NETWORK, resourceId = id.value)
 }

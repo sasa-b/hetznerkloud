@@ -5,7 +5,6 @@ package tech.sco.hetznerkloud.model
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.serialization.ImageIdSerializer
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
 
@@ -41,8 +40,9 @@ data class Image(
     val type: String,
 ) {
 
-    @Serializable(with = ImageIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 
     @Serializable
     data class CreatedFrom(

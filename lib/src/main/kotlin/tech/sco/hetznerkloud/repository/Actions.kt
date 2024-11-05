@@ -23,5 +23,5 @@ class Actions(private val httpClient: HttpClient) {
     ): Items<Action> = httpClient.makeRequest(Route.GET_ALL_ACTIONS, queryParams = (filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams()))
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Action> = httpClient.makeRequest(Route.GET_ACTION, id)
+    suspend fun find(id: Id): Item<Action> = httpClient.makeRequest(Route.GET_ACTION, id.value)
 }

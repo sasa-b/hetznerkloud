@@ -24,5 +24,5 @@ class ServerTypes(private val httpClient: HttpClient) {
         )
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<ServerType> = httpClient.makeRequest(Route.GET_SERVER_TYPE, id)
+    suspend fun find(id: Id): Item<ServerType> = httpClient.makeRequest(Route.GET_SERVER_TYPE, id.value)
 }

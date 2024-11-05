@@ -5,7 +5,6 @@ package tech.sco.hetznerkloud.model
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.serialization.LoadBalancerTypeIdSerializer
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
 
@@ -26,6 +25,7 @@ data class LoadBalancerType(
     val name: String,
     val prices: List<Price>,
 ) {
-    @Serializable(with = LoadBalancerTypeIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 }

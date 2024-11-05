@@ -15,7 +15,7 @@ class LoadBalancerTypeApiTest :
 
             val loadBalancerTypeId = LoadBalancerType.Id(42)
             val apiToken = ApiToken("foo")
-            val mockEngine = createMockEngine(apiToken) { loadBalancerTypeId }
+            val mockEngine = createMockEngine(apiToken) { loadBalancerTypeId.value }
             val underTest = CloudApiClient.of(apiToken, mockEngine)
 
             val expectedLoadBalancerType = LoadBalancerType(

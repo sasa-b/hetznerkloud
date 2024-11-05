@@ -11,6 +11,7 @@ typealias LoadBalancerSorting = Pair<SortingFields.LoadBalancer, SortingDirectio
 typealias SSHKeySorting = Pair<SortingFields.SSHKey, SortingDirection>
 typealias VolumeSorting = Pair<SortingFields.Volume, SortingDirection>
 typealias CertificateSorting = Pair<SortingFields.Certificate, SortingDirection>
+typealias FirewallSorting = Pair<SortingFields.Firewall, SortingDirection>
 
 enum class SortingDirection(val value: String) {
     ASC("asc"),
@@ -68,6 +69,12 @@ object SortingFields {
     }
 
     enum class Certificate(override val value: String) : SortingField {
+        ID("id"),
+        NAME("name"),
+        CREATED("created"),
+    }
+
+    enum class Firewall(override val value: String) : SortingField {
         ID("id"),
         NAME("name"),
         CREATED("created"),

@@ -26,14 +26,14 @@ class SSHKeys(private val httpClient: HttpClient) {
         httpClient.makeRequest(Route.GET_ALL_SSH_KEYS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<SSHKey> = httpClient.makeRequest(Route.GET_SSH_KEY, resourceId = id)
+    suspend fun find(id: Id): Item<SSHKey> = httpClient.makeRequest(Route.GET_SSH_KEY, resourceId = id.value)
 
     @Throws(Error::class)
     suspend fun create(body: CreateSSHKey): Item<SSHKey> = httpClient.makeRequest(Route.CREATE_SSH_KEY, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateSSHKey): Item<SSHKey> = httpClient.makeRequest(Route.UPDATE_SSH_KEY, resourceId = id, body = body)
+    suspend fun update(id: Id, body: UpdateSSHKey): Item<SSHKey> = httpClient.makeRequest(Route.UPDATE_SSH_KEY, resourceId = id.value, body = body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_SSH_KEY, resourceId = id)
+    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_SSH_KEY, resourceId = id.value)
 }

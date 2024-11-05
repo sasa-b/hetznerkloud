@@ -1,12 +1,11 @@
 package tech.sco.hetznerkloud
 
 import io.ktor.http.HttpMethod
-import tech.sco.hetznerkloud.model.ResourceId
 
 internal typealias HttpMethodAndPath = Pair<HttpMethod, Path>
 
 internal data class Path(val value: String) {
-    fun withId(id: ResourceId) = Path(value.replace("{id}", id.toString()))
+    fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
 }
 
 internal enum class Route(
@@ -74,4 +73,10 @@ internal enum class Route(
     CREATE_CERTIFICATE(Pair(HttpMethod.Post, Path("/certificates"))),
     UPDATE_CERTIFICATE(Pair(HttpMethod.Patch, Path("/certificates/{id}"))),
     DELETE_CERTIFICATE(Pair(HttpMethod.Delete, Path("/certificates/{id}"))),
+
+    GET_ALL_FIREWALLS(Pair(HttpMethod.Get, Path("/firewalls"))),
+    GET_FIREWALL(Pair(HttpMethod.Get, Path("/firewalls/{id}"))),
+    CREATE_FIREWALL(Pair(HttpMethod.Post, Path("/firewalls"))),
+    UPDATE_FIREWALL(Pair(HttpMethod.Patch, Path("/firewalls/{id}"))),
+    DELETE_FIREWALL(Pair(HttpMethod.Delete, Path("/firewalls/{id}"))),
 }

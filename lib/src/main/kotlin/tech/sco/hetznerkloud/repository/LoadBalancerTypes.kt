@@ -23,5 +23,5 @@ class LoadBalancerTypes(private val httpClient: HttpClient) {
         )
 
     @Throws(Error::class)
-    suspend fun find(id: LoadBalancerType.Id): Item<LoadBalancerType> = httpClient.makeRequest(Route.GET_LOAD_BALANCER_TYPE, resourceId = id)
+    suspend fun find(id: LoadBalancerType.Id): Item<LoadBalancerType> = httpClient.makeRequest(Route.GET_LOAD_BALANCER_TYPE, resourceId = id.value)
 }

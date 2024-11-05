@@ -31,7 +31,7 @@ class ServerApiTest :
     ShouldSpec({
         val serverId = Server.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { serverId }
+        val mockEngine = createMockEngine(apiToken) { serverId.value }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedServer = Server(

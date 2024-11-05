@@ -18,7 +18,7 @@ class NetworkApiTest :
     ShouldSpec({
         val networkId = Network.Id(4711)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { networkId }
+        val mockEngine = createMockEngine(apiToken) { networkId.value }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedNetwork = Network(

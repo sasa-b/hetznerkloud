@@ -14,7 +14,7 @@ class IsoApiTest :
     ShouldSpec({
         val isoId = Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { isoId }
+        val mockEngine = createMockEngine(apiToken) { isoId.value }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Iso resource read API") {

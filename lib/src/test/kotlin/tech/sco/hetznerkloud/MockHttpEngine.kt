@@ -12,11 +12,10 @@ import io.ktor.http.headers
 import io.ktor.http.toURI
 import io.ktor.utils.io.ByteReadChannel
 import tech.sco.hetznerkloud.model.ErrorCode
-import tech.sco.hetznerkloud.model.ResourceId
 import java.io.File
 
 @Suppress("CyclomaticComplexMethod")
-internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> ResourceId)? = null) =
+internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) =
     MockEngine { request ->
 
         if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
@@ -100,11 +99,17 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_CERTIFICATE, test, resourceId) -> response(Route.UPDATE_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_CERTIFICATE, test, resourceId) -> response(Route.DELETE_CERTIFICATE, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_FIREWALLS, test, resourceId) -> response(Route.GET_ALL_FIREWALLS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_FIREWALL, test, resourceId) -> response(Route.GET_FIREWALL, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_FIREWALL, test, resourceId) -> response(Route.CREATE_FIREWALL, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_FIREWALL, test, resourceId) -> response(Route.UPDATE_FIREWALL, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_FIREWALL, test, resourceId) -> response(Route.DELETE_FIREWALL, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
 
-private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: ResourceId?) = if (resourceId != null) {
+private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?) = if (resourceId != null) {
     val (httpMethod, path) = route.value
     httpMethod == test.first && path.withId(resourceId).value == test.second.value
 } else {
@@ -175,6 +180,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_CERTIFICATE -> "src/test/resources/examples/response/create_a_managed_certificate.json"
     Route.UPDATE_CERTIFICATE -> "src/test/resources/examples/response/update_a_certificate.json"
     Route.DELETE_CERTIFICATE -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_FIREWALLS -> "src/test/resources/examples/response/get_all_firewalls.json"
+    Route.GET_FIREWALL -> "src/test/resources/examples/response/get_a_firewall.json"
+    Route.CREATE_FIREWALL -> "src/test/resources/examples/response/create_a_firewall.json"
+    Route.UPDATE_FIREWALL -> "src/test/resources/examples/response/update_a_firewall.json"
+    Route.DELETE_FIREWALL -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

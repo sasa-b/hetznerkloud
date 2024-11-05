@@ -6,7 +6,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
-import tech.sco.hetznerkloud.serialization.SSHKeyIdSerializer
 import java.time.OffsetDateTime
 
 @Serializable
@@ -20,6 +19,7 @@ data class SSHKey(
     @JsonNames("public_key")
     val publicKey: String,
 ) {
-    @Serializable(with = SSHKeyIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 }

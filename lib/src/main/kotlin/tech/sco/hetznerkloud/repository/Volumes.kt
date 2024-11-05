@@ -25,14 +25,14 @@ class Volumes(private val httpClient: HttpClient) {
     ): Items<Volume> = httpClient.makeRequest(Route.GET_ALL_VOLUMES, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Volume> = httpClient.makeRequest(Route.GET_VOLUME, resourceId = id)
+    suspend fun find(id: Id): Item<Volume> = httpClient.makeRequest(Route.GET_VOLUME, resourceId = id.value)
 
     @Throws(Error::class)
     suspend fun create(body: CreateVolume): ItemCreated<Volume> = httpClient.makeRequest(Route.CREATE_VOLUME, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateVolume): Item<Volume> = httpClient.makeRequest(Route.UPDATE_VOLUME, resourceId = id, body = body)
+    suspend fun update(id: Id, body: UpdateVolume): Item<Volume> = httpClient.makeRequest(Route.UPDATE_VOLUME, resourceId = id.value, body = body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_VOLUME, resourceId = id)
+    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_VOLUME, resourceId = id.value)
 }

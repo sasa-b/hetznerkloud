@@ -9,10 +9,6 @@ import kotlinx.serialization.json.JsonNames
 
 typealias Labels = Map<String, String>
 
-sealed class ResourceId {
-    abstract val value: Long
-}
-
 @Serializable
 data class Meta(
     val pagination: Pagination,

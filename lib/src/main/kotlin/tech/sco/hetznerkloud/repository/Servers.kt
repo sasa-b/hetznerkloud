@@ -32,16 +32,16 @@ class Servers(private val httpClient: HttpClient) {
     )
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Server> = httpClient.makeRequest(Route.GET_SERVER, id)
+    suspend fun find(id: Id): Item<Server> = httpClient.makeRequest(Route.GET_SERVER, resourceId = id.value)
 
     @Throws(Error::class)
     suspend fun create(body: CreateServer): ServerCreated = httpClient.makeRequest(Route.CREATE_SERVER, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateServer): Item<Server> = httpClient.makeRequest(Route.UPDATE_SERVER, id, body)
+    suspend fun update(id: Id, body: UpdateServer): Item<Server> = httpClient.makeRequest(Route.UPDATE_SERVER, resourceId = id.value, body = body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id)
+    suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id.value)
 
     @Throws(Error::class)
     suspend fun metrics(id: Id, filter: Set<ServerMetricsFilter>): Item<ServerMetrics> {
@@ -49,7 +49,7 @@ class Servers(private val httpClient: HttpClient) {
 
         return httpClient.makeRequest(
             Route.GET_SERVER_METRICS,
-            id,
+            id.value,
             queryParams = listOf(
                 Pair("type", types.joinToString(",") { it.second }),
             ) + other.toQueryParams(),

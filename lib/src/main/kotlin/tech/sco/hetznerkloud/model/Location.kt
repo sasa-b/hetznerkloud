@@ -5,7 +5,6 @@ package tech.sco.hetznerkloud.model
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.serialization.LocationIdSerializer
 
 @Serializable
 data class Location(
@@ -19,6 +18,7 @@ data class Location(
     @JsonNames("network_zone")
     val networkZone: NetworkZone,
 ) {
-    @Serializable(with = LocationIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 }

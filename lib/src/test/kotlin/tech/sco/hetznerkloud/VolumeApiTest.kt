@@ -22,7 +22,7 @@ class VolumeApiTest :
     ShouldSpec({
         val volumeId = Volume.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { volumeId }
+        val mockEngine = createMockEngine(apiToken) { volumeId.value }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Volume resource read API") {

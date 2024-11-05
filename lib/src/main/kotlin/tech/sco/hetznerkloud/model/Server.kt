@@ -6,7 +6,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
-import tech.sco.hetznerkloud.serialization.ServerIdSerializer
 import tech.sco.hetznerkloud.serialization.TimeSeriesValuePairSerializer
 import java.time.OffsetDateTime
 
@@ -47,8 +46,9 @@ data class Server(
     val status: String,
     val volumes: List<Int>,
 ) {
-    @Serializable(with = ServerIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 
     @Serializable
     data class Deprecation(

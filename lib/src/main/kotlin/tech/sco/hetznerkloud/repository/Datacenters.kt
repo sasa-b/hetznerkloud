@@ -23,5 +23,5 @@ class Datacenters(private val httpClient: HttpClient) {
         httpClient.makeRequest(Route.GET_ALL_DATACENTERS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Datacenter> = httpClient.makeRequest(Route.GET_DATACENTER, id)
+    suspend fun find(id: Id): Item<Datacenter> = httpClient.makeRequest(Route.GET_DATACENTER, id.value)
 }

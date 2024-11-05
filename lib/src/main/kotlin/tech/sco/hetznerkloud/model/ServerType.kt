@@ -6,7 +6,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Server.Deprecation
-import tech.sco.hetznerkloud.serialization.ServerTypeIdSerializer
 
 @Serializable
 data class ServerType(
@@ -25,6 +24,7 @@ data class ServerType(
     @JsonNames("storage_type")
     val storageType: String,
 ) {
-    @Serializable(with = ServerTypeIdSerializer::class)
-    data class Id(override val value: Long) : ResourceId()
+    @Serializable
+    @JvmInline
+    value class Id(val value: Long)
 }

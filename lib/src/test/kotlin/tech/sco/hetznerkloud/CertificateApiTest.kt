@@ -22,7 +22,7 @@ class CertificateApiTest :
     ShouldSpec({
         val certificateId = Id(897)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { certificateId }
+        val mockEngine = createMockEngine(apiToken) { certificateId.value }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Certificate resource read API") {

@@ -18,6 +18,7 @@ import kotlinx.serialization.json.Json
 import tech.sco.hetznerkloud.repository.Actions
 import tech.sco.hetznerkloud.repository.Certificates
 import tech.sco.hetznerkloud.repository.Datacenters
+import tech.sco.hetznerkloud.repository.Firewalls
 import tech.sco.hetznerkloud.repository.Images
 import tech.sco.hetznerkloud.repository.Isos
 import tech.sco.hetznerkloud.repository.LoadBalancerTypes
@@ -46,6 +47,7 @@ class CloudApiClient private constructor(
     val sshKeys: SSHKeys,
     val volumes: Volumes,
     val certificates: Certificates,
+    val firewalls: Firewalls,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
@@ -95,6 +97,7 @@ class CloudApiClient private constructor(
                 sshKeys = SSHKeys(httpClient),
                 volumes = Volumes(httpClient),
                 certificates = Certificates(httpClient),
+                firewalls = Firewalls(httpClient),
             )
         }
     }

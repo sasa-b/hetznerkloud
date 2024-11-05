@@ -24,11 +24,11 @@ class Images(private val httpClient: HttpClient) {
         httpClient.makeRequest(Route.GET_ALL_IMAGES, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<Image> = httpClient.makeRequest(Route.GET_IMAGE, id)
+    suspend fun find(id: Id): Item<Image> = httpClient.makeRequest(Route.GET_IMAGE, resourceId = id.value)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateImage): Item<Image> = httpClient.makeRequest(Route.UPDATE_IMAGE, id, body)
+    suspend fun update(id: Id, body: UpdateImage): Item<Image> = httpClient.makeRequest(Route.UPDATE_IMAGE, resourceId = id.value, body = body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_IMAGE, id)
+    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_IMAGE, resourceId = id.value)
 }

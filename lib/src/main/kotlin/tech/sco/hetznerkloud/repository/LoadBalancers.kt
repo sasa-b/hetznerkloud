@@ -29,14 +29,14 @@ class LoadBalancers(private val httpClient: HttpClient) {
     )
 
     @Throws(Error::class)
-    suspend fun find(id: Id): Item<LoadBalancer> = httpClient.makeRequest(Route.GET_LOAD_BALANCER, resourceId = id)
+    suspend fun find(id: Id): Item<LoadBalancer> = httpClient.makeRequest(Route.GET_LOAD_BALANCER, resourceId = id.value)
 
     @Throws(Error::class)
     suspend fun create(body: CreateLoadBalancer): ItemCreated<LoadBalancer> = httpClient.makeRequest(Route.CREATE_LOAD_BALANCER, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateLoadBalancer): Item<LoadBalancer> = httpClient.makeRequest(Route.UPDATE_LOAD_BALANCER, resourceId = id, body = body)
+    suspend fun update(id: Id, body: UpdateLoadBalancer): Item<LoadBalancer> = httpClient.makeRequest(Route.UPDATE_LOAD_BALANCER, resourceId = id.value, body = body)
 
     @Throws(Error::class)
-    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_LOAD_BALANCER, resourceId = id)
+    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_LOAD_BALANCER, resourceId = id.value)
 }
