@@ -19,7 +19,6 @@ import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
-import tech.sco.hetznerkloud.response.ServerUpdated
 
 class Servers(private val httpClient: HttpClient) {
     @Throws(Error::class)
@@ -39,7 +38,7 @@ class Servers(private val httpClient: HttpClient) {
     suspend fun create(body: CreateServer): ServerCreated = httpClient.makeRequest(Route.CREATE_SERVER, body = body)
 
     @Throws(Error::class)
-    suspend fun update(id: Id, body: UpdateServer): ServerUpdated = httpClient.makeRequest(Route.UPDATE_SERVER, id, body)
+    suspend fun update(id: Id, body: UpdateServer): Item<Server> = httpClient.makeRequest(Route.UPDATE_SERVER, id, body)
 
     @Throws(Error::class)
     suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id)

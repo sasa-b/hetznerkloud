@@ -89,6 +89,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_SSH_KEY, test, resourceId) -> response(Route.UPDATE_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_SSH_KEY, test, resourceId) -> response(Route.DELETE_SSH_KEY, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_VOLUMES, test, resourceId) -> response(Route.GET_ALL_VOLUMES, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_VOLUME, test, resourceId) -> response(Route.GET_VOLUME, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_VOLUME, test, resourceId) -> response(Route.CREATE_VOLUME, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_VOLUME, test, resourceId) -> response(Route.UPDATE_VOLUME, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_VOLUME, test, resourceId) -> response(Route.DELETE_VOLUME, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -152,6 +158,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_SSH_KEY -> "src/test/resources/examples/response/create_an_ssh_key.json"
     Route.UPDATE_SSH_KEY -> "src/test/resources/examples/response/update_an_ssh_key.json"
     Route.DELETE_SSH_KEY -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_VOLUMES -> "src/test/resources/examples/response/get_all_volumes.json"
+    Route.GET_VOLUME -> "src/test/resources/examples/response/get_a_volume.json"
+    Route.CREATE_VOLUME -> "src/test/resources/examples/response/create_a_volume.json"
+    Route.UPDATE_VOLUME -> "src/test/resources/examples/response/update_a_volume.json"
+    Route.DELETE_VOLUME -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }
@@ -176,6 +188,7 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.UNSUPPORTED_ERROR -> "src/test/resources/examples/error/unsupported_error.json"
     ErrorCode.TOKEN_READONLY -> "src/test/resources/examples/error/token_readonly.json"
     ErrorCode.UNAVAILABLE -> "src/test/resources/examples/error/unavailable.json"
+    ErrorCode.NO_SPACE_LEFT_IN_LOCATION -> "src/test/resources/examples/error/no_space_left_in_location.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

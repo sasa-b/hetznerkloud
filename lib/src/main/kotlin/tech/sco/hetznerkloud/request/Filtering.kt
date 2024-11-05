@@ -14,6 +14,7 @@ typealias NetworkFilter = Pair<FilterFields.Network, String>
 typealias LoadBalancerFilter = Pair<FilterFields.LoadBalancer, String>
 typealias LoadBalancerTypeFilter = Pair<FilterFields.LoadBalancerType, String>
 typealias SSHKeyFilter = Pair<FilterFields.SSHKey, String>
+typealias VolumeFilter = Pair<FilterFields.Volume, String>
 
 sealed interface FilterField {
     val value: String
@@ -81,6 +82,12 @@ object FilterFields {
     enum class SSHKey(override val value: String) : FilterField {
         NAME("name"),
         FINGERPRINT("fingerprint"),
+        LABEL_SELECTOR("label_selector"),
+    }
+
+    enum class Volume(override val value: String) : FilterField {
+        STATUS("status"),
+        NAME("name"),
         LABEL_SELECTOR("label_selector"),
     }
 }

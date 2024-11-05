@@ -62,4 +62,10 @@ internal enum class Route(
     CREATE_SSH_KEY(Pair(HttpMethod.Post, Path("/ssh_keys"))),
     UPDATE_SSH_KEY(Pair(HttpMethod.Patch, Path("/ssh_keys/{id}"))),
     DELETE_SSH_KEY(Pair(HttpMethod.Delete, Path("/ssh_keys/{id}"))),
+
+    GET_ALL_VOLUMES(Pair(HttpMethod.Get, Path("/volumes"))),
+    GET_VOLUME(Pair(HttpMethod.Get, Path("/volumes/{id}"))),
+    CREATE_VOLUME(Pair(HttpMethod.Post, Path("/volumes"))),
+    UPDATE_VOLUME(Pair(HttpMethod.Patch, Path("/volumes/{id}"))),
+    DELETE_VOLUME(Pair(HttpMethod.Delete, Path("/volumes/{id}"))),
 }

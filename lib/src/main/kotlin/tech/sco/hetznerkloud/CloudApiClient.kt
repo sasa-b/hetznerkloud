@@ -26,6 +26,7 @@ import tech.sco.hetznerkloud.repository.PlacementGroups
 import tech.sco.hetznerkloud.repository.SSHKeys
 import tech.sco.hetznerkloud.repository.ServerTypes
 import tech.sco.hetznerkloud.repository.Servers
+import tech.sco.hetznerkloud.repository.Volumes
 import tech.sco.hetznerkloud.response.Failure
 
 internal const val BASE_URL = "https://api.hetzner.cloud/v1"
@@ -42,6 +43,7 @@ class CloudApiClient private constructor(
     val loadBalancers: LoadBalancers,
     val loadBalancerTypes: LoadBalancerTypes,
     val sshKeys: SSHKeys,
+    val volumes: Volumes,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
@@ -89,6 +91,7 @@ class CloudApiClient private constructor(
                 loadBalancers = LoadBalancers(httpClient),
                 loadBalancerTypes = LoadBalancerTypes(httpClient),
                 sshKeys = SSHKeys(httpClient),
+                volumes = Volumes(httpClient),
             )
         }
     }

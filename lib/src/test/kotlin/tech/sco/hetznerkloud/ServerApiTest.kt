@@ -23,7 +23,6 @@ import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
-import tech.sco.hetznerkloud.response.ServerUpdated
 import java.time.OffsetDateTime
 
 class ServerApiTest :
@@ -465,7 +464,7 @@ class ServerApiTest :
                     name = "my-server",
                 )
 
-                underTest.servers.update(serverId, requestBody) shouldBe ServerUpdated(expectedServer)
+                underTest.servers.update(serverId, requestBody) shouldBe Item(expectedServer)
             }
 
             should("delete a Server") {
