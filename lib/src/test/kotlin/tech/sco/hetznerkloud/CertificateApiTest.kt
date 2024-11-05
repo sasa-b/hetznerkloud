@@ -3,7 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
-import tech.sco.hetznerkloud.model.ActionFailed
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
 import tech.sco.hetznerkloud.model.Certificate.Id
 import tech.sco.hetznerkloud.model.ManagedCertificate
@@ -122,7 +122,7 @@ class CertificateApiTest :
                     action = Action(
                         id = Action.Id(13),
                         command = "create_certificate",
-                        error = ActionFailed(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
                         resources = listOf(
@@ -167,7 +167,7 @@ class CertificateApiTest :
                     action = Action(
                         id = Action.Id(13),
                         command = "create_certificate",
-                        error = ActionFailed(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
                         resources = listOf(

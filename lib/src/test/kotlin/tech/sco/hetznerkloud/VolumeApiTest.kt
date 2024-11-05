@@ -3,7 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
-import tech.sco.hetznerkloud.model.ActionFailed
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
@@ -111,7 +111,7 @@ class VolumeApiTest :
                     action = Action(
                         id = Action.Id(13),
                         command = "create_volume",
-                        error = ActionFailed(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
                         resources = listOf(
@@ -125,7 +125,7 @@ class VolumeApiTest :
                         Action(
                             id = Action.Id(13),
                             command = "attach_volume",
-                            error = ActionFailed(message = "Action failed"),
+                            error = ActionFailedError(message = "Action failed"),
                             finished = null,
                             progress = 0,
                             resources = listOf(

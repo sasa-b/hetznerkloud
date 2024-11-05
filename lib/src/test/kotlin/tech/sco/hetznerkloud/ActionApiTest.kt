@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Action.Id
-import tech.sco.hetznerkloud.model.ActionFailed
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.response.Item
@@ -23,7 +23,7 @@ class ActionApiTest :
             val expectedAction = Action(
                 id = Id(42),
                 command = "start_resource",
-                error = ActionFailed(
+                error = ActionFailedError(
                     message = "Action failed",
                 ),
                 finished = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),

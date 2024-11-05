@@ -3,7 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
-import tech.sco.hetznerkloud.model.ActionFailed
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
@@ -314,7 +314,7 @@ class ServerApiTest :
                     action = Action(
                         id = Action.Id(1),
                         command = "create_server",
-                        ActionFailed(
+                        ActionFailedError(
                             message = "Action failed",
                         ),
                         finished = null,
@@ -332,7 +332,7 @@ class ServerApiTest :
                         Action(
                             id = Action.Id(13),
                             command = "start_server",
-                            error = ActionFailed(message = "Action failed"),
+                            error = ActionFailedError(message = "Action failed"),
                             finished = null,
                             progress = 0,
                             resources = listOf(Resource(id = 42, type = "server")),
@@ -341,7 +341,7 @@ class ServerApiTest :
                         ),
                     ),
                     rootPassword = "YItygq1v3GYjjMomLaKc",
-                    server = Server(
+                    item = Server(
                         id = Server.Id(42),
                         backupWindow = "22-02",
                         created = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -473,7 +473,7 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",
-                        ActionFailed(message = "Action failed"),
+                        ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         progress = 100,
                         listOf(

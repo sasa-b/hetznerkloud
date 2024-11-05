@@ -1,0 +1,27 @@
+{
+  "apply_to": [
+    {
+      "server": {
+        "id": 42
+      },
+      "type": "server"
+    }
+  ],
+  "labels": {
+    "env": "dev"
+  },
+  "name": "Corporate Intranet Protection",
+  "rules": [
+    {
+      "description": "Allow port 80",
+      "direction": "in",
+      "port": "80",
+      "protocol": "tcp",
+      "source_ips": [
+        "28.239.13.1/32",
+        "28.239.14.0/24",
+        "ff21:1eac:9a3b:ee58:5ca:990c:8bc9:c03b/128"
+      ]
+    }
+  ]
+}

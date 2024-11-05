@@ -3,7 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
-import tech.sco.hetznerkloud.model.ActionFailed
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.LoadBalancerType
@@ -384,7 +384,7 @@ class LoadBalancerApiTest :
                     action = Action(
                         id = Action.Id(13),
                         command = "create_load_balancer",
-                        error = ActionFailed(
+                        error = ActionFailedError(
                             message = "Action failed",
                         ),
                         finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),

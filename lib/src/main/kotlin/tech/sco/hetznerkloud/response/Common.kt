@@ -59,7 +59,7 @@ data class Item<out T>(
 
 @Serializable
 data class ItemCreated<out T>(
-    val action: Action,
+    val action: Action? = null,
     @JsonNames("next_actions")
     val nextActions: List<Action> = emptyList(),
     @JsonNames(

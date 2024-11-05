@@ -1,7 +1,7 @@
 package tech.sco.hetznerkloud
 
 import tech.sco.hetznerkloud.model.Action
-import tech.sco.hetznerkloud.model.ActionFailed
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Image
@@ -172,7 +172,7 @@ object ActionFixture {
     ) = Action(
         id = Action.Id(id),
         command = command,
-        error ?: ActionFailed(
+        error ?: ActionFailedError(
             message = "Action failed",
         ),
         finished = finished,
