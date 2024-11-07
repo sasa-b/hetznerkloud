@@ -17,8 +17,8 @@ data class ServerType(
     val deprecated: Boolean,
     val deprecation: Deprecation? = null,
     val description: String,
-    val disk: Int,
-    val memory: Int,
+    val disk: Double,
+    val memory: Double,
     val name: String,
     val prices: List<Price>,
     @JsonNames("storage_type")

@@ -26,7 +26,7 @@ data class Image(
     @JsonNames("disk_size")
     val diskSize: Int,
     @JsonNames("image_size")
-    val imageSize: Double,
+    val imageSize: Double?,
     val labels: Labels = emptyMap(),
     val name: String?,
     @JsonNames("os_flavor")

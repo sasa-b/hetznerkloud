@@ -9,9 +9,9 @@ data class ApiToken(
     override fun toString(): String = "Bearer $value"
 
     companion object {
-        fun load(file: Path): ApiToken =
+        fun load(path: Path): ApiToken =
             ApiToken(
-                File(file.toString()).readText(Charsets.UTF_8),
+                File(path.toString()).readText(Charsets.UTF_8),
             )
     }
 }

@@ -4,6 +4,6 @@
 # Ignore Gradle build output directory
 build
 
-lib/src/main/resources/token.txt
+lib/src/test/resources/token.txt
 
 .kotlin

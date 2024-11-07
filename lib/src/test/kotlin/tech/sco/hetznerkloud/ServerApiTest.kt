@@ -155,8 +155,8 @@ class ServerApiTest :
                     unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
                 ),
                 description = "CPX11",
-                disk = 40,
-                memory = 2,
+                disk = 40.0,
+                memory = 2.0,
                 name = "cpx11",
                 prices =
                 listOf(
@@ -434,8 +434,8 @@ class ServerApiTest :
                             deprecated = true,
                             deprecation = null,
                             description = "CPX11",
-                            disk = 40,
-                            memory = 2,
+                            disk = 40.0,
+                            memory = 2.0,
                             name = "cpx11",
                             prices = listOf(
                                 Price(
