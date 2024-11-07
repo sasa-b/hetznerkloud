@@ -9,7 +9,6 @@ import tech.sco.hetznerkloud.model.Labels
 import tech.sco.hetznerkloud.model.PlacementGroup
 
 // TODO: check which values can be omitted and which ones can be sent as null
-
 @Serializable
 data class CreateServer(
     val automount: Boolean = false,

@@ -29,6 +29,7 @@ data class Meta(
     )
 
     companion object {
+        @Suppress("LongParameterList")
         fun of(
             lastPage: Int?,
             nextPage: Int?,

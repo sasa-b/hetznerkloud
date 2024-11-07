@@ -1,6 +1,7 @@
 package tech.sco.hetznerkloud
 
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
@@ -31,6 +32,7 @@ import tech.sco.hetznerkloud.response.Failure
 
 internal const val BASE_URL = "https://api.hetzner.cloud/v1"
 
+@Suppress("LongParameterList")
 class CloudApiClient private constructor(
     val actions: Actions,
     val servers: Servers,
@@ -48,69 +50,72 @@ class CloudApiClient private constructor(
     val firewalls: Firewalls,
 ) {
     companion object {
-        fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create()): CloudApiClient = HttpClient(httpEngine) {
-            // throws RedirectResponseException, ClientRequestException, ServerResponseException
-            // on 3xx, 4xx and 5xx status codes
-            expectSuccess = true
+        fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create(), block: HttpClientConfig<*>.() -> Unit = {}): CloudApiClient =
+            HttpClient(httpEngine) {
+                // throws RedirectResponseException, ClientRequestException, ServerResponseException
+                // on 3xx, 4xx and 5xx status codes
+                expectSuccess = true
 
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                    },
-                )
-            }
-
-            install(Auth) {
-                bearer {
-                    loadTokens {
-                        BearerTokens(accessToken = token.value, refreshToken = null)
-                    }
+                install(ContentNegotiation) {
+                    json(
+                        Json {
+                            ignoreUnknownKeys = true
+                        },
+                    )
                 }
-            }
 
-            HttpResponseValidator {
-                handleResponseExceptionWithRequest { exception, request ->
-                    when (exception) {
-                        is ResponseException -> {
-                            val failure: Failure = exception.response.body()
-
-                            throw failure.copy(
-                                error = when (failure.error) {
-                                    is RateLimitExceededError -> {
-                                        val headers = exception.response.headers
-
-                                        failure.error.copy(
-                                            hourlyRateLimit = headers.get("RateLimit-Limit")?.toIntOrNull() ?: 3600,
-                                            hourlyRateLimitRemaining = headers.get("RateLimit-Remaining")?.toIntOrNull(),
-                                            hourlyRateLimitResetTimestamp = headers.get("RateLimit-Reset")?.toLongOrNull(),
-                                        )
-                                    }
-                                    else -> failure.error
-                                },
-                                request = request,
-                            )
+                install(Auth) {
+                    bearer {
+                        loadTokens {
+                            BearerTokens(accessToken = token.value, refreshToken = null)
                         }
                     }
                 }
+
+                HttpResponseValidator {
+                    handleResponseExceptionWithRequest { exception, request ->
+                        when (exception) {
+                            is ResponseException -> {
+                                val failure: Failure = exception.response.body()
+
+                                throw failure.copy(
+                                    error = when (failure.error) {
+                                        is RateLimitExceededError -> {
+                                            val headers = exception.response.headers
+
+                                            failure.error.copy(
+                                                hourlyRateLimit = headers.get("RateLimit-Limit")?.toIntOrNull() ?: 3600,
+                                                hourlyRateLimitRemaining = headers.get("RateLimit-Remaining")?.toIntOrNull(),
+                                                hourlyRateLimitResetTimestamp = headers.get("RateLimit-Reset")?.toLongOrNull(),
+                                            )
+                                        }
+                                        else -> failure.error
+                                    },
+                                    request = request,
+                                )
+                            }
+                        }
+                    }
+                }
+
+                block()
+            }.let { httpClient ->
+                CloudApiClient(
+                    actions = Actions(httpClient),
+                    servers = Servers(httpClient),
+                    serverTypes = ServerTypes(httpClient),
+                    images = Images(httpClient),
+                    isos = Isos(httpClient),
+                    datacenters = Datacenters(httpClient),
+                    placementGroups = PlacementGroups(httpClient),
+                    networks = Networks(httpClient),
+                    loadBalancers = LoadBalancers(httpClient),
+                    loadBalancerTypes = LoadBalancerTypes(httpClient),
+                    sshKeys = SSHKeys(httpClient),
+                    volumes = Volumes(httpClient),
+                    certificates = Certificates(httpClient),
+                    firewalls = Firewalls(httpClient),
+                )
             }
-        }.let { httpClient ->
-            CloudApiClient(
-                actions = Actions(httpClient),
-                servers = Servers(httpClient),
-                serverTypes = ServerTypes(httpClient),
-                images = Images(httpClient),
-                isos = Isos(httpClient),
-                datacenters = Datacenters(httpClient),
-                placementGroups = PlacementGroups(httpClient),
-                networks = Networks(httpClient),
-                loadBalancers = LoadBalancers(httpClient),
-                loadBalancerTypes = LoadBalancerTypes(httpClient),
-                sshKeys = SSHKeys(httpClient),
-                volumes = Volumes(httpClient),
-                certificates = Certificates(httpClient),
-                firewalls = Firewalls(httpClient),
-            )
-        }
     }
 }

@@ -14,7 +14,7 @@ import io.ktor.utils.io.ByteReadChannel
 import tech.sco.hetznerkloud.model.ErrorCode
 import java.io.File
 
-@Suppress("CyclomaticComplexMethod")
+@Suppress("CyclomaticComplexMethod", "LongMethod")
 internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) =
     MockEngine { request ->
 

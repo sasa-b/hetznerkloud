@@ -17,7 +17,7 @@ import tech.sco.hetznerkloud.model.ServerType
 import java.time.OffsetDateTime
 
 object ServerFixture {
-
+    @Suppress("LongMethod")
     fun create(serverId: Server.Id): Server = Server(
         id = serverId,
         backupWindow = "22-02",
@@ -160,6 +160,7 @@ object ServerFixture {
 }
 
 object ActionFixture {
+    @Suppress("LongParameterList")
     fun create(
         id: Long = 1,
         error: Error? = null,
