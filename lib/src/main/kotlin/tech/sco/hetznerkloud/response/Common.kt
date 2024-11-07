@@ -2,6 +2,7 @@
 
 package tech.sco.hetznerkloud.response
 
+import io.ktor.client.request.HttpRequest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
@@ -85,4 +86,4 @@ data class ItemCreated<out T>(
 )
 
 @Serializable
-data class Failure(val error: Error)
+data class Failure(val error: Error, val request: HttpRequest? = null) : Throwable(error.message, error)

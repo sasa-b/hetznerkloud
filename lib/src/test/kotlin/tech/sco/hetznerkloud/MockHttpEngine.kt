@@ -109,6 +109,22 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         }
     }
 
+internal fun createErrorEngine(error: ErrorCode, httpStatusCode: HttpStatusCode) = MockEngine { request ->
+
+    val headers = if (error == ErrorCode.RATE_LIMIT_EXCEEDED) {
+        mapOf(
+            HttpHeaders.ContentType to "application/json",
+            "RateLimit-Limit" to "3600",
+            "RateLimit-Remaining" to "2456",
+            "RateLimit-Reset" to "1731011315",
+        )
+    } else {
+        mapOf(HttpHeaders.ContentType to "application/json")
+    }
+
+    errorResponse(error, httpStatusCode, headers)
+}
+
 private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?) = if (resourceId != null) {
     val (httpMethod, path) = route.value
     httpMethod == test.first && path.withId(resourceId).value == test.second.value

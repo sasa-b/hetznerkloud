@@ -6,6 +6,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonClassDiscriminator
+import java.time.Instant
 
 @Serializable
 @JsonClassDiscriminator("code")
@@ -80,8 +81,16 @@ data class NotFoundError(
 @SerialName("rate_limit_exceeded")
 data class RateLimitExceededError(
     override val message: String,
+    val hourlyRateLimit: Int = 3600,
+    val hourlyRateLimitRemaining: Int? = null,
+    val hourlyRateLimitResetTimestamp: Long? = null,
 ) : Error() {
     override val errorCode = ErrorCode.RATE_LIMIT_EXCEEDED
+    val hourlyRateLimitReset: Instant? get() = if (hourlyRateLimitResetTimestamp != null) {
+        Instant.ofEpochSecond(hourlyRateLimitResetTimestamp)
+    } else {
+        null
+    }
 }
 
 @Serializable
