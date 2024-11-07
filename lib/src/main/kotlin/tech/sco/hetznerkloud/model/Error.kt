@@ -97,9 +97,19 @@ data class RateLimitExceededError(
 @SerialName("resource_limit_exceeded")
 data class ResourceLimitExceededError(
     override val message: String,
-    val details: List<Map<String, String>>,
+    val details: Details,
 ) : Error() {
     override val errorCode = ErrorCode.RESOURCE_LIMIT_EXCEEDED
+
+    @Serializable
+    data class Details(
+        val limits: List<Field>,
+    ) {
+        @Serializable
+        data class Field(
+            val name: String,
+        )
+    }
 }
 
 @Serializable
@@ -130,9 +140,17 @@ data class ServiceError(
 @SerialName("uniqueness_error")
 data class UniquenessError(
     override val message: String,
-    val details: List<Map<String, String>>,
+    val details: Details,
 ) : Error() {
     override val errorCode = ErrorCode.UNIQUENESS_ERROR
+
+    @Serializable
+    data class Details(
+        val fields: List<Field>,
+    ) {
+        @Serializable
+        data class Field(val name: String)
+    }
 }
 
 @Serializable

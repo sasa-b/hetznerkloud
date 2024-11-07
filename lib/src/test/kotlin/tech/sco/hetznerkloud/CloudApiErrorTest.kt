@@ -10,8 +10,11 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.ktor.http.HttpStatusCode
 import tech.sco.hetznerkloud.model.ErrorCode
+import tech.sco.hetznerkloud.model.InvalidInputError
 import tech.sco.hetznerkloud.model.RateLimitExceededError
+import tech.sco.hetznerkloud.model.ResourceLimitExceededError
 import tech.sco.hetznerkloud.model.UnauthorizedError
+import tech.sco.hetznerkloud.model.UniquenessError
 import tech.sco.hetznerkloud.response.Failure
 import java.time.Instant
 
@@ -37,7 +40,7 @@ class CloudApiErrorTest :
         should("handle rate limit error response") {
             val mockEngine = createErrorEngine(ErrorCode.RATE_LIMIT_EXCEEDED, HttpStatusCode.TooManyRequests)
 
-            val underTest = CloudApiClient.of(ApiToken("invalid token"), mockEngine)
+            val underTest = CloudApiClient.of(apiToken, mockEngine)
 
             try {
                 underTest.servers.all()
@@ -47,6 +50,63 @@ class CloudApiErrorTest :
                 rateLimitError.hourlyRateLimit shouldBe 3600
                 rateLimitError.hourlyRateLimitRemaining shouldBe 2456
                 rateLimitError.hourlyRateLimitReset shouldBe Instant.ofEpochSecond(1731011315)
+                f.request shouldNotBe null
+            }
+        }
+
+        should("handle uniqueness error response") {
+            val mockEngine = createErrorEngine(ErrorCode.UNIQUENESS_ERROR, HttpStatusCode.UnprocessableEntity)
+
+            val underTest = CloudApiClient.of(apiToken, mockEngine)
+
+            try {
+                underTest.servers.all()
+            } catch (f: Failure) {
+                f.error.errorCode shouldBe ErrorCode.UNIQUENESS_ERROR
+                val uniquenessError = f.error as UniquenessError
+                uniquenessError.details shouldBe UniquenessError.Details(
+                    fields = listOf(
+                        UniquenessError.Details.Field(name = "public_key"),
+                    ),
+                )
+                f.request shouldNotBe null
+            }
+        }
+
+        should("handle resource limit exceeded error response") {
+            val mockEngine = createErrorEngine(ErrorCode.RESOURCE_LIMIT_EXCEEDED, HttpStatusCode.UnprocessableEntity)
+
+            val underTest = CloudApiClient.of(apiToken, mockEngine)
+
+            try {
+                underTest.servers.all()
+            } catch (f: Failure) {
+                f.error.errorCode shouldBe ErrorCode.RESOURCE_LIMIT_EXCEEDED
+                val resourceLimitExceededError = f.error as ResourceLimitExceededError
+                resourceLimitExceededError.details shouldBe ResourceLimitExceededError.Details(
+                    limits = listOf(
+                        ResourceLimitExceededError.Details.Field(name = "project_limit"),
+                    ),
+                )
+                f.request shouldNotBe null
+            }
+        }
+
+        should("handle invalid input response") {
+            val mockEngine = createErrorEngine(ErrorCode.INVALID_INPUT, HttpStatusCode.UnprocessableEntity)
+
+            val underTest = CloudApiClient.of(apiToken, mockEngine)
+
+            try {
+                underTest.servers.all()
+            } catch (f: Failure) {
+                f.error.errorCode shouldBe ErrorCode.INVALID_INPUT
+                val invalidInputError = f.error as InvalidInputError
+                invalidInputError.details shouldBe InvalidInputError.Details(
+                    fields = listOf(
+                        InvalidInputError.Details.Field("broken_field", listOf("is too long")),
+                    ),
+                )
                 f.request shouldNotBe null
             }
         }
@@ -62,7 +122,7 @@ class CloudApiErrorTest :
 
                 val mockEngine = createErrorEngine(errorCode, statusCode)
 
-                val underTest = CloudApiClient.of(ApiToken("invalid token"), mockEngine)
+                val underTest = CloudApiClient.of(apiToken, mockEngine)
 
                 try {
                     underTest.servers.all()
