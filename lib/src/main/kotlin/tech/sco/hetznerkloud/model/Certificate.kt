@@ -18,7 +18,36 @@ sealed interface Certificate {
     value class Id(val value: Long)
 
     @Serializable
-    data class Status(val error: Error? = null, val issuance: String, val renewal: String)
+    data class Status(val error: Error? = null, val issuance: Issuance, val renewal: Renewal) {
+        // pending completed failed
+        enum class Issuance {
+            @SerialName("pending")
+            PENDING,
+
+            @SerialName("completed")
+            COMPLETED,
+
+            @SerialName("failed")
+            FAILED,
+        }
+
+        enum class Renewal {
+            @SerialName("scheduled")
+            SCHEDULED,
+
+            @SerialName("pending")
+            PENDING,
+
+            @SerialName("failed")
+            FAILED,
+
+            @SerialName("unavailable")
+            UNAVAILABLE,
+
+            @SerialName("")
+            EMPTY,
+        }
+    }
 }
 
 @Serializable

@@ -68,8 +68,8 @@ class CertificateApiTest :
                             notValidBefore = null,
                             status = Certificate.Status(
                                 error = null,
-                                issuance = "pending",
-                                renewal = "unavailable",
+                                issuance = Certificate.Status.Issuance.PENDING,
+                                renewal = Certificate.Status.Renewal.UNAVAILABLE,
                             ),
                             usedBy = listOf(
                                 Resource(id = 4711, type = "load_balancer"),
@@ -146,8 +146,8 @@ class CertificateApiTest :
                         notValidBefore = null,
                         status = Certificate.Status(
                             error = null,
-                            issuance = "pending",
-                            renewal = "unavailable",
+                            issuance = Certificate.Status.Issuance.PENDING,
+                            renewal = Certificate.Status.Renewal.UNAVAILABLE,
                         ),
                         usedBy = listOf(
                             Resource(id = 4711, type = "load_balancer"),
@@ -191,8 +191,8 @@ class CertificateApiTest :
                         notValidBefore = null,
                         status = Certificate.Status(
                             error = null,
-                            issuance = "pending",
-                            renewal = "unavailable",
+                            issuance = Certificate.Status.Issuance.PENDING,
+                            renewal = Certificate.Status.Renewal.UNAVAILABLE,
                         ),
                         usedBy = listOf(
                             Resource(id = 4711, type = "load_balancer"),
