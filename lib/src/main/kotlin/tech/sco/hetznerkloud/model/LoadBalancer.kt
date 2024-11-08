@@ -42,6 +42,7 @@ data class LoadBalancer(
     @Serializable
     data class Algorithm(val type: Type) {
 
+        @Serializable
         enum class Type {
             @SerialName("round_robin")
             ROUND_ROBIN,
@@ -118,6 +119,7 @@ data class LoadBalancer(
             val stickySessions: Boolean = false,
         )
 
+        @Serializable
         enum class Protocol {
             @SerialName("tcp")
             TCP,
@@ -156,6 +158,7 @@ data class LoadBalancer(
         @Serializable
         data class Server(val id: ServerId)
 
+        @Serializable
         enum class Type {
             @SerialName("server")
             SERVER,

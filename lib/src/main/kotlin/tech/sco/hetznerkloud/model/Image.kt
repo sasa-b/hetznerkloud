@@ -51,6 +51,7 @@ data class Image(
         val name: String,
     )
 
+    @Serializable
     enum class Status {
         @SerialName("available")
         AVAILABLE,
@@ -62,7 +63,7 @@ data class Image(
         UNAVAILABLE,
     }
 
-    // system app snapshot backup temporary
+    @Serializable
     enum class Type {
         @SerialName("system")
         SYSTEM,

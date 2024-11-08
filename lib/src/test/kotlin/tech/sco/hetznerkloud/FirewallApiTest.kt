@@ -48,7 +48,7 @@ class FirewallApiTest :
                 Firewall.Rule(
                     description = null,
                     destinationIps = listOf(),
-                    direction = "in",
+                    direction = Firewall.Direction.IN,
                     port = "80",
                     protocol = Firewall.Protocol.TCP,
                     sourceIps = listOf(
@@ -94,7 +94,7 @@ class FirewallApiTest :
                         Firewall.Rule(
                             description = "Allow port 80",
                             destinationIps = emptyList(),
-                            direction = "in",
+                            direction = Firewall.Direction.IN,
                             port = "80",
                             protocol = Firewall.Protocol.TCP,
                             sourceIps = listOf(

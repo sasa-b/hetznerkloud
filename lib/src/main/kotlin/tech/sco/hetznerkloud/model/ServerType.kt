@@ -3,6 +3,7 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Server.Deprecation
@@ -22,9 +23,18 @@ data class ServerType(
     val name: String,
     val prices: List<Price>,
     @JsonNames("storage_type")
-    val storageType: String,
+    val storageType: StorageType,
 ) {
     @Serializable
     @JvmInline
     value class Id(val value: Long)
+
+    @Serializable
+    enum class StorageType {
+        @SerialName("local")
+        LOCAL,
+
+        @SerialName("network")
+        NETWORK,
+    }
 }

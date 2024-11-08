@@ -42,7 +42,7 @@ class ServerTypeApiTest :
                     pricePerTbTraffic = Price.Amount(gross = "1.1900", net = "1.0000"),
                 ),
             ),
-            storageType = "local",
+            storageType = ServerType.StorageType.LOCAL,
         )
 
         context("ServerType resource read API") {

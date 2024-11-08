@@ -3,6 +3,7 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
@@ -22,9 +23,18 @@ data class Volume(
     val protection: Protection,
     val server: Server.Id,
     val size: Long,
-    val status: String,
+    val status: Status,
 ) {
     @Serializable
     @JvmInline
     value class Id(val value: Long)
+
+    @Serializable
+    enum class Status {
+        @SerialName("creating")
+        CREATING,
+
+        @SerialName("available")
+        AVAILABLE,
+    }
 }

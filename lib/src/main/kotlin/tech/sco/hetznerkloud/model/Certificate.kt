@@ -19,7 +19,8 @@ sealed interface Certificate {
 
     @Serializable
     data class Status(val error: Error? = null, val issuance: Issuance, val renewal: Renewal) {
-        // pending completed failed
+
+        @Serializable
         enum class Issuance {
             @SerialName("pending")
             PENDING,
@@ -31,6 +32,7 @@ sealed interface Certificate {
             FAILED,
         }
 
+        @Serializable
         enum class Renewal {
             @SerialName("scheduled")
             SCHEDULED,

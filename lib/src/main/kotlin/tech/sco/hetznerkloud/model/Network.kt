@@ -49,6 +49,7 @@ data class Network(
         val vSwitchId: Long? = null,
     )
 
+    @Serializable
     enum class Type {
         @SerialName("cloud")
         CLOUD,

@@ -29,13 +29,23 @@ data class Firewall(
         val description: String?,
         @JsonNames("destination_ips")
         val destinationIps: List<String>,
-        val direction: String,
+        val direction: Direction,
         val port: String,
         val protocol: Protocol,
         @JsonNames("source_ips")
         val sourceIps: List<String>,
     )
 
+    @Serializable
+    enum class Direction {
+        @SerialName("in")
+        IN,
+
+        @SerialName("out")
+        OUT,
+    }
+
+    @Serializable
     enum class Protocol {
         @SerialName("tcp")
         TCP,

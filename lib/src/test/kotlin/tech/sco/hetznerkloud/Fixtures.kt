@@ -79,7 +79,7 @@ object ServerFixture {
             ),
             description = "FreeBSD 11.0 x64",
             name = "FreeBSD-11.0-RELEASE-amd64-dvd1",
-            type = "public",
+            type = Iso.Type.PUBLIC,
         ),
         labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
         loadBalancers = listOf(0),
@@ -93,7 +93,7 @@ object ServerFixture {
             labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
             name = "my-resource",
             servers = listOf(Server.Id(42)),
-            type = "spread",
+            type = PlacementGroup.Type.SPREAD,
         ),
         primaryDiskSize = 50,
         privateNet =
@@ -152,9 +152,9 @@ object ServerFixture {
                     pricePerTbTraffic = Price.Amount(gross = "1.1900", net = "1.0000"),
                 ),
             ),
-            storageType = "local",
+            storageType = ServerType.StorageType.LOCAL,
         ),
-        status = "running",
+        status = Server.Status.RUNNING,
         volumes = listOf(0),
     )
 }

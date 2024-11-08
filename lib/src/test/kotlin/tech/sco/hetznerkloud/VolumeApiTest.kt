@@ -51,7 +51,7 @@ class VolumeApiTest :
                 protection = Protection(delete = false),
                 server = Server.Id(12),
                 size = 42,
-                status = "available",
+                status = Volume.Status.AVAILABLE,
             )
 
             should("get all Volumes") {
@@ -92,7 +92,7 @@ class VolumeApiTest :
                 protection = Protection(delete = false),
                 server = Server.Id(12),
                 size = 42,
-                status = "available",
+                status = Volume.Status.AVAILABLE,
             )
 
             should("create a Volume") {

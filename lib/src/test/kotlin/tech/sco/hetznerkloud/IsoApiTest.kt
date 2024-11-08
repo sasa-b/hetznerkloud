@@ -29,7 +29,7 @@ class IsoApiTest :
                 ),
                 description = "FreeBSD 11.0 x64",
                 name = "FreeBSD-11.0-RELEASE-amd64-dvd1",
-                type = "public",
+                type = Iso.Type.PUBLIC,
             )
 
             should("get all Isos") {

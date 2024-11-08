@@ -3,6 +3,7 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
@@ -43,12 +44,42 @@ data class Server(
     val rescueEnabled: Boolean,
     @JsonNames("server_type")
     val serverType: ServerType,
-    val status: String,
+    val status: Status,
     val volumes: List<Int>,
 ) {
     @Serializable
     @JvmInline
     value class Id(val value: Long)
+
+    @Serializable
+    enum class Status {
+        @SerialName("running")
+        RUNNING,
+
+        @SerialName("initializing")
+        INITIALIZING,
+
+        @SerialName("starting")
+        STARTING,
+
+        @SerialName("stopping")
+        STOPPING,
+
+        @SerialName("off")
+        OFF,
+
+        @SerialName("deleting")
+        DELETING,
+
+        @SerialName("migrating")
+        MIGRATING,
+
+        @SerialName("rebuilding")
+        REBUILDING,
+
+        @SerialName("unknown")
+        UNKNOWN,
+    }
 
     @Serializable
     data class Deprecation(
@@ -119,6 +150,7 @@ data class ServerMetrics(
     @JsonNames("time_series")
     val timeSeries: TimeSeries,
 ) {
+    @Serializable
     enum class Type(val value: String) {
         CPU("cpu"),
         NETWORK("network"),

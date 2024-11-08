@@ -29,7 +29,7 @@ class PlacementGroupApiTest :
                     Server.Id(4711),
                     Server.Id(4712),
                 ),
-                type = "spread",
+                type = PlacementGroup.Type.SPREAD,
             )
 
             should("get all Placement Groups") {
@@ -61,7 +61,7 @@ class PlacementGroupApiTest :
                         labels = mapOf("key" to "value"),
                         name = "my Placement Group",
                         servers = emptyList(),
-                        type = "spread",
+                        type = PlacementGroup.Type.SPREAD,
                     ),
                 )
             }
@@ -83,7 +83,7 @@ class PlacementGroupApiTest :
                             Server.Id(value = 4711),
                             Server.Id(value = 4712),
                         ),
-                        type = "spread",
+                        type = PlacementGroup.Type.SPREAD,
                     ),
                 )
             }

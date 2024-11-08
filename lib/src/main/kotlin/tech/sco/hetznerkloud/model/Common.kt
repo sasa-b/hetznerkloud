@@ -63,6 +63,7 @@ data class Price(
 @Serializable
 data class Protection(val delete: Boolean)
 
+@Serializable
 enum class NetworkZone {
     @SerialName("eu-central")
     EU_CENTRAL,

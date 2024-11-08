@@ -41,6 +41,7 @@ data class PrimaryIp(
         val ip: String,
     )
 
+    @Serializable
     enum class Type {
         @SerialName("ipv4")
         IPV4,
