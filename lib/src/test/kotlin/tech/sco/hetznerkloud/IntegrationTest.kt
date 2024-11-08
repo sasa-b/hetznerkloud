@@ -70,4 +70,32 @@ class IntegrationTest : AnnotationSpec() {
             }
         }
     }
+
+    @Test
+    fun itGetsVolumes() {
+        assertDoesNotThrow {
+            runBlocking {
+                cloudApiClient.volumes.all().let {
+                    println(it)
+                    it.items.firstOrNull()?.let { item ->
+                        cloudApiClient.volumes.find(item.id)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun itGetsCertificates() {
+        assertDoesNotThrow {
+            runBlocking {
+                cloudApiClient.certificates.all().let {
+                    println(it)
+                    it.items.firstOrNull()?.let { item ->
+                        cloudApiClient.certificates.find(item.id)
+                    }
+                }
+            }
+        }
+    }
 }

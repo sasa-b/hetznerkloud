@@ -11,18 +11,20 @@ import java.time.OffsetDateTime
 
 @Serializable
 sealed interface Certificate {
+    val id: Id
+
     @Serializable
     @JvmInline
     value class Id(val value: Long)
 
     @Serializable
-    data class Status(val error: Error?, val issuance: String, val renewal: String)
+    data class Status(val error: Error? = null, val issuance: String, val renewal: String)
 }
 
 @Serializable
 @SerialName("managed")
 data class ManagedCertificate(
-    val id: Certificate.Id,
+    override val id: Certificate.Id,
     val certificate: String? = null,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val created: OffsetDateTime,
@@ -44,7 +46,7 @@ data class ManagedCertificate(
 @Serializable
 @SerialName("uploaded")
 data class UploadedCertificate(
-    val id: Certificate.Id,
+    override val id: Certificate.Id,
     val certificate: String,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val created: OffsetDateTime,
