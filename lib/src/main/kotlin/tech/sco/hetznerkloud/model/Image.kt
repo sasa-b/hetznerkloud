@@ -3,6 +3,7 @@
 package tech.sco.hetznerkloud.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
@@ -36,8 +37,8 @@ data class Image(
     val protection: Protection,
     @JsonNames("rapid_deploy")
     val rapidDeploy: Boolean = false,
-    val status: String,
-    val type: String,
+    val status: Status,
+    val type: Type,
 ) {
 
     @Serializable
@@ -49,4 +50,33 @@ data class Image(
         val id: Long,
         val name: String,
     )
+
+    enum class Status {
+        @SerialName("available")
+        AVAILABLE,
+
+        @SerialName("avaicreatinglable")
+        CREATING,
+
+        @SerialName("unavailable")
+        UNAVAILABLE,
+    }
+
+    // system app snapshot backup temporary
+    enum class Type {
+        @SerialName("system")
+        SYSTEM,
+
+        @SerialName("app")
+        APP,
+
+        @SerialName("snapshot")
+        SNAPSHOT,
+
+        @SerialName("backup")
+        BACKUP,
+
+        @SerialName("temporary")
+        TEMPORARY,
+    }
 }

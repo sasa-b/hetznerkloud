@@ -43,8 +43,8 @@ class ImageApiTest :
                 osVersion = "20.04",
                 protection = Protection(delete = false),
                 rapidDeploy = false,
-                status = "available",
-                type = "snapshot",
+                status = Image.Status.AVAILABLE,
+                type = Image.Type.SNAPSHOT,
             )
 
             should("get all Images") {
@@ -87,8 +87,8 @@ class ImageApiTest :
                         osVersion = "20.04",
                         protection = Protection(delete = false),
                         rapidDeploy = false,
-                        status = "available",
-                        type = "snapshot",
+                        status = Image.Status.AVAILABLE,
+                        type = Image.Type.SNAPSHOT,
                     ),
                 )
             }

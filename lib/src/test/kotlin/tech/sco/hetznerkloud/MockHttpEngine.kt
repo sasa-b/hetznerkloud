@@ -105,6 +105,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_FIREWALL, test, resourceId) -> response(Route.UPDATE_FIREWALL, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_FIREWALL, test, resourceId) -> response(Route.DELETE_FIREWALL, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_PRIMARY_IPS, test, resourceId) -> response(Route.GET_ALL_PRIMARY_IPS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_PRIMARY_IP, test, resourceId) -> response(Route.GET_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_PRIMARY_IP, test, resourceId) -> response(Route.CREATE_PRIMARY_IP, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_PRIMARY_IP, test, resourceId) -> response(Route.UPDATE_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_PRIMARY_IP, test, resourceId) -> response(Route.DELETE_PRIMARY_IP, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -202,6 +208,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_FIREWALL -> "src/test/resources/examples/response/create_a_firewall.json"
     Route.UPDATE_FIREWALL -> "src/test/resources/examples/response/update_a_firewall.json"
     Route.DELETE_FIREWALL -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_PRIMARY_IPS -> "src/test/resources/examples/response/get_all_primary_ips.json"
+    Route.GET_PRIMARY_IP -> "src/test/resources/examples/response/get_a_primary_ip.json"
+    Route.CREATE_PRIMARY_IP -> "src/test/resources/examples/response/create_a_primary_ip.json"
+    Route.UPDATE_PRIMARY_IP -> "src/test/resources/examples/response/update_a_primary_ip.json"
+    Route.DELETE_PRIMARY_IP -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

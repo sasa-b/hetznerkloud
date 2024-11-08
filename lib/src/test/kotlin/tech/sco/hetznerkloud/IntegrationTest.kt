@@ -98,4 +98,18 @@ class IntegrationTest : AnnotationSpec() {
             }
         }
     }
+
+    @Test
+    fun itGetsPrimaryIps() {
+        assertDoesNotThrow {
+            runBlocking {
+                cloudApiClient.certificates.all().let {
+                    println(it)
+                    it.items.firstOrNull()?.let { item ->
+                        cloudApiClient.certificates.find(item.id)
+                    }
+                }
+            }
+        }
+    }
 }

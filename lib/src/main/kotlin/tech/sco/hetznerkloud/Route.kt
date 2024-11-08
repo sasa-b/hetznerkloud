@@ -79,4 +79,10 @@ internal enum class Route(
     CREATE_FIREWALL(Pair(HttpMethod.Post, Path("/firewalls"))),
     UPDATE_FIREWALL(Pair(HttpMethod.Patch, Path("/firewalls/{id}"))),
     DELETE_FIREWALL(Pair(HttpMethod.Delete, Path("/firewalls/{id}"))),
+
+    GET_ALL_PRIMARY_IPS(Pair(HttpMethod.Get, Path("/primary_ips"))),
+    GET_PRIMARY_IP(Pair(HttpMethod.Get, Path("/primary_ips/{id}"))),
+    CREATE_PRIMARY_IP(Pair(HttpMethod.Post, Path("/primary_ips"))),
+    UPDATE_PRIMARY_IP(Pair(HttpMethod.Patch, Path("/primary_ips/{id}"))),
+    DELETE_PRIMARY_IP(Pair(HttpMethod.Delete, Path("/primary_ips/{id}"))),
 }
