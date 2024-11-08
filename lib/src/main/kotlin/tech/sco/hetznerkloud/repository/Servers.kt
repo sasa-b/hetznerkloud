@@ -1,6 +1,7 @@
 package tech.sco.hetznerkloud.repository
 
 import io.ktor.client.HttpClient
+import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Server
@@ -20,7 +21,7 @@ import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
 
-class Servers(private val httpClient: HttpClient) {
+class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun all(

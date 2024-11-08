@@ -1,6 +1,7 @@
 package tech.sco.hetznerkloud.repository
 
 import io.ktor.client.HttpClient
+import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Volume
@@ -16,7 +17,7 @@ import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
 
-class Volumes(private val httpClient: HttpClient) {
+class Volumes @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun all(

@@ -2,3 +2,7 @@ config:
   validation: true
   warningsAsErrors: false
   excludes: ''
+
+style:
+  MaxLineLength:
+    maxLineLength: 180 # You can set this to your desired max length

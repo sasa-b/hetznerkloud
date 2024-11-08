@@ -12,6 +12,7 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.utils.io.InternalAPI
 import kotlinx.serialization.json.Json
 import tech.sco.hetznerkloud.model.RateLimitExceededError
 import tech.sco.hetznerkloud.repository.Actions
@@ -33,6 +34,7 @@ import tech.sco.hetznerkloud.response.Failure
 internal const val BASE_URL = "https://api.hetzner.cloud/v1"
 
 @Suppress("LongParameterList")
+@OptIn(InternalAPI::class)
 class CloudApiClient private constructor(
     val actions: Actions,
     val servers: Servers,

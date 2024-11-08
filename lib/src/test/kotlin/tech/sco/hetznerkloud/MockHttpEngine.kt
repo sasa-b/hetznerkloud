@@ -138,7 +138,7 @@ private fun matchRoute(route: Route, test: HttpMethodAndPath, resourceId: Long?)
     route.value == test
 }
 
-@Suppress("CyclomaticComplexMethod")
+@Suppress("CyclomaticComplexMethod", "LongMethod")
 private fun content(route: Route): String = when (route) {
     Route.GET_ALL_ACTIONS -> "src/test/resources/examples/response/get_all_actions.json"
     Route.GET_ACTION -> "src/test/resources/examples/response/get_an_action.json"

@@ -1,6 +1,7 @@
 package tech.sco.hetznerkloud.repository
 
 import io.ktor.client.HttpClient
+import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.PlacementGroup
@@ -11,7 +12,7 @@ import tech.sco.hetznerkloud.response.Failure
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 
-class PlacementGroups(private val httpClient: HttpClient) {
+class PlacementGroups @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun all(): Items<PlacementGroup> = httpClient.makeRequest(Route.GET_ALL_PLACEMENT_GROUPS)
