@@ -58,6 +58,47 @@ dependencies {
 //    }
 // }
 
+// deployer {
+//    // 1. Artifact definition.
+//    // https://opensource.deepmedia.io/deployer/artifacts
+//    content {
+//        kotlinComponents()
+//    }
+//
+//    // 2. Project details.
+//    // https://opensource.deepmedia.io/deployer/configuration
+//    projectInfo {
+//        description = "Hetzner Cloud API Kotlin library"
+//        url = "https://github.com/sasa-b/hetznerkloud"
+//        scm.fromGithub("sasa-b", "hetznerkloud")
+//        license(apache2)
+//        developer(
+//            name = "Saša Blagojević",
+//            email = "sasa.blagojevic@mail.com",
+//            url = "https://s-co.tech",
+//        )
+//        groupId = "tech.s-co"
+//    }
+//
+//    // 3. Central Portal configuration.
+//    // https://opensource.deepmedia.io/deployer/repos/central-portal
+//    centralPortalSpec {
+//        signing.key = secret("SIGNING_KEY")
+//        signing.password = secret("SIGNING_PASSPHRASE")
+//        auth.user = secret("MAVEN_USERNAME")
+//        auth.password = secret("MAVEN_PASSWORD")
+//    }
+//
+//    githubSpec {
+//        owner.set("sasa-b")
+//        repository.set("hetznerkloud")
+//
+//        // Personal GitHub username and a personal access token linked to it
+//        auth.user.set(secret("GITHUB_USER"))
+//        auth.token.set(secret("GITHUB_TOKEN"))
+//    }
+// }
+
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
     allRules = false // activate all available (even unstable) rules.
@@ -76,11 +117,11 @@ tasks.withType<Detekt>().configureEach {
 
 // Kotlin DSL
 tasks.withType<Detekt>().configureEach {
-    jvmTarget = "21"
+    jvmTarget = "1.8"
 }
 
 tasks.withType<DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "21"
+    jvmTarget = "1.8"
 }
 
 tasks.withType<Test>().configureEach {
