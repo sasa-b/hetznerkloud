@@ -7,6 +7,7 @@ ktor = "3.0.0"
 kotest = "5.9.1"
 detekt = "1.23.7"
 konsist = "0.16.1"
+maven-deployer = "0.15.0"
 
 [libraries]
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -23,3 +24,4 @@ konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist"}
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 detek = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+maven-deployer = { id = "io.deepmedia.tools.deployer", version.ref = "maven-deployer"}

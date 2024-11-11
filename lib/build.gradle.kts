@@ -17,9 +17,11 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 
     // Apply the java-library plugin for API and implementation separation.
-    `java-library`
+//    `maven-publish`
+//    signing
 
     alias(libs.plugins.detek)
+    alias(libs.plugins.maven.deployer)
 }
 
 repositories {
@@ -74,11 +76,11 @@ tasks.withType<Detekt>().configureEach {
 
 // Kotlin DSL
 tasks.withType<Detekt>().configureEach {
-    jvmTarget = "1.8"
+    jvmTarget = "21"
 }
 
 tasks.withType<DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "1.8"
+    jvmTarget = "21"
 }
 
 tasks.withType<Test>().configureEach {

@@ -36,5 +36,5 @@ class Certificates @InternalAPI constructor(private val httpClient: HttpClient) 
     suspend fun update(id: Id, body: UpdateResource): Item<Certificate> = httpClient.makeRequest(Route.UPDATE_CERTIFICATE, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_CERTIFICATE)
+    suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_CERTIFICATE, resourceId = id.value)
 }
