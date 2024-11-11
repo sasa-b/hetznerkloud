@@ -8,6 +8,7 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.10.2/userguide/building_java_projects.html in the Gradle documentation.
  * This project uses @Incubating APIs which are subject to change.
  */
+group = "tech.s-co"
 version = "0.1.0"
 
 plugins {
