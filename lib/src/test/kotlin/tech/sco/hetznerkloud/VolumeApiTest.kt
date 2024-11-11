@@ -119,7 +119,7 @@ class VolumeApiTest :
                             Resource(id = 554, type = "volume"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     nextActions = listOf(
                         Action(
@@ -133,7 +133,7 @@ class VolumeApiTest :
                                 Resource(id = 554, type = "volume"),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                            status = "running",
+                            status = Action.Status.RUNNING,
                         ),
                     ),
                     item = expectedVolume,

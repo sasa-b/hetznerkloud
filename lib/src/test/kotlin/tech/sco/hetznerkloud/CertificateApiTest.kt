@@ -129,7 +129,7 @@ class CertificateApiTest :
                             Resource(id = 879, type = "certificate"),
                         ),
                         started = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     item = ManagedCertificate(
                         id = Id(897),
@@ -174,7 +174,7 @@ class CertificateApiTest :
                             Resource(id = 879, type = "certificate"),
                         ),
                         started = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     item = ManagedCertificate(
                         id = Id(897),

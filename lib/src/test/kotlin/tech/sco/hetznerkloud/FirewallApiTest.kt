@@ -121,7 +121,7 @@ class FirewallApiTest :
                                 ),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
-                            status = "success",
+                            status = Action.Status.SUCCESS,
                         ),
                         Action(
                             id = Action.Id(14),
@@ -140,7 +140,7 @@ class FirewallApiTest :
                                 ),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
-                            status = "success",
+                            status = Action.Status.SUCCESS,
                         ),
                     ),
                     item = expectedFirewall,

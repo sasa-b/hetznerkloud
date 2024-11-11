@@ -326,7 +326,7 @@ class ServerApiTest :
                             ),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     nextActions = listOf(
                         Action(
@@ -337,7 +337,7 @@ class ServerApiTest :
                             progress = 0,
                             resources = listOf(Resource(id = 42, type = "server")),
                             started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                            status = "running",
+                            status = Action.Status.RUNNING,
                         ),
                     ),
                     rootPassword = "YItygq1v3GYjjMomLaKc",
@@ -480,7 +480,7 @@ class ServerApiTest :
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                 )
             }

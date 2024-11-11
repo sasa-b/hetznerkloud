@@ -30,7 +30,7 @@ class ActionApiTest :
                 progress = 100,
                 resources = listOf(Resource(id = 42, type = "server")),
                 started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
-                status = "running",
+                status = Action.Status.RUNNING,
             )
 
             should("get all Actions") {

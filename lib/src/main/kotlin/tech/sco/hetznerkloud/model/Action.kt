@@ -1,5 +1,6 @@
 package tech.sco.hetznerkloud.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
@@ -15,9 +16,21 @@ data class Action(
     val resources: List<Resource>,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val started: OffsetDateTime,
-    val status: String,
+    val status: Status,
 ) {
     @Serializable
     @JvmInline
     value class Id(val value: Long)
+
+    @Serializable
+    enum class Status {
+        @SerialName("running")
+        RUNNING,
+
+        @SerialName("success")
+        SUCCESS,
+
+        @SerialName("error")
+        ERROR,
+    }
 }

@@ -169,7 +169,7 @@ object ActionFixture {
         progress: Int = 0,
         resources: List<Resource> = listOf(Resource(id = 42, type = "server")),
         started: OffsetDateTime = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-        status: String = "running",
+        status: Action.Status = Action.Status.RUNNING,
     ) = Action(
         id = Action.Id(id),
         command = command,

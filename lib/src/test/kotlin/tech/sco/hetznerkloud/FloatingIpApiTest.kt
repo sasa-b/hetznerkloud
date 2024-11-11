@@ -98,7 +98,7 @@ class FloatingIpApiTest :
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     item = expectedIp.copy(
                         id = FloatingIp.Id(4711),

@@ -109,7 +109,7 @@ class PrimaryIpApiTest :
                             Resource(id = 17, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     item = expectedIp.copy(
                         labels = mapOf("labelkey" to "value"),
@@ -144,7 +144,7 @@ class PrimaryIpApiTest :
                             Resource(id = 17, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                        status = "running",
+                        status = Action.Status.RUNNING,
                     ),
                     item = expectedIp.copy(
                         labels = mapOf("labelkey" to "value"),

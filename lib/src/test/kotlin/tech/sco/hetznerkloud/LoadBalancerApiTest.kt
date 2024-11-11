@@ -393,7 +393,7 @@ class LoadBalancerApiTest :
                             Resource(id = 4711L, "load_balancer"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                        status = "success",
+                        status = Action.Status.SUCCESS,
                     ),
                     item = expectedLoadBalancer,
                 )
