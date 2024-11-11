@@ -19,9 +19,9 @@ class CreateFloatingIp(
     val type: IpType,
     val server: Server.Id?,
     val description: String? = null,
-) {
+) : HttpBody {
     init {
-        require(homeLocation == null && server != null) {
+        require(!(homeLocation == null && server == null)) {
             "Home location is optional only when no server is provided"
         }
     }

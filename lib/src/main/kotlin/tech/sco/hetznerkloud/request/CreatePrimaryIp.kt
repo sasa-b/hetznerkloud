@@ -22,9 +22,9 @@ data class CreatePrimaryIp(
     val labels: Labels = emptyMap(),
     val name: String,
     val type: IpType,
-) {
+) : HttpBody {
     init {
-        require(datacenter != null && assigneeId == null && assigneeType == null) {
+        require(!(datacenter != null && (assigneeId != null || assigneeType != null))) {
             "datacenter and assigneeId / assigneeType fields are mutually exclusive"
         }
     }
