@@ -2,13 +2,12 @@
 
 package tech.sco.hetznerkloud.response
 
-import io.ktor.client.request.HttpRequest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Action
-import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Meta
+import tech.sco.hetznerkloud.model.Error as DomainError
 
 @Serializable
 data class Items<out T>(
@@ -86,4 +85,4 @@ data class ItemCreated<out T>(
 )
 
 @Serializable
-data class Failure(val error: Error, val request: HttpRequest? = null) : Throwable(error.message, error)
+data class Error(val error: DomainError)

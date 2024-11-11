@@ -31,7 +31,7 @@ import tech.sco.hetznerkloud.repository.SSHKeys
 import tech.sco.hetznerkloud.repository.ServerTypes
 import tech.sco.hetznerkloud.repository.Servers
 import tech.sco.hetznerkloud.repository.Volumes
-import tech.sco.hetznerkloud.response.Failure
+import tech.sco.hetznerkloud.response.Error
 
 internal const val BASE_URL = "https://api.hetzner.cloud/v1"
 
@@ -82,23 +82,22 @@ class CloudApiClient private constructor(
                     handleResponseExceptionWithRequest { exception, request ->
                         when (exception) {
                             is ResponseException -> {
-                                val failure: Failure = exception.response.body()
+                                val errorResponse: Error = exception.response.body()
 
-                                throw failure.copy(
-                                    error = when (failure.error) {
-                                        is RateLimitExceededError -> {
-                                            val headers = exception.response.headers
+                                val error = when (errorResponse.error) {
+                                    is RateLimitExceededError -> {
+                                        val headers = exception.response.headers
 
-                                            failure.error.copy(
-                                                hourlyRateLimit = headers.get("RateLimit-Limit")?.toIntOrNull() ?: 3600,
-                                                hourlyRateLimitRemaining = headers.get("RateLimit-Remaining")?.toIntOrNull(),
-                                                hourlyRateLimitResetTimestamp = headers.get("RateLimit-Reset")?.toLongOrNull(),
-                                            )
-                                        }
-                                        else -> failure.error
-                                    },
-                                    request = request,
-                                )
+                                        errorResponse.error.copy(
+                                            hourlyRateLimit = headers.get("RateLimit-Limit")?.toIntOrNull() ?: 3600,
+                                            hourlyRateLimitRemaining = headers.get("RateLimit-Remaining")?.toIntOrNull(),
+                                            hourlyRateLimitResetTimestamp = headers.get("RateLimit-Reset")?.toLongOrNull(),
+                                        )
+                                    }
+                                    else -> errorResponse.error
+                                }
+
+                                throw Failure(error, request)
                             }
                         }
                     }

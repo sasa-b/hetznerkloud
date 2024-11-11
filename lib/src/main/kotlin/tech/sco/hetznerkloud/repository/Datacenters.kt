@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud.repository
 
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI
+import tech.sco.hetznerkloud.Failure
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Datacenter
@@ -11,7 +12,6 @@ import tech.sco.hetznerkloud.request.DatacenterSorting
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.DatacenterItems
-import tech.sco.hetznerkloud.response.Failure
 import tech.sco.hetznerkloud.response.Item
 
 class Datacenters @InternalAPI constructor(private val httpClient: HttpClient) {
