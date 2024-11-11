@@ -111,6 +111,12 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.UPDATE_PRIMARY_IP, test, resourceId) -> response(Route.UPDATE_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_PRIMARY_IP, test, resourceId) -> response(Route.DELETE_PRIMARY_IP, HttpStatusCode.NoContent, defaultHeaders)
 
+            matchRoute(Route.GET_ALL_FLOATING_IPS, test, resourceId) -> response(Route.GET_ALL_FLOATING_IPS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_FLOATING_IP, test, resourceId) -> response(Route.GET_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.CREATE_FLOATING_IP, test, resourceId) -> response(Route.CREATE_FLOATING_IP, HttpStatusCode.Created, defaultHeaders)
+            matchRoute(Route.UPDATE_FLOATING_IP, test, resourceId) -> response(Route.UPDATE_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.DELETE_FLOATING_IP, test, resourceId) -> response(Route.DELETE_FLOATING_IP, HttpStatusCode.NoContent, defaultHeaders)
+
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -214,6 +220,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_PRIMARY_IP -> "src/test/resources/examples/response/create_a_primary_ip.json"
     Route.UPDATE_PRIMARY_IP -> "src/test/resources/examples/response/update_a_primary_ip.json"
     Route.DELETE_PRIMARY_IP -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_FLOATING_IPS -> "src/test/resources/examples/response/get_all_floating_ips.json"
+    Route.GET_FLOATING_IP -> "src/test/resources/examples/response/get_a_floating_ip.json"
+    Route.CREATE_FLOATING_IP -> "src/test/resources/examples/response/create_a_floating_ip.json"
+    Route.UPDATE_FLOATING_IP -> "src/test/resources/examples/response/update_a_floating_ip.json"
+    Route.DELETE_FLOATING_IP -> "src/test/resources/examples/response/no_content.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

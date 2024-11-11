@@ -1,0 +1,12 @@
+{
+  "description": "This describes my resource",
+  "home_location": "fsn1",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "name": "my-resource",
+  "server": 42,
+  "type": "ipv4"
+}

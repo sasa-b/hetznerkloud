@@ -1,0 +1,9 @@
+{
+  "description": "This describes my resource",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "name": "my-resource"
+}

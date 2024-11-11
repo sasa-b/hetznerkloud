@@ -19,12 +19,14 @@ import tech.sco.hetznerkloud.repository.Actions
 import tech.sco.hetznerkloud.repository.Certificates
 import tech.sco.hetznerkloud.repository.Datacenters
 import tech.sco.hetznerkloud.repository.Firewalls
+import tech.sco.hetznerkloud.repository.FloatingIps
 import tech.sco.hetznerkloud.repository.Images
 import tech.sco.hetznerkloud.repository.Isos
 import tech.sco.hetznerkloud.repository.LoadBalancerTypes
 import tech.sco.hetznerkloud.repository.LoadBalancers
 import tech.sco.hetznerkloud.repository.Networks
 import tech.sco.hetznerkloud.repository.PlacementGroups
+import tech.sco.hetznerkloud.repository.PrimaryIps
 import tech.sco.hetznerkloud.repository.SSHKeys
 import tech.sco.hetznerkloud.repository.ServerTypes
 import tech.sco.hetznerkloud.repository.Servers
@@ -50,6 +52,8 @@ class CloudApiClient private constructor(
     val volumes: Volumes,
     val certificates: Certificates,
     val firewalls: Firewalls,
+    val primaryIps: PrimaryIps,
+    val floatingIps: FloatingIps,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create(), block: HttpClientConfig<*>.() -> Unit = {}): CloudApiClient =
@@ -117,6 +121,8 @@ class CloudApiClient private constructor(
                     volumes = Volumes(httpClient),
                     certificates = Certificates(httpClient),
                     firewalls = Firewalls(httpClient),
+                    primaryIps = PrimaryIps(httpClient),
+                    floatingIps = FloatingIps(httpClient),
                 )
             }
     }

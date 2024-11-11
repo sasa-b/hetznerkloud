@@ -85,4 +85,10 @@ internal enum class Route(
     CREATE_PRIMARY_IP(Pair(HttpMethod.Post, Path("/primary_ips"))),
     UPDATE_PRIMARY_IP(Pair(HttpMethod.Patch, Path("/primary_ips/{id}"))),
     DELETE_PRIMARY_IP(Pair(HttpMethod.Delete, Path("/primary_ips/{id}"))),
+
+    GET_ALL_FLOATING_IPS(Pair(HttpMethod.Get, Path("/floating_ips"))),
+    GET_FLOATING_IP(Pair(HttpMethod.Get, Path("/floating_ips/{id}"))),
+    CREATE_FLOATING_IP(Pair(HttpMethod.Post, Path("/floating_ips"))),
+    UPDATE_FLOATING_IP(Pair(HttpMethod.Patch, Path("/floating_ips/{id}"))),
+    DELETE_FLOATING_IP(Pair(HttpMethod.Delete, Path("/floating_ips/{id}"))),
 }

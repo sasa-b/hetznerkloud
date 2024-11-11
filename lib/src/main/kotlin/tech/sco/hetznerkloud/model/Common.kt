@@ -84,3 +84,19 @@ data class Resource(
     val id: Long,
     val type: String,
 )
+
+@Serializable
+data class DnsPtr(
+    @JsonNames("dns_ptr")
+    val dnsPtr: String,
+    val ip: String,
+)
+
+@Serializable
+enum class IpType {
+    @SerialName("ipv4")
+    IPV4,
+
+    @SerialName("ipv6")
+    IPV6,
+}

@@ -1,0 +1,36 @@
+{
+  "floating_ip": {
+    "blocked": false,
+    "created": "2016-01-30T23:55:00+00:00",
+    "description": "This describes my resource",
+    "dns_ptr": [
+      {
+        "dns_ptr": "server.example.com",
+        "ip": "2001:db8::1"
+      }
+    ],
+    "home_location": {
+      "city": "Falkenstein",
+      "country": "DE",
+      "description": "Falkenstein DC Park 1",
+      "id": 42,
+      "latitude": 50.47612,
+      "longitude": 12.370071,
+      "name": "fsn1",
+      "network_zone": "eu-central"
+    },
+    "id": 42,
+    "ip": "131.232.99.1",
+    "labels": {
+      "environment": "prod",
+      "example.com/my": "label",
+      "just-a-key": ""
+    },
+    "name": "my-resource",
+    "protection": {
+      "delete": false
+    },
+    "server": 42,
+    "type": "ipv4"
+  }
+}

@@ -17,6 +17,8 @@ typealias SSHKeyFilter = Pair<FilterFields.SSHKey, String>
 typealias VolumeFilter = Pair<FilterFields.Volume, String>
 typealias CertificateFilter = Pair<FilterFields.Certificate, String>
 typealias FirewallFilter = Pair<FilterFields.Firewall, String>
+typealias PrimaryIpFilter = Pair<FilterFields.PrimaryIp, String>
+typealias FloatingIpFilter = Pair<FilterFields.FloatingIp, String>
 
 sealed interface FilterField {
     val value: String
@@ -100,6 +102,16 @@ object FilterFields {
     }
 
     enum class Firewall(override val value: String) : FilterField {
+        NAME("name"),
+        LABEL_SELECTOR("label_selector"),
+    }
+
+    enum class PrimaryIp(override val value: String) : FilterField {
+        NAME("name"),
+        LABEL_SELECTOR("label_selector"),
+    }
+
+    enum class FloatingIp(override val value: String) : FilterField {
         NAME("name"),
         LABEL_SELECTOR("label_selector"),
     }
