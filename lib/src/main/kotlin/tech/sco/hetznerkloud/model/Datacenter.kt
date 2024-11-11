@@ -22,9 +22,9 @@ data class Datacenter(
 
     @Serializable
     data class ServerTypes(
-        val available: List<Int>,
+        val available: List<ServerType.Id>,
         @JsonNames("available_for_migration")
-        val availableForMigration: List<Int>,
-        val supported: List<Int>,
+        val availableForMigration: List<ServerType.Id>,
+        val supported: List<ServerType.Id>,
     )
 }

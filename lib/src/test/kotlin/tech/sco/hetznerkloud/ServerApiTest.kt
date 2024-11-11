@@ -56,9 +56,9 @@ class ServerApiTest :
                 name = "fsn1-dc8",
                 serverTypes =
                 Datacenter.ServerTypes(
-                    available = listOf(1, 2, 3),
-                    availableForMigration = listOf(1, 2, 3),
-                    supported = listOf(1, 2, 3),
+                    available = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                    availableForMigration = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                    supported = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
                 ),
             ),
             image =
@@ -360,9 +360,9 @@ class ServerApiTest :
                             ),
                             name = "fsn1-dc8",
                             serverTypes = Datacenter.ServerTypes(
-                                available = listOf(1, 2, 3),
-                                availableForMigration = listOf(1, 2, 3),
-                                supported = listOf(1, 2, 3),
+                                available = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                                availableForMigration = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                                supported = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
                             ),
                         ),
                         image = Image(

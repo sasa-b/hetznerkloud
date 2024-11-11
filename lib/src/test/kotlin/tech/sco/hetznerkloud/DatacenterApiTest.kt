@@ -6,6 +6,7 @@ import tech.sco.hetznerkloud.model.Datacenter
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
+import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.response.DatacenterItems
 import tech.sco.hetznerkloud.response.Item
 
@@ -35,9 +36,9 @@ class DatacenterApiTest :
                 name = "fsn1-dc8",
                 serverTypes =
                 Datacenter.ServerTypes(
-                    available = listOf(1, 2, 3),
-                    availableForMigration = listOf(1, 2, 3),
-                    supported = listOf(1, 2, 3),
+                    available = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                    availableForMigration = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                    supported = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
                 ),
             )
 

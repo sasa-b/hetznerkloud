@@ -10,6 +10,7 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PrimaryIp
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
@@ -45,9 +46,9 @@ class PrimaryIpApiTest :
                     ),
                     name = "fsn1-dc8",
                     serverTypes = Datacenter.ServerTypes(
-                        available = listOf(1, 2, 3),
-                        availableForMigration = listOf(1, 2, 3),
-                        supported = listOf(1, 2, 3),
+                        available = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                        availableForMigration = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
+                        supported = listOf(ServerType.Id(1), ServerType.Id(2), ServerType.Id(3)),
                     ),
                 ),
                 dnsPtr = listOf(
