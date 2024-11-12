@@ -1,6 +1,14 @@
 # Getting Started
 
+## Installing the package
 
+Add to `build.gradle.kt` dependencies block.
+
+```Kotlin
+dependencies {
+    implementation("tech.s-co.hetznerkloud:0.1")
+}
+```
 
 ## Usage
 ```kotlin
