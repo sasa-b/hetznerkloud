@@ -6,7 +6,9 @@ Add to `build.gradle.kt` dependencies block.
 
 ```Kotlin
 dependencies {
-    implementation("tech.s-co.hetznerkloud:0.1")
+    implementation("tech.s-co.hetznerkloud:0.1.+")
+    // or if you always want the latest version
+    implementation("tech.s-co.hetznerkloud:latest.release")
 }
 ```
 
