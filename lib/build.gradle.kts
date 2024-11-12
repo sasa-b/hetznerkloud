@@ -12,13 +12,13 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  * This project uses @Incubating APIs which are subject to change.
  */
 group = "tech.s-co"
-version = "0.1.0"
+version = "0.1.1"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
-
+    `java-library`
     // Apply the java-library plugin for API and implementation separation.
 //    `maven-publish`
 //    signing
@@ -54,15 +54,23 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("mavenKotlin") {
+            artifactId = rootProject.name
             groupId = "tech.s-co"
-            artifactId = "hetznerkloud"
-            version = "0.1.0"
-
-            from(components["kotlin"])
-
+            from(components["java"])
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
             pom {
-                name = "hetznerkloud"
-                description = "Hetzner Cloud API Kotlin libraru"
+                name = rootProject.name
+                description = """
+                    Hetzner Cloud API Kotlin library
+                    https://docs.hetzner.cloud
+                """.trimIndent()
                 url = "https://github.com/sasa-b/hetznerkloud"
                 licenses {
                     license {
@@ -73,9 +81,15 @@ publishing {
                 developers {
                     developer {
                         id = "sasa-b"
-                        name = "Sasha Blagojevic"
+                        name = "Saša Blagoejvić"
                         email = "sasa.blagojevic@mail.com"
                     }
+                }
+
+                scm {
+                    url = "https://github.com/sasa-b/hetznerkloud"
+                    connection = "scm:git:git://github.com/sasa-b/hetznerkloud"
+                    developerConnection = "scm:git:ssh://github.com/sasa-b/hetznerkloud"
                 }
             }
         }
@@ -86,6 +100,11 @@ publishing {
             name = "file"
             url = uri(layout.buildDirectory.dir("repo"))
         }
+
+//        maven {
+//            name = "sasa-b"
+//            url = uri("https://github.com/sasa-b/hetznerkloud")
+//        }
 
 //        maven {
 //            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
@@ -101,48 +120,50 @@ publishing {
 }
 
 signing {
-//    useInMemoryPgpKeys(Base64.Default.decode(signingKey).toString(), signingPassphrase)
-
     sign(publishing.publications["mavenKotlin"])
 }
 
-// deployer {
-//
-//    // Load properties from gradle.properties first (already done by default)
-//
-//    // 1. Artifact definition.
-//    // https://opensource.deepmedia.io/deployer/artifacts
-//    content {
-//        component {
-//            fromSoftwareComponent("kotlin")
-//        }
-//    }
-//
-//    // 2. Project details.
-//    // https://opensource.deepmedia.io/deployer/configuration
-//    projectInfo {
-//        description = "Hetzner Cloud API Kotlin library"
-//        url = "https://github.com/sasa-b/hetznerkloud"
-//        scm.fromGithub("sasa-b", "hetznerkloud")
-//        license(apache2)
-//        developer(
-//            name = "Sasha Blagojevic",
-//            email = "sasa.blagojevic@mail.com",
-//            url = "https://s-co.tech",
-//        )
-//        artifactId = "hetznerkloud"
-//        groupId = "tech.s-co"
-//    }
-//
-//    // 3. Central Portal configuration.
-//    // https://opensource.deepmedia.io/deployer/repos/central-portal
-//    centralPortalSpec {
-//        signing.key = secret("SIGNING_KEY")
-//        signing.password = secret("SIGNING_PASSPHRASE")
-//        auth.user = secret("MAVEN_USERNAME")
-//        auth.password = secret("MAVEN_PASSWORD")
-//    }
-//
+deployer {
+    // Load properties from gradle.properties first (already done by default)
+
+    // 1. Artifact definition.
+    // https://opensource.deepmedia.io/deployer/artifacts
+    content {
+        component {
+            fromMavenPublication("mavenKotlin")
+        }
+    }
+
+    // 2. Project details.
+    // https://opensource.deepmedia.io/deployer/configuration
+    projectInfo {
+        description = """
+            Hetzner Cloud API Kotlin library
+            https://docs.hetzner.cloud
+        """.trimIndent()
+        url = "https://github.com/sasa-b/hetznerkloud"
+        scm.fromGithub("sasa-b", "hetznerkloud")
+        license(apache2)
+        developer(
+            name = "Saša Blagojević",
+            email = "sasa.blagojevic@mail.com",
+            url = "https://s-co.tech",
+        )
+        artifactId = rootProject.name
+        groupId = group.toString()
+    }
+
+    // 3. Central Portal configuration.
+    // https://opensource.deepmedia.io/deployer/repos/central-portal
+    centralPortalSpec {
+        signing.key = secret("SIGNING_KEY")
+        signing.password = secret("SIGNING_PASSPHRASE")
+        auth.user = secret("MAVEN_USERNAME")
+        auth.password = secret("MAVEN_PASSWORD")
+
+        allowMavenCentralSync = false
+    }
+
 //    githubSpec {
 //        owner.set("sasa-b")
 //        repository.set("hetznerkloud")
@@ -151,7 +172,7 @@ signing {
 //        auth.user.set(secret("GITHUB_USER"))
 //        auth.token.set(secret("GITHUB_TOKEN"))
 //    }
-// }
+}
 
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
@@ -184,6 +205,9 @@ tasks.withType<Test>().configureEach {
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
+    withSourcesJar()
+    withJavadocJar()
+
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
