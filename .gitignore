@@ -9,3 +9,4 @@ lib/src/test/resources/token.txt
 .kotlin
 
 local.properties
+.env
