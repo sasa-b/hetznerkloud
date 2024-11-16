@@ -10,7 +10,7 @@
 > * Network Actions,
 > * Primary IP Actions,
 > * Volume Actions,
-> * and part of Server Actions,
+> * and part of Server Actions.
 
 ## Installing the package
 
