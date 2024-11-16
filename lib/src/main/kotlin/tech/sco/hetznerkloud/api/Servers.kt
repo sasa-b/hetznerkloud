@@ -109,4 +109,13 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun reset(id: Id): Item<Action> = httpClient.makeRequest(Route.RESET_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun powerOn(id: Id): Item<Action> = httpClient.makeRequest(Route.POWER_ON_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun powerOff(id: Id): Item<Action> = httpClient.makeRequest(Route.POWER_OFF_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun softReboot(id: Id): Item<Action> = httpClient.makeRequest(Route.SOFT_REBOOT_SERVER, resourceId = id.value)
 }

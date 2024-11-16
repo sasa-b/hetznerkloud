@@ -34,6 +34,9 @@ internal enum class Route(
     ATTACH_SERVER_TO_NETWORK(Pair(HttpMethod.Post, Path("/servers/{id}/actions/attach_to_network"))),
     SHUTDOWN_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/shutdown"))),
     RESET_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/reset"))),
+    SOFT_REBOOT_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/reboot"))),
+    POWER_ON_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/poweron"))),
+    POWER_OFF_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/poweroff"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),

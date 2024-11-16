@@ -670,5 +670,56 @@ class ServerApiTest :
                     ),
                 )
             }
+
+            should("power on a Server") {
+                underTest.servers.powerOn(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "start_server",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("power off a Server") {
+                underTest.servers.powerOff(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "stop_server",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("soft reboot on a Server") {
+                underTest.servers.softReboot(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "reboot_server",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
         }
     })
