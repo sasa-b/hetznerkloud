@@ -1,4 +1,4 @@
-package tech.sco.hetznerkloud.repository
+package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI

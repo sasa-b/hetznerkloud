@@ -1,4 +1,4 @@
-package tech.sco.hetznerkloud.repository
+package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI
@@ -21,8 +21,7 @@ class Datacenters @InternalAPI constructor(private val httpClient: HttpClient) {
         filter: Set<DatacenterFilter> = emptySet(),
         sorting: Set<DatacenterSorting> = emptySet(),
         pagination: Pagination = Pagination(),
-    ): DatacenterItems =
-        httpClient.makeRequest(Route.GET_ALL_DATACENTERS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
+    ): DatacenterItems = httpClient.makeRequest(Route.GET_ALL_DATACENTERS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Failure::class)
     suspend fun find(id: Id): Item<Datacenter> = httpClient.makeRequest(Route.GET_DATACENTER, id.value)

@@ -1,4 +1,4 @@
-package tech.sco.hetznerkloud.repository
+package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI
@@ -19,11 +19,10 @@ class ServerTypes @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun all(
         filter: Set<ServerTypeFilter> = emptySet(),
         pagination: Pagination = Pagination(),
-    ): Items<ServerType> =
-        httpClient.makeRequest(
-            Route.GET_ALL_SERVER_TYPES,
-            queryParams = filter.toQueryParams() + pagination.toQueryParams(),
-        )
+    ): Items<ServerType> = httpClient.makeRequest(
+        Route.GET_ALL_SERVER_TYPES,
+        queryParams = filter.toQueryParams() + pagination.toQueryParams(),
+    )
 
     @Throws(Failure::class)
     suspend fun find(id: Id): Item<ServerType> = httpClient.makeRequest(Route.GET_SERVER_TYPE, id.value)

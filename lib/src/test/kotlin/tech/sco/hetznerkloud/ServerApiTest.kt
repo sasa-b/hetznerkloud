@@ -636,5 +636,39 @@ class ServerApiTest :
                     ),
                 )
             }
+
+            should("shutdown a Server") {
+                underTest.servers.shutdown(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "shutdown_server",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("restart a Server") {
+                underTest.servers.reset(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "reset_server",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
         }
     })

@@ -1,4 +1,4 @@
-package tech.sco.hetznerkloud.repository
+package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI
@@ -103,4 +103,10 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun attachToNetwork(id: Id, body: AttachToNetwork): Item<Action> = httpClient.makeRequest(Route.ATTACH_SERVER_TO_NETWORK, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun shutdown(id: Id): Item<Action> = httpClient.makeRequest(Route.SHUTDOWN_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun reset(id: Id): Item<Action> = httpClient.makeRequest(Route.RESET_SERVER, resourceId = id.value)
 }

@@ -1,4 +1,4 @@
-package tech.sco.hetznerkloud.repository
+package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI
@@ -22,8 +22,7 @@ class Images @InternalAPI constructor(private val httpClient: HttpClient) {
         filter: Set<ImageFilter> = emptySet(),
         sorting: Set<ImageSorting> = emptySet(),
         pagination: Pagination = Pagination(),
-    ): Items<Image> =
-        httpClient.makeRequest(Route.GET_ALL_IMAGES, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
+    ): Items<Image> = httpClient.makeRequest(Route.GET_ALL_IMAGES, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Failure::class)
     suspend fun find(id: Id): Item<Image> = httpClient.makeRequest(Route.GET_IMAGE, resourceId = id.value)

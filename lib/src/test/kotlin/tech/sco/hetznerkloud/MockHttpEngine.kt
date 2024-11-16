@@ -51,6 +51,8 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         matchRoute(Route.ADD_SERVER_TO_PLACEMENT_GROUP, test, resourceId) -> response(Route.ADD_SERVER_TO_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.ATTACH_ISO_TO_SERVER, test, resourceId) -> response(Route.ATTACH_ISO_TO_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.ATTACH_SERVER_TO_NETWORK, test, resourceId) -> response(Route.ATTACH_SERVER_TO_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.SHUTDOWN_SERVER, test, resourceId) -> response(Route.SHUTDOWN_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.RESET_SERVER, test, resourceId) -> response(Route.RESET_SERVER, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -168,6 +170,8 @@ private fun content(route: Route): String = when (route) {
     Route.ADD_SERVER_TO_PLACEMENT_GROUP -> "src/test/resources/examples/response/add_a_server_to_placement_group.json"
     Route.ATTACH_ISO_TO_SERVER -> "src/test/resources/examples/response/attach_an_iso_to_server.json"
     Route.ATTACH_SERVER_TO_NETWORK -> "src/test/resources/examples/response/attach_a_server_to_network.json"
+    Route.SHUTDOWN_SERVER -> "src/test/resources/examples/response/shutdown_a_server.json"
+    Route.RESET_SERVER -> "src/test/resources/examples/response/reset_a_server.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"

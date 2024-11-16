@@ -32,6 +32,8 @@ internal enum class Route(
     ADD_SERVER_TO_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/servers/{id}/actions/add_to_placement_group"))),
     ATTACH_ISO_TO_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/attach_iso"))),
     ATTACH_SERVER_TO_NETWORK(Pair(HttpMethod.Post, Path("/servers/{id}/actions/attach_to_network"))),
+    SHUTDOWN_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/shutdown"))),
+    RESET_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/reset"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),

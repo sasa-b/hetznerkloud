@@ -215,7 +215,7 @@ java {
 
 tasks.withType<PublishToMavenRepository>().configureEach {
     // Prevents `./gradlew publish` from failing
-    // due to missing repository credentials
+    // due to missing api credentials
     if (name.endsWith("Sasa-bHetznerkloudRepository")) {
         enabled = false
     }
