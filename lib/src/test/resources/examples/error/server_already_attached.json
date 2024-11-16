@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "server_already_attached",
+    "message": "Server already attached"
+  }
+}

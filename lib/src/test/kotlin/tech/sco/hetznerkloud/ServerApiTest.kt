@@ -9,6 +9,7 @@ import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
+import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
@@ -18,6 +19,9 @@ import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.request.AddToPlacementGroup
+import tech.sco.hetznerkloud.request.AttachIsoById
+import tech.sco.hetznerkloud.request.AttachIsoByName
+import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
@@ -292,9 +296,9 @@ class ServerApiTest :
                             progress = 100,
                             resources = listOf(Resource(id = 42, type = "server")),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                            status = Action.Status.RUNNING
-                        )
-                    )
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
                 )
             }
 
@@ -310,14 +314,14 @@ class ServerApiTest :
                             progress = 100,
                             resources = listOf(Resource(id = 42, type = "server")),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                            status = Action.Status.SUCCESS
-                        )
-                    )
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
                 )
             }
 
             should("get a Server action") {
-                underTest.servers.action(id = Action.Id(42)) shouldBe Item(
+                underTest.servers.action(actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",
@@ -326,8 +330,23 @@ class ServerApiTest :
                         progress = 100,
                         resources = listOf(Resource(id = 42, type = "server")),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                        status = Action.Status.RUNNING
-                    )
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Server action for server") {
+                underTest.servers.action(serverId = serverId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 42, type = "server")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
                 )
             }
         }
@@ -552,7 +571,69 @@ class ServerApiTest :
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
-                    )
+                    ),
+                )
+            }
+
+            should("attach Iso by name to a Server") {
+                val attachIso = AttachIsoByName("FreeBSD-11.0-RELEASE-amd64-dvd1")
+
+                underTest.servers.attachIso(serverId, attachIso) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "attach_iso",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("attach Iso by id to a Server") {
+                val attachIso = AttachIsoById(Iso.Id(1))
+
+                underTest.servers.attachIso(serverId, attachIso) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "attach_iso",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("attach Server to a Network") {
+                val attachToNetwork = AttachToNetwork(
+                    aliasIps = listOf("10.0.1.2"),
+                    ip = "10.0.1.1",
+                    network = Network.Id(4711),
+                )
+
+                underTest.servers.attachToNetwork(serverId, attachToNetwork) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "attach_to_network",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                            Resource(id = 4711, type = "network"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
                 )
             }
         }

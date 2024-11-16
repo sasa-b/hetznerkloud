@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "no_subnet_available",
+    "message": "No subnet available"
+  }
+}

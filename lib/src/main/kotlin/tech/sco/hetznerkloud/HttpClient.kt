@@ -11,29 +11,50 @@ import io.ktor.http.parameters
 import tech.sco.hetznerkloud.request.HttpBody
 
 typealias QueryParams = List<Pair<String, String>>
+typealias RouteParams = Map<String, String>
 
-internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T =
-    route.value.let {
-        val (httpMethod, path) = it
+internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, routeParams: RouteParams, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T = route.value.let {
+    val (httpMethod, path) = it
 
-        this
-            .request(BASE_URL) {
-                method = httpMethod
-                url {
-                    if (resourceId != null) {
-                        appendPathSegments(path.withId(resourceId).value)
-                    } else {
-                        appendPathSegments(path.value)
-                    }
+    this
+        .request(BASE_URL) {
+            method = httpMethod
+            url {
+                appendPathSegments(path.withParams(routeParams).value)
+            }
+            if (body != null) {
+                contentType(ContentType.Application.Json)
+                setBody(body)
+            }
+            if (queryParams.isNotEmpty()) {
+                parameters {
+                    queryParams.forEach { (key, value) -> append(key, value) }
                 }
-                if (body != null) {
-                    contentType(ContentType.Application.Json)
-                    setBody(body)
+            }
+        }.body()
+}
+
+internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T = route.value.let {
+    val (httpMethod, path) = it
+
+    this
+        .request(BASE_URL) {
+            method = httpMethod
+            url {
+                if (resourceId != null) {
+                    appendPathSegments(path.withId(resourceId).value)
+                } else {
+                    appendPathSegments(path.value)
                 }
-                if (queryParams.isNotEmpty()) {
-                    parameters {
-                        queryParams.forEach { (key, value) -> append(key, value) }
-                    }
+            }
+            if (body != null) {
+                contentType(ContentType.Application.Json)
+                setBody(body)
+            }
+            if (queryParams.isNotEmpty()) {
+                parameters {
+                    queryParams.forEach { (key, value) -> append(key, value) }
                 }
-            }.body()
-    }
+            }
+        }.body()
+}

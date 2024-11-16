@@ -6,6 +6,11 @@ internal typealias HttpMethodAndPath = Pair<HttpMethod, Path>
 
 internal data class Path(val value: String) {
     fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
+    fun withParams(params: RouteParams): Path {
+        var path: String = value
+        params.forEach { (k, v) -> path = value.replace("{$k}", v) }
+        return Path(path)
+    }
 }
 
 internal enum class Route(
@@ -19,11 +24,14 @@ internal enum class Route(
     GET_SERVER_METRICS(Pair(HttpMethod.Get, Path("/servers/{id}/metrics"))),
     GET_SERVER_ACTIONS(Pair(HttpMethod.Get, Path("/servers/{id}/actions"))),
     GET_SERVER_ACTION(Pair(HttpMethod.Get, Path("/servers/actions/{id}"))),
+    GET_SERVER_ACTION_FOR_SERVER(Pair(HttpMethod.Get, Path("/servers/{id}/actions/{action_id}"))),
     GET_ALL_SERVER_ACTIONS(Pair(HttpMethod.Get, Path("/servers/actions"))),
     CREATE_SERVER(Pair(HttpMethod.Post, Path("/servers"))),
     UPDATE_SERVER(Pair(HttpMethod.Patch, Path("/servers/{id}"))),
     DELETE_SERVER(Pair(HttpMethod.Delete, Path("/servers/{id}"))),
     ADD_SERVER_TO_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/servers/{id}/actions/add_to_placement_group"))),
+    ATTACH_ISO_TO_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/attach_iso"))),
+    ATTACH_SERVER_TO_NETWORK(Pair(HttpMethod.Post, Path("/servers/{id}/actions/attach_to_network"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),

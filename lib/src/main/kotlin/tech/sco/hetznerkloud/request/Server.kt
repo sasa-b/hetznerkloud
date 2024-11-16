@@ -5,7 +5,9 @@ package tech.sco.hetznerkloud.request
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Labels
+import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.PlacementGroup
 
 // TODO: check which values can be omitted and which ones can be sent as null
@@ -52,5 +54,19 @@ data class CreateServer(
 @Serializable
 data class AddToPlacementGroup(
     @JsonNames("placement_group")
-    val id: PlacementGroup.Id
-): HttpBody
+    val id: PlacementGroup.Id,
+) : HttpBody
+
+@Serializable
+data class AttachIsoByName(val iso: String) : HttpBody
+
+@Serializable
+data class AttachIsoById(val iso: Iso.Id) : HttpBody
+
+@Serializable
+data class AttachToNetwork(
+    @JsonNames("alias_ips")
+    val aliasIps: List<String>,
+    val ip: String,
+    val network: Network.Id,
+) : HttpBody

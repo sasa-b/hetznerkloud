@@ -15,115 +15,117 @@ import tech.sco.hetznerkloud.model.ErrorCode
 import java.io.File
 
 @Suppress("CyclomaticComplexMethod", "LongMethod")
-internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) =
-    MockEngine { request ->
+internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequestData) -> Long)? = null) = MockEngine { request ->
 
-        if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
-            return@MockEngine errorResponse(ErrorCode.UNAUTHORIZED, HttpStatusCode.Unauthorized, mapOf(HttpHeaders.ContentType to "application/json"))
-        }
-
-        val defaultHeaders = mapOf(
-            HttpHeaders.ContentType to "application/json",
-            HttpHeaders.Authorization to apiToken.toString(),
-        )
-
-        val resourceId = resourceIdProvider?.invoke(request)
-
-        val testPath = request.url.toURI().path
-            .replace("{id}", resourceId?.toString() ?: "<none>")
-            .replace("/v1/", "")
-
-        val test = HttpMethodAndPath(request.method, Path("/$testPath"))
-
-        when {
-            matchRoute(Route.GET_ALL_ACTIONS, test, resourceId) -> response(Route.GET_ALL_ACTIONS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_ACTION, test, resourceId) -> response(Route.GET_ACTION, HttpStatusCode.OK, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_SERVERS, test, resourceId) -> response(Route.GET_ALL_SERVERS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_SERVER, test, resourceId) -> response(Route.GET_SERVER, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_SERVER_METRICS, test, resourceId) -> response(Route.GET_SERVER_METRICS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_SERVER_ACTIONS, test, resourceId) -> response(Route.GET_SERVER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_SERVER_ACTION, test, resourceId) -> response(Route.GET_SERVER_ACTION, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_ALL_SERVER_ACTIONS, test, resourceId) -> response(Route.GET_ALL_SERVER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_SERVER, test, resourceId) -> response(Route.CREATE_SERVER, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_SERVER, test, resourceId) -> response(Route.UPDATE_SERVER, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.ADD_SERVER_TO_PLACEMENT_GROUP, test, resourceId) -> response(Route.ADD_SERVER_TO_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_DATACENTERS, test, resourceId) -> response(Route.GET_ALL_DATACENTERS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_DATACENTER, test, resourceId) -> response(Route.GET_DATACENTER, HttpStatusCode.OK, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_IMAGES, test, resourceId) -> response(Route.GET_ALL_IMAGES, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_IMAGE, test, resourceId) -> response(Route.GET_IMAGE, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.UPDATE_IMAGE, test, resourceId) -> response(Route.UPDATE_IMAGE, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_IMAGE, test, resourceId) -> response(Route.DELETE_IMAGE, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_ISOS, test, resourceId) -> response(Route.GET_ALL_ISOS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_ISO, test, resourceId) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_PLACEMENT_GROUPS, test, resourceId) -> response(Route.GET_ALL_PLACEMENT_GROUPS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_A_PLACEMENT_GROUP, test, resourceId) -> response(Route.GET_A_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.CREATE_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.UPDATE_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_PLACEMENT_GROUP, test, resourceId) -> response(Route.DELETE_PLACEMENT_GROUP, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_NETWORKS, test, resourceId) -> response(Route.GET_ALL_NETWORKS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_NETWORK, test, resourceId) -> response(Route.GET_NETWORK, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_NETWORK, test, resourceId) -> response(Route.CREATE_NETWORK, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_NETWORK, test, resourceId) -> response(Route.UPDATE_NETWORK, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_NETWORK, test, resourceId) -> response(Route.DELETE_NETWORK, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_LOAD_BALANCERS, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCERS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_LOAD_BALANCER, test, resourceId) -> response(Route.GET_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_LOAD_BALANCER, test, resourceId) -> response(Route.CREATE_LOAD_BALANCER, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_LOAD_BALANCER, test, resourceId) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_LOAD_BALANCER, test, resourceId) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_LOAD_BALANCER_TYPES, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCER_TYPES, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_LOAD_BALANCER_TYPE, test, resourceId) -> response(Route.GET_LOAD_BALANCER_TYPE, HttpStatusCode.OK, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_SSH_KEYS, test, resourceId) -> response(Route.GET_ALL_SSH_KEYS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_SSH_KEY, test, resourceId) -> response(Route.GET_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_SSH_KEY, test, resourceId) -> response(Route.CREATE_SSH_KEY, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_SSH_KEY, test, resourceId) -> response(Route.UPDATE_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_SSH_KEY, test, resourceId) -> response(Route.DELETE_SSH_KEY, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_VOLUMES, test, resourceId) -> response(Route.GET_ALL_VOLUMES, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_VOLUME, test, resourceId) -> response(Route.GET_VOLUME, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_VOLUME, test, resourceId) -> response(Route.CREATE_VOLUME, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_VOLUME, test, resourceId) -> response(Route.UPDATE_VOLUME, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_VOLUME, test, resourceId) -> response(Route.DELETE_VOLUME, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_CERTIFICATES, test, resourceId) -> response(Route.GET_ALL_CERTIFICATES, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_CERTIFICATE, test, resourceId) -> response(Route.GET_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_CERTIFICATE, test, resourceId) -> response(Route.CREATE_CERTIFICATE, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_CERTIFICATE, test, resourceId) -> response(Route.UPDATE_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_CERTIFICATE, test, resourceId) -> response(Route.DELETE_CERTIFICATE, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_FIREWALLS, test, resourceId) -> response(Route.GET_ALL_FIREWALLS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_FIREWALL, test, resourceId) -> response(Route.GET_FIREWALL, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_FIREWALL, test, resourceId) -> response(Route.CREATE_FIREWALL, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_FIREWALL, test, resourceId) -> response(Route.UPDATE_FIREWALL, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_FIREWALL, test, resourceId) -> response(Route.DELETE_FIREWALL, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_PRIMARY_IPS, test, resourceId) -> response(Route.GET_ALL_PRIMARY_IPS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_PRIMARY_IP, test, resourceId) -> response(Route.GET_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_PRIMARY_IP, test, resourceId) -> response(Route.CREATE_PRIMARY_IP, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_PRIMARY_IP, test, resourceId) -> response(Route.UPDATE_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_PRIMARY_IP, test, resourceId) -> response(Route.DELETE_PRIMARY_IP, HttpStatusCode.NoContent, defaultHeaders)
-
-            matchRoute(Route.GET_ALL_FLOATING_IPS, test, resourceId) -> response(Route.GET_ALL_FLOATING_IPS, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.GET_FLOATING_IP, test, resourceId) -> response(Route.GET_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.CREATE_FLOATING_IP, test, resourceId) -> response(Route.CREATE_FLOATING_IP, HttpStatusCode.Created, defaultHeaders)
-            matchRoute(Route.UPDATE_FLOATING_IP, test, resourceId) -> response(Route.UPDATE_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
-            matchRoute(Route.DELETE_FLOATING_IP, test, resourceId) -> response(Route.DELETE_FLOATING_IP, HttpStatusCode.NoContent, defaultHeaders)
-
-            else -> respondError(HttpStatusCode.NotFound)
-        }
+    if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
+        return@MockEngine errorResponse(ErrorCode.UNAUTHORIZED, HttpStatusCode.Unauthorized, mapOf(HttpHeaders.ContentType to "application/json"))
     }
+
+    val defaultHeaders = mapOf(
+        HttpHeaders.ContentType to "application/json",
+        HttpHeaders.Authorization to apiToken.toString(),
+    )
+
+    val resourceId = resourceIdProvider?.invoke(request)
+
+    val testPath = request.url.toURI().path
+        .replace("{id}", resourceId?.toString() ?: "<none>")
+        .replace("/v1/", "")
+
+    val test = HttpMethodAndPath(request.method, Path("/$testPath"))
+
+    when {
+        matchRoute(Route.GET_ALL_ACTIONS, test, resourceId) -> response(Route.GET_ALL_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ACTION, test, resourceId) -> response(Route.GET_ACTION, HttpStatusCode.OK, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_SERVERS, test, resourceId) -> response(Route.GET_ALL_SERVERS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SERVER, test, resourceId) -> response(Route.GET_SERVER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SERVER_METRICS, test, resourceId) -> response(Route.GET_SERVER_METRICS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SERVER_ACTIONS, test, resourceId) -> response(Route.GET_SERVER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SERVER_ACTION, test, resourceId) -> response(Route.GET_SERVER_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SERVER_ACTION_FOR_SERVER, test, resourceId) -> response(Route.GET_SERVER_ACTION_FOR_SERVER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_SERVER_ACTIONS, test, resourceId) -> response(Route.GET_ALL_SERVER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_SERVER, test, resourceId) -> response(Route.CREATE_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_SERVER, test, resourceId) -> response(Route.UPDATE_SERVER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.ADD_SERVER_TO_PLACEMENT_GROUP, test, resourceId) -> response(Route.ADD_SERVER_TO_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ATTACH_ISO_TO_SERVER, test, resourceId) -> response(Route.ATTACH_ISO_TO_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ATTACH_SERVER_TO_NETWORK, test, resourceId) -> response(Route.ATTACH_SERVER_TO_NETWORK, HttpStatusCode.Created, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_DATACENTERS, test, resourceId) -> response(Route.GET_ALL_DATACENTERS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_DATACENTER, test, resourceId) -> response(Route.GET_DATACENTER, HttpStatusCode.OK, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_IMAGES, test, resourceId) -> response(Route.GET_ALL_IMAGES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_IMAGE, test, resourceId) -> response(Route.GET_IMAGE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.UPDATE_IMAGE, test, resourceId) -> response(Route.UPDATE_IMAGE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_IMAGE, test, resourceId) -> response(Route.DELETE_IMAGE, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_ISOS, test, resourceId) -> response(Route.GET_ALL_ISOS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ISO, test, resourceId) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_PLACEMENT_GROUPS, test, resourceId) -> response(Route.GET_ALL_PLACEMENT_GROUPS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_A_PLACEMENT_GROUP, test, resourceId) -> response(Route.GET_A_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.CREATE_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_PLACEMENT_GROUP, test, resourceId) -> response(Route.UPDATE_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_PLACEMENT_GROUP, test, resourceId) -> response(Route.DELETE_PLACEMENT_GROUP, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_NETWORKS, test, resourceId) -> response(Route.GET_ALL_NETWORKS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_NETWORK, test, resourceId) -> response(Route.GET_NETWORK, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_NETWORK, test, resourceId) -> response(Route.CREATE_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_NETWORK, test, resourceId) -> response(Route.UPDATE_NETWORK, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_NETWORK, test, resourceId) -> response(Route.DELETE_NETWORK, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_LOAD_BALANCERS, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCERS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_LOAD_BALANCER, test, resourceId) -> response(Route.GET_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_LOAD_BALANCER, test, resourceId) -> response(Route.CREATE_LOAD_BALANCER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_LOAD_BALANCER, test, resourceId) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_LOAD_BALANCER, test, resourceId) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_LOAD_BALANCER_TYPES, test, resourceId) -> response(Route.GET_ALL_LOAD_BALANCER_TYPES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_LOAD_BALANCER_TYPE, test, resourceId) -> response(Route.GET_LOAD_BALANCER_TYPE, HttpStatusCode.OK, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_SSH_KEYS, test, resourceId) -> response(Route.GET_ALL_SSH_KEYS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_SSH_KEY, test, resourceId) -> response(Route.GET_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_SSH_KEY, test, resourceId) -> response(Route.CREATE_SSH_KEY, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_SSH_KEY, test, resourceId) -> response(Route.UPDATE_SSH_KEY, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_SSH_KEY, test, resourceId) -> response(Route.DELETE_SSH_KEY, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_VOLUMES, test, resourceId) -> response(Route.GET_ALL_VOLUMES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_VOLUME, test, resourceId) -> response(Route.GET_VOLUME, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_VOLUME, test, resourceId) -> response(Route.CREATE_VOLUME, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_VOLUME, test, resourceId) -> response(Route.UPDATE_VOLUME, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_VOLUME, test, resourceId) -> response(Route.DELETE_VOLUME, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_CERTIFICATES, test, resourceId) -> response(Route.GET_ALL_CERTIFICATES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_CERTIFICATE, test, resourceId) -> response(Route.GET_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_CERTIFICATE, test, resourceId) -> response(Route.CREATE_CERTIFICATE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_CERTIFICATE, test, resourceId) -> response(Route.UPDATE_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_CERTIFICATE, test, resourceId) -> response(Route.DELETE_CERTIFICATE, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_FIREWALLS, test, resourceId) -> response(Route.GET_ALL_FIREWALLS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_FIREWALL, test, resourceId) -> response(Route.GET_FIREWALL, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_FIREWALL, test, resourceId) -> response(Route.CREATE_FIREWALL, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_FIREWALL, test, resourceId) -> response(Route.UPDATE_FIREWALL, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_FIREWALL, test, resourceId) -> response(Route.DELETE_FIREWALL, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_PRIMARY_IPS, test, resourceId) -> response(Route.GET_ALL_PRIMARY_IPS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_PRIMARY_IP, test, resourceId) -> response(Route.GET_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_PRIMARY_IP, test, resourceId) -> response(Route.CREATE_PRIMARY_IP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_PRIMARY_IP, test, resourceId) -> response(Route.UPDATE_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_PRIMARY_IP, test, resourceId) -> response(Route.DELETE_PRIMARY_IP, HttpStatusCode.NoContent, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_FLOATING_IPS, test, resourceId) -> response(Route.GET_ALL_FLOATING_IPS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_FLOATING_IP, test, resourceId) -> response(Route.GET_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_FLOATING_IP, test, resourceId) -> response(Route.CREATE_FLOATING_IP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_FLOATING_IP, test, resourceId) -> response(Route.UPDATE_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_FLOATING_IP, test, resourceId) -> response(Route.DELETE_FLOATING_IP, HttpStatusCode.NoContent, defaultHeaders)
+
+        else -> respondError(HttpStatusCode.NotFound)
+    }
+}
 
 internal fun createErrorEngine(error: ErrorCode, httpStatusCode: HttpStatusCode) = MockEngine { request ->
 
@@ -158,11 +160,14 @@ private fun content(route: Route): String = when (route) {
     Route.GET_SERVER_METRICS -> "src/test/resources/examples/response/get_server_metrics.json"
     Route.GET_SERVER_ACTIONS -> "src/test/resources/examples/response/get_server_actions.json"
     Route.GET_SERVER_ACTION -> "src/test/resources/examples/response/get_a_server_action.json"
+    Route.GET_SERVER_ACTION_FOR_SERVER -> "src/test/resources/examples/response/get_a_server_action_for_server.json"
     Route.GET_ALL_SERVER_ACTIONS -> "src/test/resources/examples/response/get_all_server_actions.json"
     Route.CREATE_SERVER -> "src/test/resources/examples/response/create_a_server.json"
     Route.UPDATE_SERVER -> "src/test/resources/examples/response/update_a_server.json"
     Route.DELETE_SERVER -> "src/test/resources/examples/response/delete_a_server.json"
     Route.ADD_SERVER_TO_PLACEMENT_GROUP -> "src/test/resources/examples/response/add_a_server_to_placement_group.json"
+    Route.ATTACH_ISO_TO_SERVER -> "src/test/resources/examples/response/attach_an_iso_to_server.json"
+    Route.ATTACH_SERVER_TO_NETWORK -> "src/test/resources/examples/response/attach_a_server_to_network.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"
@@ -278,6 +283,10 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.SERVER_NOT_STOPPED -> "src/test/resources/examples/error/server_not_stopped.json"
     ErrorCode.SERVER_HAS_IPV4 -> "src/test/resources/examples/error/server_has_ipv4.json"
     ErrorCode.SERVER_HAS_IPV6 -> "src/test/resources/examples/error/server_has_ipv6.json"
+    ErrorCode.IP_NOT_AVAILABLE -> "src/test/resources/examples/error/ip_not_available.json"
+    ErrorCode.SUBNET_NOT_AVAILABLE -> "src/test/resources/examples/error/no_subnet_available.json"
+    ErrorCode.SERVER_ALREADY_ATTACHED_TO_NETWORK -> "src/test/resources/examples/error/server_already_attached.json"
+    ErrorCode.NETWORKS_OVERLAP -> "src/test/resources/examples/error/networks_overlap.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }
@@ -286,28 +295,26 @@ private fun MockRequestHandleScope.response(
     route: Route,
     statusCode: HttpStatusCode,
     headers: Map<String, String>,
-): HttpResponseData =
-    respond(
-        content = ByteReadChannel(content(route)),
-        status = statusCode,
-        headers = headers {
-            headers.forEach {
-                append(it.key, it.value)
-            }
-        },
-    )
+): HttpResponseData = respond(
+    content = ByteReadChannel(content(route)),
+    status = statusCode,
+    headers = headers {
+        headers.forEach {
+            append(it.key, it.value)
+        }
+    },
+)
 
 private fun MockRequestHandleScope.errorResponse(
     error: ErrorCode,
     statusCode: HttpStatusCode,
     headers: Map<String, String>,
-): HttpResponseData =
-    respond(
-        content = ByteReadChannel(error(error)),
-        status = statusCode,
-        headers = headers {
-            headers.forEach {
-                append(it.key, it.value)
-            }
-        },
-    )
+): HttpResponseData = respond(
+    content = ByteReadChannel(error(error)),
+    status = statusCode,
+    headers = headers {
+        headers.forEach {
+            append(it.key, it.value)
+        }
+    },
+)
