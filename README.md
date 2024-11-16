@@ -1,5 +1,17 @@
 # Getting Started
 
+> [!NOTE]  
+> The API is not yet 100% covered. The following are missing:
+> * Certificate Actions,
+> * Firewall Actions,
+> * Floating IP Actions,
+> * Image Actions,
+> * Load Balancer Actions,
+> * Network Actions,
+> * Primary IP Actions,
+> * Volume Actions,
+> * and part of Server Actions,
+
 ## Installing the package
 
 Add to `build.gradle.kt` dependencies block.
