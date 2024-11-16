@@ -9,6 +9,7 @@ import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.Server.Id
 import tech.sco.hetznerkloud.model.ServerMetrics
+import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.Pagination
@@ -83,7 +84,8 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     )
 
     @Throws(Failure::class)
-    suspend fun action(
-        id: Action.Id
-    ): Item<Action> = httpClient.makeRequest(Route.GET_SERVER_ACTION, resourceId = id.value)
+    suspend fun action(id: Action.Id): Item<Action> = httpClient.makeRequest(Route.GET_SERVER_ACTION, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun addToPlacementGroup(id: Id, body: AddToPlacementGroup): Item<Action> = httpClient.makeRequest(Route.ADD_SERVER_TO_PLACEMENT_GROUP, resourceId = id.value, body = body)
 }

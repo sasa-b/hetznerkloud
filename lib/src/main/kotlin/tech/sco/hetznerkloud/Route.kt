@@ -23,6 +23,7 @@ internal enum class Route(
     CREATE_SERVER(Pair(HttpMethod.Post, Path("/servers"))),
     UPDATE_SERVER(Pair(HttpMethod.Patch, Path("/servers/{id}"))),
     DELETE_SERVER(Pair(HttpMethod.Delete, Path("/servers/{id}"))),
+    ADD_SERVER_TO_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/servers/{id}/actions/add_to_placement_group"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),

@@ -17,6 +17,7 @@ import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
+import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
@@ -533,6 +534,25 @@ class ServerApiTest :
                         started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         status = Action.Status.RUNNING,
                     ),
+                )
+            }
+
+            should("add Server to a Placement Group") {
+                val addToPlacementGroupRequest = AddToPlacementGroup(PlacementGroup.Id(1))
+
+                underTest.servers.addToPlacementGroup(serverId, addToPlacementGroupRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "add_to_placement_group",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    )
                 )
             }
         }

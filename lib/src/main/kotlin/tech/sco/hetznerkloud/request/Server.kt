@@ -48,3 +48,9 @@ data class CreateServer(
         val ipv6: String? = null,
     )
 }
+
+@Serializable
+data class AddToPlacementGroup(
+    @JsonNames("placement_group")
+    val id: PlacementGroup.Id
+): HttpBody

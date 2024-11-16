@@ -48,6 +48,7 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.CREATE_SERVER, test, resourceId) -> response(Route.CREATE_SERVER, HttpStatusCode.Created, defaultHeaders)
             matchRoute(Route.UPDATE_SERVER, test, resourceId) -> response(Route.UPDATE_SERVER, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.ADD_SERVER_TO_PLACEMENT_GROUP, test, resourceId) -> response(Route.ADD_SERVER_TO_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
 
             matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -161,6 +162,7 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_SERVER -> "src/test/resources/examples/response/create_a_server.json"
     Route.UPDATE_SERVER -> "src/test/resources/examples/response/update_a_server.json"
     Route.DELETE_SERVER -> "src/test/resources/examples/response/delete_a_server.json"
+    Route.ADD_SERVER_TO_PLACEMENT_GROUP -> "src/test/resources/examples/response/add_a_server_to_placement_group.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"
