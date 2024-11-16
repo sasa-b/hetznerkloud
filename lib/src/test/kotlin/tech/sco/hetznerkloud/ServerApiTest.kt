@@ -278,6 +278,57 @@ class ServerApiTest :
                     expectedMetrics,
                 )
             }
+
+            should("get all Server actions") {
+                underTest.servers.actions() shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING
+                        )
+                    )
+                )
+            }
+
+            should("get Server actions") {
+                underTest.servers.actions(serverId = serverId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "start_server",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS
+                        )
+                    )
+                )
+            }
+
+            should("get a Server action") {
+                underTest.servers.action(id = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 42, type = "server")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING
+                    )
+                )
+            }
         }
 
         context("Server resource write API") {

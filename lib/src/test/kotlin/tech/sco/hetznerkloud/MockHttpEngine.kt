@@ -42,6 +42,9 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
             matchRoute(Route.GET_ALL_SERVERS, test, resourceId) -> response(Route.GET_ALL_SERVERS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_SERVER, test, resourceId) -> response(Route.GET_SERVER, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.GET_SERVER_METRICS, test, resourceId) -> response(Route.GET_SERVER_METRICS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_SERVER_ACTIONS, test, resourceId) -> response(Route.GET_SERVER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_SERVER_ACTION, test, resourceId) -> response(Route.GET_SERVER_ACTION, HttpStatusCode.OK, defaultHeaders)
+            matchRoute(Route.GET_ALL_SERVER_ACTIONS, test, resourceId) -> response(Route.GET_ALL_SERVER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.CREATE_SERVER, test, resourceId) -> response(Route.CREATE_SERVER, HttpStatusCode.Created, defaultHeaders)
             matchRoute(Route.UPDATE_SERVER, test, resourceId) -> response(Route.UPDATE_SERVER, HttpStatusCode.OK, defaultHeaders)
             matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
@@ -152,6 +155,9 @@ private fun content(route: Route): String = when (route) {
     Route.GET_ALL_SERVERS -> "src/test/resources/examples/response/get_all_servers.json"
     Route.GET_SERVER -> "src/test/resources/examples/response/get_a_server.json"
     Route.GET_SERVER_METRICS -> "src/test/resources/examples/response/get_server_metrics.json"
+    Route.GET_SERVER_ACTIONS -> "src/test/resources/examples/response/get_server_actions.json"
+    Route.GET_SERVER_ACTION -> "src/test/resources/examples/response/get_a_server_action.json"
+    Route.GET_ALL_SERVER_ACTIONS -> "src/test/resources/examples/response/get_all_server_actions.json"
     Route.CREATE_SERVER -> "src/test/resources/examples/response/create_a_server.json"
     Route.UPDATE_SERVER -> "src/test/resources/examples/response/update_a_server.json"
     Route.DELETE_SERVER -> "src/test/resources/examples/response/delete_a_server.json"

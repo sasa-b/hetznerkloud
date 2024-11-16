@@ -5,12 +5,14 @@ import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Failure
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
+import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.Server.Id
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.Pagination
+import tech.sco.hetznerkloud.request.ServerActionFilter
 import tech.sco.hetznerkloud.request.ServerFilter
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.ServerSorting
@@ -57,4 +59,31 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
             ) + other.toQueryParams(),
         )
     }
+
+    @Throws(Failure::class)
+    suspend fun actions(
+        filter: Set<ServerActionFilter> = emptySet(),
+        sorting: Set<ServerActionFilter> = emptySet(),
+        pagination: Pagination = Pagination(),
+    ): Items<Action> = httpClient.makeRequest(
+        Route.GET_ALL_SERVER_ACTIONS,
+        queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams()
+    )
+
+    @Throws(Failure::class)
+    suspend fun actions(
+        serverId: Id,
+        filter: Set<ServerActionFilter> = emptySet(),
+        sorting: Set<ServerActionFilter> = emptySet(),
+        pagination: Pagination = Pagination(),
+    ): Items<Action> = httpClient.makeRequest(
+        Route.GET_SERVER_ACTIONS,
+        resourceId = serverId.value,
+        queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams()
+    )
+
+    @Throws(Failure::class)
+    suspend fun action(
+        id: Action.Id
+    ): Item<Action> = httpClient.makeRequest(Route.GET_SERVER_ACTION, resourceId = id.value)
 }

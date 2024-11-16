@@ -5,6 +5,7 @@ import tech.sco.hetznerkloud.QueryParams
 typealias Filter = Pair<FilterField, String>
 typealias ActionFilter = Pair<FilterFields.Action, String>
 typealias ServerFilter = Pair<FilterFields.Server, String>
+typealias ServerActionFilter = Pair<FilterFields.ServerAction, String>
 typealias ServerMetricsFilter = Pair<FilterFields.ServerMetrics, String>
 typealias ServerTypeFilter = Pair<FilterFields.ServerType, String>
 typealias DatacenterFilter = Pair<FilterFields.Datacenter, String>
@@ -36,6 +37,11 @@ object FilterFields {
         NAME("name"),
         LABEL_SELECTOR("label_selector"),
         STATUS("status"),
+    }
+
+    enum class ServerAction(override val value: String) : FilterField {
+        ID("id"),
+        STATUS("status")
     }
 
     enum class ServerMetrics(override val value: String) : FilterField {
