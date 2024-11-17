@@ -14,8 +14,11 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.EnableRescueMode
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.Pagination
+import tech.sco.hetznerkloud.request.RebuildFromImageById
+import tech.sco.hetznerkloud.request.RebuildFromImageByName
 import tech.sco.hetznerkloud.request.ServerActionFilter
 import tech.sco.hetznerkloud.request.ServerFilter
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
@@ -24,10 +27,10 @@ import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
-import tech.sco.hetznerkloud.response.ServerConsoleRequested
+import tech.sco.hetznerkloud.response.ServerActionWithRootPassword
+import tech.sco.hetznerkloud.response.ServerConsoleRequestedAction
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
-import tech.sco.hetznerkloud.response.ServerRootPasswordReset
 
 class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
@@ -122,8 +125,23 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun softReboot(id: Id): Item<Action> = httpClient.makeRequest(Route.SOFT_REBOOT_SERVER, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun resetRootPassword(id: Id): ServerRootPasswordReset = httpClient.makeRequest(Route.RESET_SERVER_ROOT_PASSWORD, resourceId = id.value)
+    suspend fun resetRootPassword(id: Id): ServerActionWithRootPassword = httpClient.makeRequest(Route.RESET_SERVER_ROOT_PASSWORD, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun requestConsole(id: Id): ServerConsoleRequested = httpClient.makeRequest(Route.REQUEST_CONSOLE_FOR_SERVER, resourceId = id.value)
+    suspend fun requestConsole(id: Id): ServerConsoleRequestedAction = httpClient.makeRequest(Route.REQUEST_CONSOLE_FOR_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun removeFromPlacementGroup(id: Id): Item<Action> = httpClient.makeRequest(Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun rebuildFromImage(id: Id, body: RebuildFromImageById): ServerActionWithRootPassword = httpClient.makeRequest(Route.REBUILD_SERVER_FROM_IMAGE, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun rebuildFromImage(id: Id, body: RebuildFromImageByName): ServerActionWithRootPassword = httpClient.makeRequest(Route.REBUILD_SERVER_FROM_IMAGE, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun enableBackup(id: Id): Item<Action> = httpClient.makeRequest(Route.ENABLE_SERVER_BACKUP, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun enableRescueMode(id: Id, body: EnableRescueMode): ServerActionWithRootPassword = httpClient.makeRequest(Route.ENABLE_RESCUE_MODE, resourceId = id.value, body = body)
 }

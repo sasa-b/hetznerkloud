@@ -15,6 +15,7 @@ import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.SSHKey
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerType
@@ -23,15 +24,18 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.EnableRescueMode
 import tech.sco.hetznerkloud.request.FilterFields
+import tech.sco.hetznerkloud.request.RebuildFromImageById
+import tech.sco.hetznerkloud.request.RebuildFromImageByName
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
-import tech.sco.hetznerkloud.response.ServerConsoleRequested
+import tech.sco.hetznerkloud.response.ServerActionWithRootPassword
+import tech.sco.hetznerkloud.response.ServerConsoleRequestedAction
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
-import tech.sco.hetznerkloud.response.ServerRootPasswordReset
 import java.time.OffsetDateTime
 
 class ServerApiTest :
@@ -387,7 +391,7 @@ class ServerApiTest :
                     action = Action(
                         id = Action.Id(1),
                         command = "create_server",
-                        ActionFailedError(
+                        error = ActionFailedError(
                             message = "Action failed",
                         ),
                         finished = null,
@@ -546,10 +550,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         progress = 100,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
@@ -565,14 +569,31 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "add_to_placement_group",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("remove Server from a Placement Group") {
+                underTest.servers.removeFromPlacementGroup(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "remove_from_placement_group",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
                     ),
                 )
             }
@@ -584,10 +605,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "attach_iso",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -603,10 +624,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "attach_iso",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -626,10 +647,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "attach_to_network",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                             Resource(id = 4711, type = "network"),
                         ),
@@ -644,10 +665,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "shutdown_server",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -661,10 +682,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "reset_server",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -678,10 +699,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "start_server",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -695,10 +716,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "stop_server",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -712,10 +733,10 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "reboot_server",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -725,14 +746,14 @@ class ServerApiTest :
             }
 
             should("reset Server root password") {
-                underTest.servers.resetRootPassword(serverId) shouldBe ServerRootPasswordReset(
+                underTest.servers.resetRootPassword(serverId) shouldBe ServerActionWithRootPassword(
                     action = Action(
                         id = Action.Id(13),
                         command = "reset_password",
-                        ActionFailedError(message = "Action failed"),
+                        error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
-                        listOf(
+                        resources = listOf(
                             Resource(id = 42, type = "server"),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
@@ -744,14 +765,14 @@ class ServerApiTest :
         }
 
         should("request Server console") {
-            underTest.servers.requestConsole(serverId) shouldBe ServerConsoleRequested(
+            underTest.servers.requestConsole(serverId) shouldBe ServerConsoleRequestedAction(
                 action = Action(
                     id = Action.Id(13),
                     command = "request_console",
-                    ActionFailedError(message = "Action failed"),
+                    error = ActionFailedError(message = "Action failed"),
                     finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                     progress = 100,
-                    listOf(
+                    resources = listOf(
                         Resource(id = 42, type = "server"),
                     ),
                     started = OffsetDateTime.parse("2016-01-30T23:55Z"),
@@ -759,6 +780,82 @@ class ServerApiTest :
                 ),
                 password = "9MQaTg2VAGI0FIpc10k3UpRXcHj2wQ6x",
                 wssUrl = "wss://console.hetzner.cloud/?server_id=1&token=3db32d15-af2f-459c-8bf8-dee1fd05f49c",
+            )
+        }
+
+        should("rebuild Server from an image by name") {
+            underTest.servers.rebuildFromImage(serverId, RebuildFromImageByName("")) shouldBe ServerActionWithRootPassword(
+                action = Action(
+                    id = Action.Id(13),
+                    command = "rebuild_server",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                    status = Action.Status.RUNNING,
+                ),
+                rootPassword = null,
+            )
+        }
+
+        should("rebuild Server from an image by id") {
+            underTest.servers.rebuildFromImage(serverId, RebuildFromImageById(Image.Id(1))) shouldBe ServerActionWithRootPassword(
+                action = Action(
+                    id = Action.Id(13),
+                    command = "rebuild_server",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                    status = Action.Status.RUNNING,
+                ),
+                rootPassword = null,
+            )
+        }
+
+        should("enable Server backup") {
+            underTest.servers.enableBackup(serverId) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "enable_backup",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                    progress = 100,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                    status = Action.Status.SUCCESS,
+                ),
+            )
+        }
+
+        should("enable rescue mode for a Server") {
+            underTest.servers.enableRescueMode(
+                serverId,
+                EnableRescueMode(
+                    sshKeys = listOf(SSHKey.Id(2323)),
+                ),
+            ) shouldBe ServerActionWithRootPassword(
+                Action(
+                    id = Action.Id(13),
+                    command = "enable_rescue",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                    progress = 100,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                    status = Action.Status.SUCCESS,
+                ),
+                rootPassword = "zCWbFhnu950dUTko5f40",
             )
         }
     })

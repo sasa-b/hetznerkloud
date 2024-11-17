@@ -8,14 +8,14 @@ import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Action
 
 @Serializable
-data class ServerRootPasswordReset(
+data class ServerActionWithRootPassword(
     val action: Action,
     @JsonNames("root_password")
-    val rootPassword: String,
+    val rootPassword: String? = null,
 )
 
 @Serializable
-data class ServerConsoleRequested(
+data class ServerConsoleRequestedAction(
     val action: Action,
     val password: String,
     @JsonNames("wss_url")

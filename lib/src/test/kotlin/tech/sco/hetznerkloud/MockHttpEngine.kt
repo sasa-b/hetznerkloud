@@ -58,6 +58,10 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         matchRoute(Route.SOFT_REBOOT_SERVER, test, resourceId) -> response(Route.SOFT_REBOOT_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.RESET_SERVER_ROOT_PASSWORD, test, resourceId) -> response(Route.RESET_SERVER_ROOT_PASSWORD, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.REQUEST_CONSOLE_FOR_SERVER, test, resourceId) -> response(Route.REQUEST_CONSOLE_FOR_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP, test, resourceId) -> response(Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.REBUILD_SERVER_FROM_IMAGE, test, resourceId) -> response(Route.REBUILD_SERVER_FROM_IMAGE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ENABLE_SERVER_BACKUP, test, resourceId) -> response(Route.ENABLE_SERVER_BACKUP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ENABLE_RESCUE_MODE, test, resourceId) -> response(Route.ENABLE_RESCUE_MODE, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -182,6 +186,10 @@ private fun content(route: Route): String = when (route) {
     Route.POWER_OFF_SERVER -> "src/test/resources/examples/response/power_off_a_server.json"
     Route.RESET_SERVER_ROOT_PASSWORD -> "src/test/resources/examples/response/reset_root_password_for_a_server.json"
     Route.REQUEST_CONSOLE_FOR_SERVER -> "src/test/resources/examples/response/request_console_for_a_server.json"
+    Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP -> "src/test/resources/examples/response/remove_server_from_a_placement_group.json"
+    Route.REBUILD_SERVER_FROM_IMAGE -> "src/test/resources/examples/response/rebuild_server_from_an_image.json"
+    Route.ENABLE_SERVER_BACKUP -> "src/test/resources/examples/response/enable_server_backup.json"
+    Route.ENABLE_RESCUE_MODE -> "src/test/resources/examples/response/enable_rescue_mode_for_server.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"

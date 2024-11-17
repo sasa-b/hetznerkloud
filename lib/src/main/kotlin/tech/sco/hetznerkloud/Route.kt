@@ -39,6 +39,10 @@ internal enum class Route(
     POWER_OFF_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/poweroff"))),
     RESET_SERVER_ROOT_PASSWORD(Pair(HttpMethod.Post, Path("/servers/{id}/actions/reset_password"))),
     REQUEST_CONSOLE_FOR_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/request_console"))),
+    REMOVE_SERVER_FROM_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/servers/{id}/actions/remove_from_placement_group"))),
+    REBUILD_SERVER_FROM_IMAGE(Pair(HttpMethod.Post, Path("/servers/{id}/actions/rebuild"))),
+    ENABLE_SERVER_BACKUP(Pair(HttpMethod.Post, Path("/servers/{id}/actions/enable_backup"))),
+    ENABLE_RESCUE_MODE(Pair(HttpMethod.Post, Path("/servers/{id}/actions/enable_rescue"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),
