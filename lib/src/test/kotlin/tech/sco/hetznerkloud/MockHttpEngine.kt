@@ -56,6 +56,8 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         matchRoute(Route.POWER_ON_SERVER, test, resourceId) -> response(Route.POWER_ON_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.POWER_OFF_SERVER, test, resourceId) -> response(Route.POWER_OFF_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.SOFT_REBOOT_SERVER, test, resourceId) -> response(Route.SOFT_REBOOT_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.RESET_SERVER_ROOT_PASSWORD, test, resourceId) -> response(Route.RESET_SERVER_ROOT_PASSWORD, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.REQUEST_CONSOLE_FOR_SERVER, test, resourceId) -> response(Route.REQUEST_CONSOLE_FOR_SERVER, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -178,6 +180,8 @@ private fun content(route: Route): String = when (route) {
     Route.SOFT_REBOOT_SERVER -> "src/test/resources/examples/response/soft_reboot_a_server.json"
     Route.POWER_ON_SERVER -> "src/test/resources/examples/response/power_on_a_server.json"
     Route.POWER_OFF_SERVER -> "src/test/resources/examples/response/power_off_a_server.json"
+    Route.RESET_SERVER_ROOT_PASSWORD -> "src/test/resources/examples/response/reset_root_password_for_a_server.json"
+    Route.REQUEST_CONSOLE_FOR_SERVER -> "src/test/resources/examples/response/request_console_for_a_server.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"

@@ -24,8 +24,10 @@ import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
+import tech.sco.hetznerkloud.response.ServerConsoleRequested
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
+import tech.sco.hetznerkloud.response.ServerRootPasswordReset
 
 class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
@@ -118,4 +120,10 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun softReboot(id: Id): Item<Action> = httpClient.makeRequest(Route.SOFT_REBOOT_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun resetRootPassword(id: Id): ServerRootPasswordReset = httpClient.makeRequest(Route.RESET_SERVER_ROOT_PASSWORD, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun requestConsole(id: Id): ServerConsoleRequested = httpClient.makeRequest(Route.REQUEST_CONSOLE_FOR_SERVER, resourceId = id.value)
 }

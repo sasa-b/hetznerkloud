@@ -28,8 +28,10 @@ import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
+import tech.sco.hetznerkloud.response.ServerConsoleRequested
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
+import tech.sco.hetznerkloud.response.ServerRootPasswordReset
 import java.time.OffsetDateTime
 
 class ServerApiTest :
@@ -721,5 +723,42 @@ class ServerApiTest :
                     ),
                 )
             }
+
+            should("reset Server root password") {
+                underTest.servers.resetRootPassword(serverId) shouldBe ServerRootPasswordReset(
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "reset_password",
+                        ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                    rootPassword = "zCWbFhnu950dUTko5f40",
+                )
+            }
+        }
+
+        should("request Server console") {
+            underTest.servers.requestConsole(serverId) shouldBe ServerConsoleRequested(
+                action = Action(
+                    id = Action.Id(13),
+                    command = "request_console",
+                    ActionFailedError(message = "Action failed"),
+                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                    progress = 100,
+                    listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                    status = Action.Status.SUCCESS,
+                ),
+                password = "9MQaTg2VAGI0FIpc10k3UpRXcHj2wQ6x",
+                wssUrl = "wss://console.hetzner.cloud/?server_id=1&token=3db32d15-af2f-459c-8bf8-dee1fd05f49c",
+            )
         }
     })

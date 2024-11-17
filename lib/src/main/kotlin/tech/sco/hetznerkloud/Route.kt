@@ -37,6 +37,8 @@ internal enum class Route(
     SOFT_REBOOT_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/reboot"))),
     POWER_ON_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/poweron"))),
     POWER_OFF_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/poweroff"))),
+    RESET_SERVER_ROOT_PASSWORD(Pair(HttpMethod.Post, Path("/servers/{id}/actions/reset_password"))),
+    REQUEST_CONSOLE_FOR_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/request_console"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),
