@@ -1,0 +1,48 @@
+
+{
+  "action": {
+    "command": "create_image",
+    "error": {
+      "code": "action_failed",
+      "message": "Action failed"
+    },
+    "finished": "2016-01-30T23:56:00+00:00",
+    "id": 13,
+    "progress": 100,
+    "resources": [
+      {
+        "id": 42,
+        "type": "server"
+      }
+    ],
+    "started": "2016-01-30T23:55:00+00:00",
+    "status": "success"
+  },
+  "image": {
+    "architecture": "x86",
+    "bound_to": null,
+    "created": "2016-01-30T23:50:00+00:00",
+    "created_from": {
+      "id": 1,
+      "name": "Server"
+    },
+    "deleted": null,
+    "deprecated": "2018-02-28T00:00:00+00:00",
+    "description": "my image",
+    "disk_size": 10,
+    "id": 4711,
+    "image_size": 2.3,
+    "labels": {
+      "env": "dev"
+    },
+    "name": null,
+    "os_flavor": "ubuntu",
+    "os_version": "20.04",
+    "protection": {
+      "delete": false
+    },
+    "rapid_deploy": false,
+    "status": "creating",
+    "type": "snapshot"
+  }
+}

@@ -23,6 +23,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.EnableRescueMode
@@ -33,6 +34,7 @@ import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
+import tech.sco.hetznerkloud.response.ServerActionWithImage
 import tech.sco.hetznerkloud.response.ServerActionWithRootPassword
 import tech.sco.hetznerkloud.response.ServerConsoleRequestedAction
 import tech.sco.hetznerkloud.response.ServerCreated
@@ -929,6 +931,56 @@ class ServerApiTest :
                     ),
                     started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                     status = Action.Status.RUNNING,
+                ),
+            )
+        }
+
+        should("create an Image fromServer") {
+            val createImage = CreateImageFromServer(
+                description = "my image",
+                labels = mapOf(
+                    "environment" to "prod",
+                    "example.com/my" to "label",
+                    "just-a-key" to "",
+                ),
+                type = CreateImageFromServer.Type.SNAPSHOT,
+            )
+
+            underTest.servers.createImage(serverId, createImage) shouldBe ServerActionWithImage(
+                action = Action(
+                    id = Action.Id(13),
+                    command = "create_image",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
+                    progress = 100,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                    status = Action.Status.SUCCESS,
+                ),
+                image = Image(
+                    id = Image.Id(4711),
+                    architecture = "x86",
+                    boundTo = null,
+                    created = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                    createdFrom = Image.CreatedFrom(
+                        id = 1,
+                        name = "Server",
+                    ),
+                    deleted = null,
+                    deprecated = OffsetDateTime.parse("2018-02-28T00:00:00+00:00"),
+                    description = "my image",
+                    diskSize = 10,
+                    imageSize = 2.3,
+                    labels = mapOf("env" to "dev"),
+                    name = null,
+                    osFlavor = "ubuntu",
+                    osVersion = "20.04",
+                    protection = Protection(delete = false),
+                    rapidDeploy = false,
+                    status = Image.Status.CREATING,
+                    type = Image.Type.SNAPSHOT,
                 ),
             )
         }

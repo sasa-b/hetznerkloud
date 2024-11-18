@@ -86,6 +86,8 @@ data class EnableRescueMode(
     val sshKeys: List<SSHKey.Id>,
     val type: Type = Type.LINUX64,
 ) : HttpBody {
+
+    @Serializable
     enum class Type {
         @SerialName("linux64")
         LINUX64,
@@ -94,3 +96,20 @@ data class EnableRescueMode(
 
 @Serializable
 data class DetachFromNetwork(val network: Network.Id) : HttpBody
+
+@Serializable
+data class CreateImageFromServer(
+    val description: String,
+    val labels: Labels = emptyMap(),
+    val type: Type,
+) : HttpBody {
+
+    @Serializable
+    enum class Type {
+        @SerialName("snapshot")
+        SNAPSHOT,
+
+        @SerialName("backup")
+        BACKUP,
+    }
+}

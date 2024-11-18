@@ -56,7 +56,7 @@ data class Image(
         @SerialName("available")
         AVAILABLE,
 
-        @SerialName("avaicreatinglable")
+        @SerialName("creating")
         CREATING,
 
         @SerialName("unavailable")

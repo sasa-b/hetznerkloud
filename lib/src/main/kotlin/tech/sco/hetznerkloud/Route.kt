@@ -47,6 +47,7 @@ internal enum class Route(
     DISABLE_SERVER_BACKUP(Pair(HttpMethod.Post, Path("/servers/{id}/actions/disable_backup"))),
     ENABLE_SERVER_RESCUE_MODE(Pair(HttpMethod.Post, Path("/servers/{id}/actions/enable_rescue"))),
     DISABLE_SERVER_RESCUE_MODE(Pair(HttpMethod.Post, Path("/servers/{id}/actions/disable_rescue"))),
+    CREATE_IMAGE_FROM_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/create_image"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),
