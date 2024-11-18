@@ -24,6 +24,7 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.EnableRescueMode
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.RebuildFromImageById
@@ -636,6 +637,23 @@ class ServerApiTest :
                 )
             }
 
+            should("detach Iso from Server") {
+                underTest.servers.detachIso(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "detach_iso",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
             should("attach Server to a Network") {
                 val attachToNetwork = AttachToNetwork(
                     aliasIps = listOf("10.0.1.2"),
@@ -647,6 +665,28 @@ class ServerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "attach_to_network",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                            Resource(id = 4711, type = "network"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("detach Server from Network") {
+                val detachFromNetwork = DetachFromNetwork(
+                    network = Network.Id(4711),
+                )
+
+                underTest.servers.detachFromNetwork(serverId, detachFromNetwork) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "detach_from_network",
                         error = ActionFailedError(message = "Action failed"),
                         finished = null,
                         progress = 0,
@@ -836,6 +876,23 @@ class ServerApiTest :
             )
         }
 
+        should("disable Server backup") {
+            underTest.servers.disableBackup(serverId) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "disable_backup",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                    progress = 100,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                    status = Action.Status.SUCCESS,
+                ),
+            )
+        }
+
         should("enable rescue mode for a Server") {
             underTest.servers.enableRescueMode(
                 serverId,
@@ -856,6 +913,23 @@ class ServerApiTest :
                     status = Action.Status.SUCCESS,
                 ),
                 rootPassword = "zCWbFhnu950dUTko5f40",
+            )
+        }
+
+        should("disable rescue mode for a Server") {
+            underTest.servers.disableRescueMode(serverId) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "disable_rescue",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                    status = Action.Status.RUNNING,
+                ),
             )
         }
     })

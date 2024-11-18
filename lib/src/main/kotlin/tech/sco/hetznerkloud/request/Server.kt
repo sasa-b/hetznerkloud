@@ -91,3 +91,6 @@ data class EnableRescueMode(
         LINUX64,
     }
 }
+
+@Serializable
+data class DetachFromNetwork(val network: Network.Id) : HttpBody

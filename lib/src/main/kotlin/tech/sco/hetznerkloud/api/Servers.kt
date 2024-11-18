@@ -14,6 +14,7 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.CreateServer
+import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.EnableRescueMode
 import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.Pagination
@@ -107,7 +108,13 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun attachIso(id: Id, body: AttachIsoById): Item<Action> = httpClient.makeRequest(Route.ATTACH_ISO_TO_SERVER, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
+    suspend fun detachIso(id: Id): Item<Action> = httpClient.makeRequest(Route.DETACH_ISO_FROM_SERVER, resourceId = id.value)
+
+    @Throws(Failure::class)
     suspend fun attachToNetwork(id: Id, body: AttachToNetwork): Item<Action> = httpClient.makeRequest(Route.ATTACH_SERVER_TO_NETWORK, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun detachFromNetwork(id: Id, body: DetachFromNetwork): Item<Action> = httpClient.makeRequest(Route.DETACH_SERVER_FROM_NETWORK, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun shutdown(id: Id): Item<Action> = httpClient.makeRequest(Route.SHUTDOWN_SERVER, resourceId = id.value)
@@ -143,5 +150,11 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun enableBackup(id: Id): Item<Action> = httpClient.makeRequest(Route.ENABLE_SERVER_BACKUP, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun enableRescueMode(id: Id, body: EnableRescueMode): ServerActionWithRootPassword = httpClient.makeRequest(Route.ENABLE_RESCUE_MODE, resourceId = id.value, body = body)
+    suspend fun disableBackup(id: Id): Item<Action> = httpClient.makeRequest(Route.DISABLE_SERVER_BACKUP, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun enableRescueMode(id: Id, body: EnableRescueMode): ServerActionWithRootPassword = httpClient.makeRequest(Route.ENABLE_SERVER_RESCUE_MODE, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun disableRescueMode(id: Id): Item<Action> = httpClient.makeRequest(Route.DISABLE_SERVER_RESCUE_MODE, resourceId = id.value)
 }

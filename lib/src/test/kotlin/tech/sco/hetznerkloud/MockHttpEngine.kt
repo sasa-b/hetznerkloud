@@ -50,7 +50,9 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         matchRoute(Route.DELETE_SERVER, test, resourceId) -> response(Route.DELETE_SERVER, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.ADD_SERVER_TO_PLACEMENT_GROUP, test, resourceId) -> response(Route.ADD_SERVER_TO_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.ATTACH_ISO_TO_SERVER, test, resourceId) -> response(Route.ATTACH_ISO_TO_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.DETACH_ISO_FROM_SERVER, test, resourceId) -> response(Route.DETACH_ISO_FROM_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.ATTACH_SERVER_TO_NETWORK, test, resourceId) -> response(Route.ATTACH_SERVER_TO_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.DETACH_SERVER_FROM_NETWORK, test, resourceId) -> response(Route.DETACH_SERVER_FROM_NETWORK, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.SHUTDOWN_SERVER, test, resourceId) -> response(Route.SHUTDOWN_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.RESET_SERVER, test, resourceId) -> response(Route.RESET_SERVER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.POWER_ON_SERVER, test, resourceId) -> response(Route.POWER_ON_SERVER, HttpStatusCode.Created, defaultHeaders)
@@ -61,7 +63,9 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         matchRoute(Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP, test, resourceId) -> response(Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.REBUILD_SERVER_FROM_IMAGE, test, resourceId) -> response(Route.REBUILD_SERVER_FROM_IMAGE, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.ENABLE_SERVER_BACKUP, test, resourceId) -> response(Route.ENABLE_SERVER_BACKUP, HttpStatusCode.Created, defaultHeaders)
-        matchRoute(Route.ENABLE_RESCUE_MODE, test, resourceId) -> response(Route.ENABLE_RESCUE_MODE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.DISABLE_SERVER_BACKUP, test, resourceId) -> response(Route.DISABLE_SERVER_BACKUP, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ENABLE_SERVER_RESCUE_MODE, test, resourceId) -> response(Route.ENABLE_SERVER_RESCUE_MODE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.DISABLE_SERVER_RESCUE_MODE, test, resourceId) -> response(Route.DISABLE_SERVER_RESCUE_MODE, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -178,7 +182,9 @@ private fun content(route: Route): String = when (route) {
     Route.DELETE_SERVER -> "src/test/resources/examples/response/delete_a_server.json"
     Route.ADD_SERVER_TO_PLACEMENT_GROUP -> "src/test/resources/examples/response/add_a_server_to_placement_group.json"
     Route.ATTACH_ISO_TO_SERVER -> "src/test/resources/examples/response/attach_an_iso_to_server.json"
+    Route.DETACH_ISO_FROM_SERVER -> "src/test/resources/examples/response/detach_an_iso_from_server.json"
     Route.ATTACH_SERVER_TO_NETWORK -> "src/test/resources/examples/response/attach_a_server_to_network.json"
+    Route.DETACH_SERVER_FROM_NETWORK -> "src/test/resources/examples/response/detach_server_from_network.json"
     Route.SHUTDOWN_SERVER -> "src/test/resources/examples/response/shutdown_a_server.json"
     Route.RESET_SERVER -> "src/test/resources/examples/response/reset_a_server.json"
     Route.SOFT_REBOOT_SERVER -> "src/test/resources/examples/response/soft_reboot_a_server.json"
@@ -189,7 +195,9 @@ private fun content(route: Route): String = when (route) {
     Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP -> "src/test/resources/examples/response/remove_server_from_a_placement_group.json"
     Route.REBUILD_SERVER_FROM_IMAGE -> "src/test/resources/examples/response/rebuild_server_from_an_image.json"
     Route.ENABLE_SERVER_BACKUP -> "src/test/resources/examples/response/enable_server_backup.json"
-    Route.ENABLE_RESCUE_MODE -> "src/test/resources/examples/response/enable_rescue_mode_for_server.json"
+    Route.DISABLE_SERVER_BACKUP -> "src/test/resources/examples/response/disable_server_backup.json"
+    Route.ENABLE_SERVER_RESCUE_MODE -> "src/test/resources/examples/response/enable_rescue_mode_for_server.json"
+    Route.DISABLE_SERVER_RESCUE_MODE -> "src/test/resources/examples/response/disable_rescue_mode_for_server.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"
