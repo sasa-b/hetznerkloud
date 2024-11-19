@@ -9,7 +9,7 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
  * This project uses @Incubating APIs which are subject to change.
  */
 group = "tech.s-co"
-version = "0.1.3"
+version = "0.1.4"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
