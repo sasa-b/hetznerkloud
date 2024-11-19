@@ -13,6 +13,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeServerProtections
 import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
@@ -36,6 +37,7 @@ import tech.sco.hetznerkloud.response.ServerConsoleRequestedAction
 import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
 
+@Suppress("TooManyFunctions")
 class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
@@ -166,4 +168,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun changeType(id: Id, body: ChangeServerType): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_TYPE, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun changeProtection(id: Id, body: ChangeServerProtections): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_PROTECTION, resourceId = id.value, body = body)
 }

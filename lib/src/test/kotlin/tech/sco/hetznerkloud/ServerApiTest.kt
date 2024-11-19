@@ -23,6 +23,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeServerProtections
 import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
@@ -1004,6 +1005,28 @@ class ServerApiTest :
                     ),
                     started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                     status = Action.Status.RUNNING,
+                ),
+            )
+        }
+
+        should("change Server protection") {
+            val changeServerProtection = ChangeServerProtections(
+                delete = true,
+                rebuild = true,
+            )
+
+            underTest.servers.changeProtection(serverId, changeServerProtection) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "change_protection",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                    progress = 100,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                    status = Action.Status.SUCCESS,
                 ),
             )
         }

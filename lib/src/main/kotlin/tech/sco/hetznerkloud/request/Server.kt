@@ -121,3 +121,9 @@ data class ChangeServerType(
     @JsonNames("upgrade_disk")
     val upgradeDisk: Boolean,
 ) : HttpBody
+
+@Serializable
+data class ChangeServerProtections(
+    val delete: Boolean,
+    val rebuild: Boolean,
+) : HttpBody
