@@ -13,6 +13,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.DetachFromNetwork
@@ -162,4 +163,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun createImage(id: Id, body: CreateImageFromServer): ServerActionWithImage = httpClient.makeRequest(Route.CREATE_IMAGE_FROM_SERVER, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun changeType(id: Id, body: ChangeServerType): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_TYPE, resourceId = id.value, body = body)
 }

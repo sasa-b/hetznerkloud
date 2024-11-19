@@ -113,3 +113,11 @@ data class CreateImageFromServer(
         BACKUP,
     }
 }
+
+@Serializable
+data class ChangeServerType(
+    @JsonNames("server_type")
+    val serverType: String,
+    @JsonNames("upgrade_disk")
+    val upgradeDisk: Boolean,
+) : HttpBody

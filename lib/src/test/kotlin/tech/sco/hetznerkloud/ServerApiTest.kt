@@ -23,6 +23,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
 import tech.sco.hetznerkloud.request.DetachFromNetwork
@@ -981,6 +982,28 @@ class ServerApiTest :
                     rapidDeploy = false,
                     status = Image.Status.CREATING,
                     type = Image.Type.SNAPSHOT,
+                ),
+            )
+        }
+
+        should("change Server type") {
+            val changeServerTypeRequest = ChangeServerType(
+                serverType = "cpx11",
+                upgradeDisk = true,
+            )
+
+            underTest.servers.changeType(serverId, changeServerTypeRequest) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "change_server_type",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                    status = Action.Status.RUNNING,
                 ),
             )
         }

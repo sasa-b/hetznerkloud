@@ -404,4 +404,5 @@ enum class ErrorCode(val value: String) {
     SERVER_NOT_STOPPED("server_not_stopped"),
     SERVER_HAS_IPV4("server_has_ipv4"),
     SERVER_HAS_IPV6("server_has_ipv6"),
+    INVALID_SERVER_TYPE("invalid_server_type"),
 }

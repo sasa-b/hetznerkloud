@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "invalid_server_type",
+    "message": "Invalid server type"
+  }
+}
