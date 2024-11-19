@@ -13,6 +13,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeAliasIps
 import tech.sco.hetznerkloud.request.ChangeServerProtections
 import tech.sco.hetznerkloud.request.ChangeServerReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerType
@@ -175,4 +176,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun changeReverseDns(id: Id, body: ChangeServerReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_REVERSE_DNS, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun changeAliasIps(id: Id, body: ChangeAliasIps): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_ALIAS_IP_OF_NETWORK, resourceId = id.value, body = body)
 }

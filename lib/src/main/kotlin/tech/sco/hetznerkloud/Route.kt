@@ -51,6 +51,7 @@ internal enum class Route(
     CHANGE_SERVER_TYPE(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_type"))),
     CHANGE_SERVER_PROTECTION(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_protection"))),
     CHANGE_SERVER_REVERSE_DNS(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_dns_ptr"))),
+    CHANGE_SERVER_ALIAS_IP_OF_NETWORK(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_alias_ips"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),

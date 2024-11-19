@@ -23,6 +23,7 @@ import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeAliasIps
 import tech.sco.hetznerkloud.request.ChangeServerProtections
 import tech.sco.hetznerkloud.request.ChangeServerReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerType
@@ -1047,6 +1048,29 @@ class ServerApiTest :
                     progress = 0,
                     resources = listOf(
                         Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                    status = Action.Status.RUNNING,
+                ),
+            )
+        }
+
+        should("change Server alias ips for network") {
+            val changeReverseDnsPtrRequest = ChangeAliasIps(
+                aliasIps = listOf("10.0.1.2"),
+                network = Network.Id(4711),
+            )
+
+            underTest.servers.changeAliasIps(serverId, changeReverseDnsPtrRequest) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "change_alias_ips",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                        Resource(id = 4711, type = "network"),
                     ),
                     started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                     status = Action.Status.RUNNING,

@@ -70,6 +70,7 @@ internal fun createMockEngine(apiToken: ApiToken, resourceIdProvider: ((HttpRequ
         matchRoute(Route.CHANGE_SERVER_TYPE, test, resourceId) -> response(Route.CHANGE_SERVER_TYPE, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.CHANGE_SERVER_PROTECTION, test, resourceId) -> response(Route.CHANGE_SERVER_PROTECTION, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.CHANGE_SERVER_REVERSE_DNS, test, resourceId) -> response(Route.CHANGE_SERVER_REVERSE_DNS, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_SERVER_ALIAS_IP_OF_NETWORK, test, resourceId) -> response(Route.CHANGE_SERVER_ALIAS_IP_OF_NETWORK, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_SERVER_TYPES, test, resourceId) -> response(Route.GET_ALL_SERVER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_SERVER_TYPE, test, resourceId) -> response(Route.GET_SERVER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -206,6 +207,7 @@ private fun content(route: Route): String = when (route) {
     Route.CHANGE_SERVER_TYPE -> "src/test/resources/examples/response/change_server_type.json"
     Route.CHANGE_SERVER_PROTECTION -> "src/test/resources/examples/response/change_server_protection.json"
     Route.CHANGE_SERVER_REVERSE_DNS -> "src/test/resources/examples/response/change_server_reverse_dns.json"
+    Route.CHANGE_SERVER_ALIAS_IP_OF_NETWORK -> "src/test/resources/examples/response/change_alias_ips_of_a_network.json"
 
     Route.GET_ALL_SERVER_TYPES -> "src/test/resources/examples/response/get_all_server_types.json"
     Route.GET_SERVER_TYPE -> "src/test/resources/examples/response/get_a_server_type.json"

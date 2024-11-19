@@ -134,3 +134,10 @@ data class ChangeServerReverseDns(
     val dnsPtr: String,
     val ip: String,
 ) : HttpBody
+
+@Serializable
+data class ChangeAliasIps(
+    @JsonNames("alias_ips")
+    val aliasIps: List<String>,
+    val network: Network.Id,
+) : HttpBody
