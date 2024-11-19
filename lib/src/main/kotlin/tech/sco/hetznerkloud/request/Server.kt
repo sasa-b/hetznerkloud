@@ -127,3 +127,10 @@ data class ChangeServerProtections(
     val delete: Boolean,
     val rebuild: Boolean,
 ) : HttpBody
+
+@Serializable
+data class ChangeServerReverseDns(
+    @JsonNames("dns_ptr")
+    val dnsPtr: String,
+    val ip: String,
+) : HttpBody

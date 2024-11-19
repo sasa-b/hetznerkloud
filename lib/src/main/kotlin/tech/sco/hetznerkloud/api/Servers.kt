@@ -14,6 +14,7 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeServerProtections
+import tech.sco.hetznerkloud.request.ChangeServerReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
@@ -171,4 +172,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun changeProtection(id: Id, body: ChangeServerProtections): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_PROTECTION, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun changeReverseDns(id: Id, body: ChangeServerReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_REVERSE_DNS, resourceId = id.value, body = body)
 }

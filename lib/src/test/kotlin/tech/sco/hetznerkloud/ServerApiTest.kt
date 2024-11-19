@@ -24,6 +24,7 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeServerProtections
+import tech.sco.hetznerkloud.request.ChangeServerReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
@@ -1027,6 +1028,28 @@ class ServerApiTest :
                     ),
                     started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                     status = Action.Status.SUCCESS,
+                ),
+            )
+        }
+
+        should("change Server reverse DNS ptr") {
+            val changeReverseDnsPtrRequest = ChangeServerReverseDns(
+                dnsPtr = "server01.example.com",
+                ip = "1.2.3.4",
+            )
+
+            underTest.servers.changeReverseDns(serverId, changeReverseDnsPtrRequest) shouldBe Item(
+                Action(
+                    id = Action.Id(13),
+                    command = "change_dns_ptr",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        Resource(id = 42, type = "server"),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                    status = Action.Status.RUNNING,
                 ),
             )
         }

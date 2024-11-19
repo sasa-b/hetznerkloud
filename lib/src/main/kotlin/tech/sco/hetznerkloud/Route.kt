@@ -50,6 +50,7 @@ internal enum class Route(
     CREATE_IMAGE_FROM_SERVER(Pair(HttpMethod.Post, Path("/servers/{id}/actions/create_image"))),
     CHANGE_SERVER_TYPE(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_type"))),
     CHANGE_SERVER_PROTECTION(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_protection"))),
+    CHANGE_SERVER_REVERSE_DNS(Pair(HttpMethod.Post, Path("/servers/{id}/actions/change_dns_ptr"))),
 
     GET_ALL_DATACENTERS(Pair(HttpMethod.Get, Path("/datacenters"))),
     GET_DATACENTER(Pair(HttpMethod.Get, Path("/datacenters/{id}"))),
