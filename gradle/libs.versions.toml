@@ -8,7 +8,8 @@ kotest = "5.9.1"
 detekt = "1.23.7"
 konsist = "0.16.1"
 maven-deployer = "0.15.0"
-maven-central-publisher = "0.6.0"
+#maven-central-publisher = "0.6.0"
+git-version = "6.4.4"
 
 [libraries]
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -20,10 +21,11 @@ ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist"}
-maven-central-publisher = { module = "org.sonatype.central:central-publishing-maven-plugin", version.ref = "maven-central-publisher"}
+#maven-central-publisher = { module = "org.sonatype.central:central-publishing-maven-plugin", version.ref = "maven-central-publisher"}
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 detek = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 maven-deployer = { id = "io.deepmedia.tools.deployer", version.ref = "maven-deployer"}
+git-version = { id = "me.qoomon.git-versioning", version.ref = "git-version" }

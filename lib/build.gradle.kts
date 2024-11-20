@@ -22,6 +22,15 @@ plugins {
 
     alias(libs.plugins.detek)
     alias(libs.plugins.maven.deployer)
+    alias(libs.plugins.git.version)
+}
+
+gitVersioning.apply {
+    refs {
+        tag("(?<version>\\d+\\.\\d+\\.\\d+)") {
+            version = "\${ref.version}"
+        }
+    }
 }
 
 repositories {
