@@ -8,14 +8,13 @@ internal data class Path(val value: String) {
     fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
     fun withParams(params: RouteParams): Path {
         var path: String = value
-        params.forEach { (k, v) -> path = value.replace("{$k}", v) }
+        params.forEach { (k, v) -> path = path.replace("{$k}", v) }
         return Path(path)
     }
+    fun toRegex(): Regex = value.replace("(\\{\\w+})".toRegex(), "\\\\d+").toRegex()
 }
 
-internal enum class Route(
-    val value: HttpMethodAndPath,
-) {
+internal enum class Route(val value: HttpMethodAndPath) {
     GET_ALL_ACTIONS(Pair(HttpMethod.Get, Path("/actions"))),
     GET_ACTION(Pair(HttpMethod.Get, Path("/actions/{id}"))),
 
@@ -58,6 +57,10 @@ internal enum class Route(
 
     GET_ALL_IMAGES(Pair(HttpMethod.Get, Path("/images"))),
     GET_IMAGE(Pair(HttpMethod.Get, Path("/images/{id}"))),
+    GET_IMAGE_ACTIONS(Pair(HttpMethod.Get, Path("/images/{id}/actions"))),
+    GET_IMAGE_ACTION(Pair(HttpMethod.Get, Path("/images/actions/{id}"))),
+    GET_IMAGE_ACTION_FOR_IMAGE(Pair(HttpMethod.Get, Path("/images/{id}/actions/{action_id}"))),
+    GET_ALL_IMAGE_ACTIONS(Pair(HttpMethod.Get, Path("/images/actions"))),
     UPDATE_IMAGE(Pair(HttpMethod.Patch, Path("/images/{id}"))),
     DELETE_IMAGE(Pair(HttpMethod.Delete, Path("/images/{id}"))),
 
@@ -75,12 +78,20 @@ internal enum class Route(
 
     GET_ALL_NETWORKS(Pair(HttpMethod.Get, Path("/networks"))),
     GET_NETWORK(Pair(HttpMethod.Get, Path("/networks/{id}"))),
+    GET_NETWORK_ACTIONS(Pair(HttpMethod.Get, Path("/networks/{id}/actions"))),
+    GET_NETWORK_ACTION(Pair(HttpMethod.Get, Path("/networks/actions/{id}"))),
+    GET_NETWORK_ACTION_FOR_NETWORK(Pair(HttpMethod.Get, Path("/networks/{id}/actions/{action_id}"))),
+    GET_ALL_NETWORK_ACTIONS(Pair(HttpMethod.Get, Path("/networks/actions"))),
     CREATE_NETWORK(Pair(HttpMethod.Post, Path("/networks"))),
     UPDATE_NETWORK(Pair(HttpMethod.Patch, Path("/networks/{id}"))),
     DELETE_NETWORK(Pair(HttpMethod.Delete, Path("/networks/{id}"))),
 
     GET_ALL_LOAD_BALANCERS(Pair(HttpMethod.Get, Path("/load_balancers"))),
     GET_LOAD_BALANCER(Pair(HttpMethod.Get, Path("/load_balancers/{id}"))),
+    GET_LOAD_BALANCER_ACTIONS(Pair(HttpMethod.Get, Path("/load_balancers/{id}/actions"))),
+    GET_LOAD_BALANCER_ACTION(Pair(HttpMethod.Get, Path("/load_balancers/actions/{id}"))),
+    GET_LOAD_BALANCER_ACTION_FOR_LOAD_BALANCER(Pair(HttpMethod.Get, Path("/load_balancers/{id}/actions/{action_id}"))),
+    GET_ALL_LOAD_BALANCER_ACTIONS(Pair(HttpMethod.Get, Path("/load_balancers/actions"))),
     CREATE_LOAD_BALANCER(Pair(HttpMethod.Post, Path("/load_balancers"))),
     UPDATE_LOAD_BALANCER(Pair(HttpMethod.Patch, Path("/load_balancers/{id}"))),
     DELETE_LOAD_BALANCER(Pair(HttpMethod.Delete, Path("/load_balancers/{id}"))),
@@ -96,31 +107,58 @@ internal enum class Route(
 
     GET_ALL_VOLUMES(Pair(HttpMethod.Get, Path("/volumes"))),
     GET_VOLUME(Pair(HttpMethod.Get, Path("/volumes/{id}"))),
+    GET_VOLUME_ACTIONS(Pair(HttpMethod.Get, Path("/volumes/{id}/actions"))),
+    GET_VOLUME_ACTION(Pair(HttpMethod.Get, Path("/volumes/actions/{id}"))),
+    GET_VOLUME_ACTION_FOR_VOLUME(Pair(HttpMethod.Get, Path("/volumes/{id}/actions/{action_id}"))),
+    GET_ALL_VOLUME_ACTIONS(Pair(HttpMethod.Get, Path("/volumes/actions"))),
     CREATE_VOLUME(Pair(HttpMethod.Post, Path("/volumes"))),
     UPDATE_VOLUME(Pair(HttpMethod.Patch, Path("/volumes/{id}"))),
     DELETE_VOLUME(Pair(HttpMethod.Delete, Path("/volumes/{id}"))),
 
     GET_ALL_CERTIFICATES(Pair(HttpMethod.Get, Path("/certificates"))),
     GET_CERTIFICATE(Pair(HttpMethod.Get, Path("/certificates/{id}"))),
+    GET_CERTIFICATE_ACTIONS(Pair(HttpMethod.Get, Path("/certificates/{id}/actions"))),
+    GET_CERTIFICATE_ACTION(Pair(HttpMethod.Get, Path("/certificates/actions/{id}"))),
+    GET_CERTIFICATE_ACTION_FOR_CERTIFICATE(Pair(HttpMethod.Get, Path("/certificates/{id}/actions/{action_id}"))),
+    GET_ALL_CERTIFICATE_ACTIONS(Pair(HttpMethod.Get, Path("/certificates/actions"))),
     CREATE_CERTIFICATE(Pair(HttpMethod.Post, Path("/certificates"))),
     UPDATE_CERTIFICATE(Pair(HttpMethod.Patch, Path("/certificates/{id}"))),
     DELETE_CERTIFICATE(Pair(HttpMethod.Delete, Path("/certificates/{id}"))),
 
     GET_ALL_FIREWALLS(Pair(HttpMethod.Get, Path("/firewalls"))),
     GET_FIREWALL(Pair(HttpMethod.Get, Path("/firewalls/{id}"))),
+    GET_FIREWALL_ACTIONS(Pair(HttpMethod.Get, Path("/firewalls/{id}/actions"))),
+    GET_FIREWALL_ACTION(Pair(HttpMethod.Get, Path("/firewalls/actions/{id}"))),
+    GET_FIREWALL_ACTION_FOR_FIREWALL(Pair(HttpMethod.Get, Path("/firewalls/{id}/actions/{action_id}"))),
+    GET_ALL_FIREWALL_ACTIONS(Pair(HttpMethod.Get, Path("/firewalls/actions"))),
     CREATE_FIREWALL(Pair(HttpMethod.Post, Path("/firewalls"))),
     UPDATE_FIREWALL(Pair(HttpMethod.Patch, Path("/firewalls/{id}"))),
     DELETE_FIREWALL(Pair(HttpMethod.Delete, Path("/firewalls/{id}"))),
 
     GET_ALL_PRIMARY_IPS(Pair(HttpMethod.Get, Path("/primary_ips"))),
     GET_PRIMARY_IP(Pair(HttpMethod.Get, Path("/primary_ips/{id}"))),
+    GET_PRIMARY_IP_ACTIONS(Pair(HttpMethod.Get, Path("/primary_ips/{id}/actions"))),
+    GET_PRIMARY_IP_ACTION(Pair(HttpMethod.Get, Path("/primary_ips/actions/{id}"))),
+    GET_PRIMARY_IP_ACTION_FOR_PRIMARY_IP(Pair(HttpMethod.Get, Path("/primary_ips/{id}/actions/{action_id}"))),
+    GET_ALL_PRIMARY_IP_ACTIONS(Pair(HttpMethod.Get, Path("/primary_ips/actions"))),
     CREATE_PRIMARY_IP(Pair(HttpMethod.Post, Path("/primary_ips"))),
     UPDATE_PRIMARY_IP(Pair(HttpMethod.Patch, Path("/primary_ips/{id}"))),
     DELETE_PRIMARY_IP(Pair(HttpMethod.Delete, Path("/primary_ips/{id}"))),
 
     GET_ALL_FLOATING_IPS(Pair(HttpMethod.Get, Path("/floating_ips"))),
     GET_FLOATING_IP(Pair(HttpMethod.Get, Path("/floating_ips/{id}"))),
+    GET_FLOATING_IP_ACTIONS(Pair(HttpMethod.Get, Path("/floating_ips/{id}/actions"))),
+    GET_FLOATING_IP_ACTION(Pair(HttpMethod.Get, Path("/floating_ips/actions/{id}"))),
+    GET_FLOATING_IP_ACTION_FOR_FLOATING_IP(Pair(HttpMethod.Get, Path("/floating_ips/{id}/actions/{action_id}"))),
+    GET_ALL_FLOATING_IP_ACTIONS(Pair(HttpMethod.Get, Path("/floating_ips/actions"))),
     CREATE_FLOATING_IP(Pair(HttpMethod.Post, Path("/floating_ips"))),
     UPDATE_FLOATING_IP(Pair(HttpMethod.Patch, Path("/floating_ips/{id}"))),
     DELETE_FLOATING_IP(Pair(HttpMethod.Delete, Path("/floating_ips/{id}"))),
+    ;
+
+    val method: HttpMethod
+        get() = value.first
+
+    val path: Path
+        get() = value.second
 }

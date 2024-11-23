@@ -19,8 +19,8 @@ class ImageApiTest :
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) { request ->
             when {
-                request.method == HttpMethod.Patch -> updateImageId.value
-                else -> imageId.value
+                request.method == HttpMethod.Patch -> mapOf("id" to updateImageId.value.toString())
+                else -> mapOf("id" to imageId.value.toString())
             }
         }
         val underTest = CloudApiClient.of(apiToken, mockEngine)

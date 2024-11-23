@@ -14,7 +14,7 @@ class DatacenterApiTest :
     ShouldSpec({
         val datacenterId = Datacenter.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { datacenterId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to datacenterId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Datacenter resource read API") {

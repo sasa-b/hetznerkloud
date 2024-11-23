@@ -2,11 +2,15 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.http.toURI
+import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateNetwork
 import tech.sco.hetznerkloud.request.UpdateNetwork
@@ -18,7 +22,12 @@ class NetworkApiTest :
     ShouldSpec({
         val networkId = Network.Id(4711)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { networkId.value }
+        val mockEngine = createMockEngine(apiToken) {
+            when {
+                Route.GET_NETWORK_ACTION.path.toRegex().matches(it.url.toURI().pathWithoutVersion) -> mapOf("id" to "42")
+                else -> mapOf("id" to networkId.value.toString(), "action_id" to "42")
+            }
+        }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedNetwork = Network(
@@ -64,6 +73,72 @@ class NetworkApiTest :
             should("get network by id") {
 
                 underTest.networks.find(networkId) shouldBe Item(expectedNetwork)
+            }
+
+            should("get all Network actions") {
+                underTest.servers.actions() shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Network actions") {
+                underTest.networks.actions(id = networkId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "add_subnet",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Network action") {
+                underTest.networks.action(actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 42, type = "server")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Network action for network") {
+                underTest.networks.action(networkId = networkId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "add_subnet",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 4711, type = "network")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
 

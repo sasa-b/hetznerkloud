@@ -24,7 +24,7 @@ class FloatingIpApiTest :
     ShouldSpec({
         val floatingIpId = FloatingIp.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { floatingIpId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to floatingIpId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedIp = FloatingIp(

@@ -45,11 +45,12 @@ import tech.sco.hetznerkloud.response.ServerCreated
 import tech.sco.hetznerkloud.response.ServerDeleted
 import java.time.OffsetDateTime
 
+@Suppress("LargeClass")
 class ServerApiTest :
     ShouldSpec({
         val serverId = Server.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { serverId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to serverId.value.toString(), "action_id" to "42") }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedServer = Server(
@@ -351,14 +352,14 @@ class ServerApiTest :
             should("get a Server action for server") {
                 underTest.servers.action(serverId = serverId, actionId = Action.Id(42)) shouldBe Item(
                     Action(
-                        id = Action.Id(42),
-                        command = "start_resource",
+                        id = Action.Id(13),
+                        command = "start_server",
                         error = ActionFailedError(message = "Action failed"),
-                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(Resource(id = 42, type = "server")),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                        status = Action.Status.RUNNING,
+                        status = Action.Status.SUCCESS,
                     ),
                 )
             }
@@ -808,273 +809,273 @@ class ServerApiTest :
                     rootPassword = "zCWbFhnu950dUTko5f40",
                 )
             }
-        }
 
-        should("request Server console") {
-            underTest.servers.requestConsole(serverId) shouldBe ServerConsoleRequestedAction(
-                action = Action(
-                    id = Action.Id(13),
-                    command = "request_console",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
-                    progress = 100,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("request Server console") {
+                underTest.servers.requestConsole(serverId) shouldBe ServerConsoleRequestedAction(
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "request_console",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                    status = Action.Status.SUCCESS,
-                ),
-                password = "9MQaTg2VAGI0FIpc10k3UpRXcHj2wQ6x",
-                wssUrl = "wss://console.hetzner.cloud/?server_id=1&token=3db32d15-af2f-459c-8bf8-dee1fd05f49c",
-            )
-        }
+                    password = "9MQaTg2VAGI0FIpc10k3UpRXcHj2wQ6x",
+                    wssUrl = "wss://console.hetzner.cloud/?server_id=1&token=3db32d15-af2f-459c-8bf8-dee1fd05f49c",
+                )
+            }
 
-        should("rebuild Server from an image by name") {
-            underTest.servers.rebuildFromImage(serverId, RebuildFromImageByName("")) shouldBe ServerActionWithRootPassword(
-                action = Action(
-                    id = Action.Id(13),
-                    command = "rebuild_server",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("rebuild Server from an image by name") {
+                underTest.servers.rebuildFromImage(serverId, RebuildFromImageByName("")) shouldBe ServerActionWithRootPassword(
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "rebuild_server",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                    status = Action.Status.RUNNING,
-                ),
-                rootPassword = null,
-            )
-        }
+                    rootPassword = null,
+                )
+            }
 
-        should("rebuild Server from an image by id") {
-            underTest.servers.rebuildFromImage(serverId, RebuildFromImageById(Image.Id(1))) shouldBe ServerActionWithRootPassword(
-                action = Action(
-                    id = Action.Id(13),
-                    command = "rebuild_server",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("rebuild Server from an image by id") {
+                underTest.servers.rebuildFromImage(serverId, RebuildFromImageById(Image.Id(1))) shouldBe ServerActionWithRootPassword(
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "rebuild_server",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                    status = Action.Status.RUNNING,
-                ),
-                rootPassword = null,
-            )
-        }
+                    rootPassword = null,
+                )
+            }
 
-        should("enable Server backup") {
-            underTest.servers.enableBackup(serverId) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "enable_backup",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
-                    progress = 100,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("enable Server backup") {
+                underTest.servers.enableBackup(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "enable_backup",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                    status = Action.Status.SUCCESS,
-                ),
-            )
-        }
+                )
+            }
 
-        should("disable Server backup") {
-            underTest.servers.disableBackup(serverId) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "disable_backup",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
-                    progress = 100,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("disable Server backup") {
+                underTest.servers.disableBackup(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "disable_backup",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                    status = Action.Status.SUCCESS,
-                ),
-            )
-        }
+                )
+            }
 
-        should("enable rescue mode for a Server") {
-            underTest.servers.enableRescueMode(
-                serverId,
-                EnableRescueMode(
-                    sshKeys = listOf(SSHKey.Id(2323)),
-                ),
-            ) shouldBe ServerActionWithRootPassword(
-                Action(
-                    id = Action.Id(13),
-                    command = "enable_rescue",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
-                    progress = 100,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("enable rescue mode for a Server") {
+                underTest.servers.enableRescueMode(
+                    serverId,
+                    EnableRescueMode(
+                        sshKeys = listOf(SSHKey.Id(2323)),
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                    status = Action.Status.SUCCESS,
-                ),
-                rootPassword = "zCWbFhnu950dUTko5f40",
-            )
-        }
+                ) shouldBe ServerActionWithRootPassword(
+                    Action(
+                        id = Action.Id(13),
+                        command = "enable_rescue",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                    rootPassword = "zCWbFhnu950dUTko5f40",
+                )
+            }
 
-        should("disable rescue mode for a Server") {
-            underTest.servers.disableRescueMode(serverId) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "disable_rescue",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+            should("disable rescue mode for a Server") {
+                underTest.servers.disableRescueMode(serverId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "disable_rescue",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
-        }
+                )
+            }
 
-        should("create an Image fromServer") {
-            val createImage = CreateImageFromServer(
-                description = "my image",
-                labels = mapOf(
-                    "environment" to "prod",
-                    "example.com/my" to "label",
-                    "just-a-key" to "",
-                ),
-                type = CreateImageFromServer.Type.SNAPSHOT,
-            )
-
-            underTest.servers.createImage(serverId, createImage) shouldBe ServerActionWithImage(
-                action = Action(
-                    id = Action.Id(13),
-                    command = "create_image",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
-                    progress = 100,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
-                    ),
-                    started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
-                    status = Action.Status.SUCCESS,
-                ),
-                image = Image(
-                    id = Image.Id(4711),
-                    architecture = "x86",
-                    boundTo = null,
-                    created = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                    createdFrom = Image.CreatedFrom(
-                        id = 1,
-                        name = "Server",
-                    ),
-                    deleted = null,
-                    deprecated = OffsetDateTime.parse("2018-02-28T00:00:00+00:00"),
+            should("create an Image fromServer") {
+                val createImage = CreateImageFromServer(
                     description = "my image",
-                    diskSize = 10,
-                    imageSize = 2.3,
-                    labels = mapOf("env" to "dev"),
-                    name = null,
-                    osFlavor = "ubuntu",
-                    osVersion = "20.04",
-                    protection = Protection(delete = false),
-                    rapidDeploy = false,
-                    status = Image.Status.CREATING,
-                    type = Image.Type.SNAPSHOT,
-                ),
-            )
-        }
-
-        should("change Server type") {
-            val changeServerTypeRequest = ChangeServerType(
-                serverType = "cpx11",
-                upgradeDisk = true,
-            )
-
-            underTest.servers.changeType(serverId, changeServerTypeRequest) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "change_server_type",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
-        }
+                    type = CreateImageFromServer.Type.SNAPSHOT,
+                )
 
-        should("change Server protection") {
-            val changeServerProtection = ChangeServerProtections(
-                delete = true,
-                rebuild = true,
-            )
-
-            underTest.servers.changeProtection(serverId, changeServerProtection) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "change_protection",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
-                    progress = 100,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+                underTest.servers.createImage(serverId, createImage) shouldBe ServerActionWithImage(
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "create_image",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                        status = Action.Status.SUCCESS,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:55Z"),
-                    status = Action.Status.SUCCESS,
-                ),
-            )
-        }
-
-        should("change Server reverse DNS ptr") {
-            val changeReverseDnsPtrRequest = ChangeServerReverseDns(
-                dnsPtr = "server01.example.com",
-                ip = "1.2.3.4",
-            )
-
-            underTest.servers.changeReverseDns(serverId, changeReverseDnsPtrRequest) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "change_dns_ptr",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
+                    image = Image(
+                        id = Image.Id(4711),
+                        architecture = "x86",
+                        boundTo = null,
+                        created = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        createdFrom = Image.CreatedFrom(
+                            id = 1,
+                            name = "Server",
+                        ),
+                        deleted = null,
+                        deprecated = OffsetDateTime.parse("2018-02-28T00:00:00+00:00"),
+                        description = "my image",
+                        diskSize = 10,
+                        imageSize = 2.3,
+                        labels = mapOf("env" to "dev"),
+                        name = null,
+                        osFlavor = "ubuntu",
+                        osVersion = "20.04",
+                        protection = Protection(delete = false),
+                        rapidDeploy = false,
+                        status = Image.Status.CREATING,
+                        type = Image.Type.SNAPSHOT,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
-        }
+                )
+            }
 
-        should("change Server alias ips for network") {
-            val changeReverseDnsPtrRequest = ChangeAliasIps(
-                aliasIps = listOf("10.0.1.2"),
-                network = Network.Id(4711),
-            )
+            should("change Server type") {
+                val changeServerTypeRequest = ChangeServerType(
+                    serverType = "cpx11",
+                    upgradeDisk = true,
+                )
 
-            underTest.servers.changeAliasIps(serverId, changeReverseDnsPtrRequest) shouldBe Item(
-                Action(
-                    id = Action.Id(13),
-                    command = "change_alias_ips",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        Resource(id = 42, type = "server"),
-                        Resource(id = 4711, type = "network"),
+                underTest.servers.changeType(serverId, changeServerTypeRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_server_type",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
+                )
+            }
+
+            should("change Server protection") {
+                val changeServerProtection = ChangeServerProtections(
+                    delete = true,
+                    rebuild = true,
+                )
+
+                underTest.servers.changeProtection(serverId, changeServerProtection) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change Server reverse DNS ptr") {
+                val changeReverseDnsPtrRequest = ChangeServerReverseDns(
+                    dnsPtr = "server01.example.com",
+                    ip = "1.2.3.4",
+                )
+
+                underTest.servers.changeReverseDns(serverId, changeReverseDnsPtrRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_dns_ptr",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("change Server alias ips for network") {
+                val changeReverseDnsPtrRequest = ChangeAliasIps(
+                    aliasIps = listOf("10.0.1.2"),
+                    network = Network.Id(4711),
+                )
+
+                underTest.servers.changeAliasIps(serverId, changeReverseDnsPtrRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_alias_ips",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            Resource(id = 42, type = "server"),
+                            Resource(id = 4711, type = "network"),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
         }
     })

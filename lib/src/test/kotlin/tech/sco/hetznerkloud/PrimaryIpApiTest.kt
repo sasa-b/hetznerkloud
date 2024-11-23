@@ -25,7 +25,7 @@ class PrimaryIpApiTest :
     ShouldSpec({
         val primaryIpId = PrimaryIp.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { primaryIpId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to primaryIpId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedIp = PrimaryIp(

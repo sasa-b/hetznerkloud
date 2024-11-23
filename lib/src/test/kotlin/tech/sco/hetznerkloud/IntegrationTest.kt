@@ -11,8 +11,7 @@ class IntegrationTest : AnnotationSpec() {
         ApiToken.load(Path("src/test/resources/token.txt")),
     )
 
-    @Test
-    fun itGetsServers() {
+    @Test fun itGetsServers() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.servers.all().let {
@@ -23,8 +22,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsImages() {
+    @Test fun itGetsImages() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.images.all().let {
@@ -35,8 +33,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsLoadBalancers() {
+    @Test fun itGetsLoadBalancers() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.loadBalancers.all().let {
@@ -47,8 +44,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsDatacenters() {
+    @Test fun itGetsDatacenters() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.datacenters.all().let {
@@ -59,8 +55,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsNetworks() {
+    @Test fun itGetsNetworks() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.networks.all().let {
@@ -71,8 +66,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsVolumes() {
+    @Test fun itGetsVolumes() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.volumes.all().let {
@@ -85,8 +79,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsCertificates() {
+    @Test fun itGetsCertificates() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.certificates.all().let {
@@ -99,8 +92,7 @@ class IntegrationTest : AnnotationSpec() {
         }
     }
 
-    @Test
-    fun itGetsPrimaryIps() {
+    @Test fun itGetsPrimaryIps() {
         assertDoesNotThrow {
             runBlocking {
                 cloudApiClient.primaryIps.all().let {

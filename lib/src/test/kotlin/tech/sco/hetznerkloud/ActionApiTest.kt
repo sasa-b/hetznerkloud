@@ -17,7 +17,7 @@ class ActionApiTest :
         context("Action resource read API") {
             val actionId = Id(42)
             val apiToken = ApiToken("foo")
-            val mockEngine = createMockEngine(apiToken) { actionId.value }
+            val mockEngine = createMockEngine(apiToken) { mapOf("id" to actionId.value.toString()) }
             val underTest = CloudApiClient.of(apiToken, mockEngine)
 
             val expectedAction = Action(

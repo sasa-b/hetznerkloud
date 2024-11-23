@@ -19,7 +19,7 @@ class FirewallApiTest :
     ShouldSpec({
         val firewallId = Firewall.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { firewallId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to firewallId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedFirewall = Firewall(

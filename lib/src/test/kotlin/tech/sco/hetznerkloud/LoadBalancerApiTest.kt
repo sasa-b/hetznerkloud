@@ -27,7 +27,7 @@ class LoadBalancerApiTest :
 
         val loadBalancerId = LoadBalancer.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { loadBalancerId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to loadBalancerId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Load balancer resource read API") {

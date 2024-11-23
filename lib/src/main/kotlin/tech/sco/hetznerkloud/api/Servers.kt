@@ -26,6 +26,7 @@ import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.RebuildFromImageById
 import tech.sco.hetznerkloud.request.RebuildFromImageByName
 import tech.sco.hetznerkloud.request.ServerActionFilter
+import tech.sco.hetznerkloud.request.ServerActionSorting
 import tech.sco.hetznerkloud.request.ServerFilter
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.ServerSorting
@@ -43,14 +44,11 @@ import tech.sco.hetznerkloud.response.ServerDeleted
 class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
-    suspend fun all(
-        filter: Set<ServerFilter> = emptySet(),
-        sorting: Set<ServerSorting> = emptySet(),
-        pagination: Pagination = Pagination(),
-    ): Items<Server> = httpClient.makeRequest(
-        Route.GET_ALL_SERVERS,
-        queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
-    )
+    suspend fun all(filter: Set<ServerFilter> = emptySet(), sorting: Set<ServerSorting> = emptySet(), pagination: Pagination = Pagination()): Items<Server> =
+        httpClient.makeRequest(
+            Route.GET_ALL_SERVERS,
+            queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
+        )
 
     @Throws(Failure::class)
     suspend fun find(id: Id): Item<Server> = httpClient.makeRequest(Route.GET_SERVER, resourceId = id.value)
@@ -78,20 +76,17 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     }
 
     @Throws(Failure::class)
-    suspend fun actions(
-        filter: Set<ServerActionFilter> = emptySet(),
-        sorting: Set<ServerActionFilter> = emptySet(),
-        pagination: Pagination = Pagination(),
-    ): Items<Action> = httpClient.makeRequest(
-        Route.GET_ALL_SERVER_ACTIONS,
-        queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
-    )
+    suspend fun actions(filter: Set<ServerActionFilter> = emptySet(), sorting: Set<ServerActionSorting> = emptySet(), pagination: Pagination = Pagination()): Items<Action> =
+        httpClient.makeRequest(
+            Route.GET_ALL_SERVER_ACTIONS,
+            queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
+        )
 
     @Throws(Failure::class)
     suspend fun actions(
         serverId: Id,
         filter: Set<ServerActionFilter> = emptySet(),
-        sorting: Set<ServerActionFilter> = emptySet(),
+        sorting: Set<ServerActionSorting> = emptySet(),
         pagination: Pagination = Pagination(),
     ): Items<Action> = httpClient.makeRequest(
         Route.GET_SERVER_ACTIONS,
@@ -103,10 +98,17 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun action(actionId: Action.Id): Item<Action> = httpClient.makeRequest(Route.GET_SERVER_ACTION, resourceId = actionId.value)
 
     @Throws(Failure::class)
-    suspend fun action(serverId: Id, actionId: Action.Id): Item<Action> = httpClient.makeRequest(Route.GET_SERVER_ACTION, routeParams = mapOf("id" to serverId.toString(), "action_id" to actionId.toString()))
+    suspend fun action(serverId: Id, actionId: Action.Id): Item<Action> = httpClient.makeRequest(
+        Route.GET_SERVER_ACTION_FOR_SERVER,
+        routeParams = mapOf(
+            "id" to serverId.value.toString(),
+            "action_id" to actionId.value.toString(),
+        ),
+    )
 
     @Throws(Failure::class)
-    suspend fun addToPlacementGroup(id: Id, body: AddToPlacementGroup): Item<Action> = httpClient.makeRequest(Route.ADD_SERVER_TO_PLACEMENT_GROUP, resourceId = id.value, body = body)
+    suspend fun addToPlacementGroup(id: Id, body: AddToPlacementGroup): Item<Action> =
+        httpClient.makeRequest(Route.ADD_SERVER_TO_PLACEMENT_GROUP, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun attachIso(id: Id, body: AttachIsoByName): Item<Action> = httpClient.makeRequest(Route.ATTACH_ISO_TO_SERVER, resourceId = id.value, body = body)
@@ -148,10 +150,12 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun removeFromPlacementGroup(id: Id): Item<Action> = httpClient.makeRequest(Route.REMOVE_SERVER_FROM_PLACEMENT_GROUP, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun rebuildFromImage(id: Id, body: RebuildFromImageById): ServerActionWithRootPassword = httpClient.makeRequest(Route.REBUILD_SERVER_FROM_IMAGE, resourceId = id.value, body = body)
+    suspend fun rebuildFromImage(id: Id, body: RebuildFromImageById): ServerActionWithRootPassword =
+        httpClient.makeRequest(Route.REBUILD_SERVER_FROM_IMAGE, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun rebuildFromImage(id: Id, body: RebuildFromImageByName): ServerActionWithRootPassword = httpClient.makeRequest(Route.REBUILD_SERVER_FROM_IMAGE, resourceId = id.value, body = body)
+    suspend fun rebuildFromImage(id: Id, body: RebuildFromImageByName): ServerActionWithRootPassword =
+        httpClient.makeRequest(Route.REBUILD_SERVER_FROM_IMAGE, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun enableBackup(id: Id): Item<Action> = httpClient.makeRequest(Route.ENABLE_SERVER_BACKUP, resourceId = id.value)
@@ -160,7 +164,8 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun disableBackup(id: Id): Item<Action> = httpClient.makeRequest(Route.DISABLE_SERVER_BACKUP, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun enableRescueMode(id: Id, body: EnableRescueMode): ServerActionWithRootPassword = httpClient.makeRequest(Route.ENABLE_SERVER_RESCUE_MODE, resourceId = id.value, body = body)
+    suspend fun enableRescueMode(id: Id, body: EnableRescueMode): ServerActionWithRootPassword =
+        httpClient.makeRequest(Route.ENABLE_SERVER_RESCUE_MODE, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun disableRescueMode(id: Id): Item<Action> = httpClient.makeRequest(Route.DISABLE_SERVER_RESCUE_MODE, resourceId = id.value)

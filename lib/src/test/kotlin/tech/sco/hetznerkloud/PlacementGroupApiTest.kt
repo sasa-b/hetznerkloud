@@ -15,7 +15,7 @@ class PlacementGroupApiTest :
     ShouldSpec({
         val placementGroupId = PlacementGroup.Id(897)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { placementGroupId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to placementGroupId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Placement Group resource read API") {

@@ -15,6 +15,7 @@ typealias CertificateSorting = Pair<SortingFields.Certificate, SortingDirection>
 typealias FirewallSorting = Pair<SortingFields.Firewall, SortingDirection>
 typealias PrimaryIpSorting = Pair<SortingFields.PrimaryIp, SortingDirection>
 typealias FloatingIpSorting = Pair<SortingFields.FloatingIp, SortingDirection>
+typealias NetworkActionSorting = Pair<SortingFields.NetworkAction, SortingDirection>
 
 enum class SortingDirection(val value: String) {
     ASC("asc"),
@@ -98,5 +99,13 @@ object SortingFields {
     enum class FloatingIp(override val value: String) : SortingField {
         ID("id"),
         CREATED("created"),
+    }
+
+    enum class NetworkAction(override val value: String) : SortingField {
+        ID("id"),
+        COMMAND("command"),
+        STATUS("status"),
+        STARTED("started"),
+        FINISHED("finished"),
     }
 }

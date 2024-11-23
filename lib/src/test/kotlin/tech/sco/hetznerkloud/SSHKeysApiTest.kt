@@ -15,7 +15,7 @@ class SSHKeysApiTest :
 
         val sshKeyId = SSHKey.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { sshKeyId.value }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to sshKeyId.value.toString()) }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedSSHKey = SSHKey(
