@@ -1,0 +1,20 @@
+{
+  "action": {
+    "command": "issue_certificate",
+    "error": {
+      "code": "action_failed",
+      "message": "Action failed"
+    },
+    "finished": "2021-01-30T23:57:00+00:00",
+    "id": 14,
+    "progress": 100,
+    "resources": [
+      {
+        "id": 896,
+        "type": "certificate"
+      }
+    ],
+    "started": "2021-01-30T23:55:00+00:00",
+    "status": "success"
+  }
+}

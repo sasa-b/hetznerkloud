@@ -92,7 +92,7 @@ class Actions @InternalAPI constructor(private val httpClient: HttpClient) {
             ResourceType.FLOATING_IP -> Route.GET_FLOATING_IP_ACTION
             else -> throw InvalidResourceType(resourceType)
         },
-        resourceId = actionId.value,
+        mapOf("id" to actionId.asString()),
     )
 
     @Throws(Failure::class, InvalidResourceId::class)

@@ -87,7 +87,7 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.GET_ALL_IMAGE_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_IMAGE_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.UPDATE_IMAGE, request, routeParamsProvider) -> response(Route.UPDATE_IMAGE, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_IMAGE, request, routeParamsProvider) -> response(Route.DELETE_IMAGE, HttpStatusCode.NoContent, defaultHeaders)
-        matchRoute(Route.CHANGE_IMAGE_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_IMAGE_PROTECTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CHANGE_IMAGE_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_IMAGE_PROTECTION, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_ISOS, request, routeParamsProvider) -> response(Route.GET_ALL_ISOS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_ISO, request, routeParamsProvider) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
@@ -131,9 +131,22 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
 
         matchRoute(Route.GET_ALL_CERTIFICATES, request, routeParamsProvider) -> response(Route.GET_ALL_CERTIFICATES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_CERTIFICATE, request, routeParamsProvider) -> response(Route.GET_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_CERTIFICATE_ACTIONS, request, routeParamsProvider) -> response(Route.GET_CERTIFICATE_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_CERTIFICATE_ACTION, request, routeParamsProvider) -> response(Route.GET_CERTIFICATE_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(
+            Route.GET_CERTIFICATE_ACTION_FOR_CERTIFICATE,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.GET_CERTIFICATE_ACTION_FOR_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_CERTIFICATE_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_CERTIFICATE_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.CREATE_CERTIFICATE, request, routeParamsProvider) -> response(Route.CREATE_CERTIFICATE, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_CERTIFICATE, request, routeParamsProvider) -> response(Route.UPDATE_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_CERTIFICATE, request, routeParamsProvider) -> response(Route.DELETE_CERTIFICATE, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(
+            Route.RETRY_CERTIFICATE_ISSUANCE_OR_RENEWAL,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.RETRY_CERTIFICATE_ISSUANCE_OR_RENEWAL, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_FIREWALLS, request, routeParamsProvider) -> response(Route.GET_ALL_FIREWALLS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_FIREWALL, request, routeParamsProvider) -> response(Route.GET_FIREWALL, HttpStatusCode.OK, defaultHeaders)
@@ -294,13 +307,14 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_CERTIFICATES -> "src/test/resources/examples/response/certificate/get_all_certificates.json"
     Route.GET_CERTIFICATE -> "src/test/resources/examples/response/certificate/get_a_certificate.json"
-    Route.GET_CERTIFICATE_ACTIONS -> TODO()
-    Route.GET_CERTIFICATE_ACTION -> TODO()
-    Route.GET_CERTIFICATE_ACTION_FOR_CERTIFICATE -> TODO()
-    Route.GET_ALL_CERTIFICATE_ACTIONS -> TODO()
+    Route.GET_CERTIFICATE_ACTIONS -> "src/test/resources/examples/response/certificate/get_certificate_actions.json"
+    Route.GET_CERTIFICATE_ACTION -> "src/test/resources/examples/response/certificate/get_a_certificate_action.json"
+    Route.GET_CERTIFICATE_ACTION_FOR_CERTIFICATE -> "src/test/resources/examples/response/certificate/get_a_certificate_action_for_certificate.json"
+    Route.GET_ALL_CERTIFICATE_ACTIONS -> "src/test/resources/examples/response/certificate/get_all_certificate_actions.json"
     Route.CREATE_CERTIFICATE -> "src/test/resources/examples/response/certificate/create_a_managed_certificate.json"
     Route.UPDATE_CERTIFICATE -> "src/test/resources/examples/response/certificate/update_a_certificate.json"
     Route.DELETE_CERTIFICATE -> "src/test/resources/examples/response/no_content.json"
+    Route.RETRY_CERTIFICATE_ISSUANCE_OR_RENEWAL -> "src/test/resources/examples/response/certificate/retry_certificate_issuance_or_renewal.json"
 
     Route.GET_ALL_FIREWALLS -> "src/test/resources/examples/response/firewall/get_all_firewalls.json"
     Route.GET_FIREWALL -> "src/test/resources/examples/response/firewall/get_a_firewall.json"
@@ -380,6 +394,14 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.SERVER_ALREADY_ATTACHED_TO_NETWORK -> "src/test/resources/examples/error/server_already_attached.json"
     ErrorCode.NETWORKS_OVERLAP -> "src/test/resources/examples/error/networks_overlap.json"
     ErrorCode.INVALID_SERVER_TYPE -> "src/test/resources/examples/error/invalid_server_type.json"
+    ErrorCode.CAA_RECORD_DOES_NOT_ALLOW_CA -> TODO()
+    ErrorCode.CA_DNS_VALIDATION_FAILED -> TODO()
+    ErrorCode.CA_TOO_MANY_AUTHORIZATIONS_FAILED -> TODO()
+    ErrorCode.CA_TOO_MANY_CERTIFICATES_ISSUED_FOR_DOMAIN -> TODO()
+    ErrorCode.CA_TOO_MANY_DUPLICATE_CERTIFICATES -> TODO()
+    ErrorCode.COULD_NOT_VERIFY_DOMAIN_DELEGATE_TO_ZONE -> TODO()
+    ErrorCode.DNS_ZONE_NOT_FOUND -> TODO()
+    ErrorCode.DNS_ZONE_IS_SECONDARY_ZONE -> TODO()
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

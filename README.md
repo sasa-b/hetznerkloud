@@ -2,7 +2,6 @@
 
 > [!NOTE]  
 > The API is not yet 100% covered. The following are missing:
-> * Certificate Actions,
 > * Firewall Actions,
 > * Floating IP Actions,
 > * Load Balancer Actions,

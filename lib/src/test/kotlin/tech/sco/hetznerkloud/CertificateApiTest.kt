@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.http.toURI
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
@@ -9,6 +10,7 @@ import tech.sco.hetznerkloud.model.Certificate.Id
 import tech.sco.hetznerkloud.model.ManagedCertificate
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.UploadedCertificate
 import tech.sco.hetznerkloud.request.CreateManagedCertificate
 import tech.sco.hetznerkloud.request.CreateUploadedCertificate
@@ -22,7 +24,12 @@ class CertificateApiTest :
     ShouldSpec({
         val certificateId = Id(897)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to certificateId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) {
+            when {
+                Route.GET_CERTIFICATE_ACTION.path.toRegex().matches(it.url.toURI().pathWithoutVersion) -> mapOf("id" to "42")
+                else -> mapOf("id" to certificateId.value.toString(), "action_id" to "42")
+            }
+        }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Certificate resource read API") {
@@ -101,6 +108,72 @@ class CertificateApiTest :
                         usedBy = listOf(
                             Resource(id = 4711, type = "load_balancer"),
                         ),
+                    ),
+                )
+            }
+
+            should("get all Certificate actions") {
+                underTest.actions.all(ResourceType.CERTIFICATE) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Certificate actions") {
+                underTest.actions.all(resourceId = certificateId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(14),
+                            command = "issue_certificate",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2021-01-30T23:57Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 896, type = "certificate")),
+                            started = OffsetDateTime.parse("2021-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Certificate action") {
+                underTest.actions.find(ResourceType.CERTIFICATE, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 42, type = "server")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Certificate action for server") {
+                underTest.actions.find(resourceId = certificateId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(14),
+                        command = "issue_certificate",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2021-01-30T23:57Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 896, type = "certificate")),
+                        started = OffsetDateTime.parse("2021-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
                     ),
                 )
             }
@@ -236,6 +309,21 @@ class CertificateApiTest :
 
             should("delete a Certificate") {
                 underTest.certificates.delete(certificateId) shouldBe Unit
+            }
+
+            should("retry Certificate issuance or renewal") {
+                underTest.certificates.retryIssuanceOrRenewal(certificateId) shouldBe Item(
+                    Action(
+                        id = Action.Id(14),
+                        command = "issue_certificate",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2021-01-30T23:57Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 896, type = "certificate")),
+                        started = OffsetDateTime.parse("2021-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
     })

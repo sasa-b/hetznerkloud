@@ -125,6 +125,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_CERTIFICATE(Pair(HttpMethod.Post, Path("/certificates"))),
     UPDATE_CERTIFICATE(Pair(HttpMethod.Patch, Path("/certificates/{id}"))),
     DELETE_CERTIFICATE(Pair(HttpMethod.Delete, Path("/certificates/{id}"))),
+    RETRY_CERTIFICATE_ISSUANCE_OR_RENEWAL(Pair(HttpMethod.Post, Path("/certificates/{id}/actions/retry"))),
 
     GET_ALL_FIREWALLS(Pair(HttpMethod.Get, Path("/firewalls"))),
     GET_FIREWALL(Pair(HttpMethod.Get, Path("/firewalls/{id}"))),
