@@ -9,10 +9,67 @@ import kotlinx.serialization.json.JsonNames
 
 typealias Labels = Map<String, String>
 
+sealed interface ResourceId {
+    val value: Long
+    val type: ResourceType
+    fun asString(): String = value.toString()
+}
+
+enum class ResourceType {
+    @SerialName("action")
+    ACTION,
+
+    @SerialName("certificate")
+    CERTIFICATE,
+
+    @SerialName("datacenter")
+    DATACENTER,
+
+    @SerialName("firewall")
+    FIREWALL,
+
+    @SerialName("floating_ip")
+    FLOATING_IP,
+
+    @SerialName("image")
+    IMAGE,
+
+    @SerialName("iso")
+    ISO,
+
+    @SerialName("load_balancer")
+    LOAD_BALANCER,
+
+    @SerialName("load_balancer_type")
+    LOAD_BALANCER_TYPE,
+
+    @SerialName("location")
+    LOCATION,
+
+    @SerialName("network")
+    NETWORK,
+
+    @SerialName("placement_group")
+    PLACEMENT_GROUP,
+
+    @SerialName("primary_ip")
+    PRIMARY_IP,
+
+    @SerialName("server")
+    SERVER,
+
+    @SerialName("server_type")
+    SERVER_TYPE,
+
+    @SerialName("ssh_key")
+    SSH_KEY,
+
+    @SerialName("volume")
+    VOLUME,
+}
+
 @Serializable
-data class Meta(
-    val pagination: Pagination,
-) {
+data class Meta(val pagination: Pagination) {
     @Serializable
     data class Pagination(
         @JsonNames("last_page")
@@ -30,14 +87,8 @@ data class Meta(
 
     companion object {
         @Suppress("LongParameterList")
-        fun of(
-            lastPage: Int?,
-            nextPage: Int?,
-            page: Int,
-            perPage: Int,
-            previousPage: Int?,
-            totalEntries: Int?,
-        ): Meta = Meta(Pagination(lastPage, nextPage, page, perPage, previousPage, totalEntries))
+        fun of(lastPage: Int?, nextPage: Int?, page: Int, perPage: Int, previousPage: Int?, totalEntries: Int?): Meta =
+            Meta(Pagination(lastPage, nextPage, page, perPage, previousPage, totalEntries))
     }
 }
 
@@ -54,10 +105,7 @@ data class Price(
     val pricePerTbTraffic: Amount,
 ) {
     @Serializable
-    data class Amount(
-        val gross: String,
-        val net: String,
-    )
+    data class Amount(val gross: String, val net: String)
 }
 
 @Serializable
@@ -80,10 +128,7 @@ enum class NetworkZone {
 
 // TODO: add a sealed interface serialization approach for the resource
 @Serializable
-data class Resource(
-    val id: Long,
-    val type: String,
-)
+data class Resource(val id: Long, val type: String)
 
 @Serializable
 data class DnsPtr(

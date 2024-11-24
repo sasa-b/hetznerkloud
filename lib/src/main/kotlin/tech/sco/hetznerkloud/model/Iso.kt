@@ -5,17 +5,13 @@ import kotlinx.serialization.Serializable
 import tech.sco.hetznerkloud.model.Server.Deprecation
 
 @Serializable
-data class Iso(
-    val id: Id,
-    val architecture: String?,
-    val deprecation: Deprecation?,
-    val description: String,
-    val name: String?,
-    val type: Type?,
-) {
+data class Iso(val id: Id, val architecture: String?, val deprecation: Deprecation?, val description: String, val name: String?, val type: Type?) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.ISO
+    }
 
     @Serializable
     enum class Type {

@@ -22,7 +22,10 @@ data class Firewall(
 ) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.FIREWALL
+    }
 
     @Serializable
     data class Rule(
@@ -73,10 +76,7 @@ data class Firewall(
         val type: String,
     ) {
         @Serializable
-        data class Resource(
-            val server: ServerResource,
-            val type: String,
-        )
+        data class Resource(val server: ServerResource, val type: String)
 
         @Serializable
         @SerialName("server")

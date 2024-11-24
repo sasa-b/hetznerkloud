@@ -43,13 +43,13 @@ data class Image(
 
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.IMAGE
+    }
 
     @Serializable
-    data class CreatedFrom(
-        val id: Long,
-        val name: String,
-    )
+    data class CreatedFrom(val id: Long, val name: String)
 
     @Serializable
     enum class Status {

@@ -11,6 +11,7 @@ import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateNetwork
 import tech.sco.hetznerkloud.request.UpdateNetwork
@@ -94,7 +95,7 @@ class NetworkApiTest :
             }
 
             should("get Network actions") {
-                underTest.networks.actions(id = networkId) shouldBe Items(
+                underTest.actions.all(resourceId = networkId) shouldBe Items(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                     items = listOf(
                         Action(
@@ -112,7 +113,7 @@ class NetworkApiTest :
             }
 
             should("get a Network action") {
-                underTest.networks.action(actionId = Action.Id(42)) shouldBe Item(
+                underTest.actions.find(ResourceType.NETWORK, actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",
@@ -127,7 +128,7 @@ class NetworkApiTest :
             }
 
             should("get a Network action for network") {
-                underTest.networks.action(networkId = networkId, actionId = Action.Id(42)) shouldBe Item(
+                underTest.actions.find(resourceId = networkId, actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(13),
                         command = "add_subnet",

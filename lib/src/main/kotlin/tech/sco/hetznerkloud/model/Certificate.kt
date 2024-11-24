@@ -15,7 +15,10 @@ sealed interface Certificate {
 
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.CERTIFICATE
+    }
 
     @Serializable
     data class Status(val error: Error? = null, val issuance: Issuance, val renewal: Renewal) {

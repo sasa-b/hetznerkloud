@@ -29,13 +29,13 @@ data class Network(
 ) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.NETWORK
+    }
 
     @Serializable
-    data class Route(
-        val destination: String,
-        val gateway: String,
-    )
+    data class Route(val destination: String, val gateway: String)
 
     @Serializable
     data class Subnet(

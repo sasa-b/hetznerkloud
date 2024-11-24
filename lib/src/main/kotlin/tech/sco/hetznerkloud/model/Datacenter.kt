@@ -18,7 +18,10 @@ data class Datacenter(
 
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.DATACENTER
+    }
 
     @Serializable
     data class ServerTypes(

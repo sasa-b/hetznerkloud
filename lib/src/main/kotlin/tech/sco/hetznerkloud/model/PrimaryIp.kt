@@ -32,7 +32,10 @@ data class PrimaryIp(
 ) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.PRIMARY_IP
+    }
 
     @Serializable
     enum class AssigneeType {

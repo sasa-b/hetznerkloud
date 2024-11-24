@@ -23,7 +23,10 @@ data class Action(
 ) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.ACTION
+    }
 
     @Serializable
     enum class Status {

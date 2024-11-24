@@ -49,7 +49,10 @@ data class Server(
 ) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.SERVER
+    }
 
     @Serializable
     enum class Status {
@@ -101,10 +104,7 @@ data class Server(
     )
 
     @Serializable
-    data class Protection(
-        val delete: Boolean,
-        val rebuild: Boolean,
-    )
+    data class Protection(val delete: Boolean, val rebuild: Boolean)
 
     @Serializable
     data class PublicNetwork(
@@ -115,10 +115,7 @@ data class Server(
         val ipv6: Ipv6,
     ) {
         @Serializable
-        data class Firewall(
-            val id: Long,
-            val status: String,
-        )
+        data class Firewall(val id: Long, val status: String)
 
         @Serializable
         data class Ipv4(

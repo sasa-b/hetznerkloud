@@ -37,7 +37,10 @@ data class LoadBalancer(
 ) {
     @Serializable
     @JvmInline
-    value class Id(val value: Long)
+    value class Id(override val value: Long) : ResourceId {
+        override val type: ResourceType
+            get() = ResourceType.LOAD_BALANCER
+    }
 
     @Serializable
     data class Algorithm(val type: Type) {
@@ -53,17 +56,10 @@ data class LoadBalancer(
     }
 
     @Serializable
-    data class PrivateNetwork(
-        val ip: String,
-        val network: Network.Id,
-    )
+    data class PrivateNetwork(val ip: String, val network: Network.Id)
 
     @Serializable
-    data class PublicNetwork(
-        val enabled: Boolean,
-        val ipv4: Ip,
-        val ipv6: Ip,
-    ) {
+    data class PublicNetwork(val enabled: Boolean, val ipv4: Ip, val ipv6: Ip) {
 
         @Serializable
         data class Ip(
@@ -87,14 +83,7 @@ data class LoadBalancer(
         val proxyProtocol: Boolean,
     ) {
         @Serializable
-        data class HealthCheck(
-            val http: Http,
-            val interval: Int,
-            val port: Int,
-            val protocol: Protocol,
-            val retries: Int,
-            val timeout: Int,
-        ) {
+        data class HealthCheck(val http: Http, val interval: Int, val port: Int, val protocol: Protocol, val retries: Int, val timeout: Int) {
             @Serializable
             data class Http(
                 val domain: String?,

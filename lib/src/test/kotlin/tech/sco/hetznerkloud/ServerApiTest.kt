@@ -15,6 +15,7 @@ import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.SSHKey
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
@@ -299,7 +300,7 @@ class ServerApiTest :
             }
 
             should("get all Server actions") {
-                underTest.servers.actions() shouldBe Items(
+                underTest.actions.all(ResourceType.SERVER) shouldBe Items(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                     items = listOf(
                         Action(
