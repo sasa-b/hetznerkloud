@@ -81,6 +81,10 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
 
         matchRoute(Route.GET_ALL_IMAGES, request, routeParamsProvider) -> response(Route.GET_ALL_IMAGES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_IMAGE, request, routeParamsProvider) -> response(Route.GET_IMAGE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_IMAGE_ACTIONS, request, routeParamsProvider) -> response(Route.GET_IMAGE_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_IMAGE_ACTION, request, routeParamsProvider) -> response(Route.GET_IMAGE_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_IMAGE_ACTION_FOR_IMAGE, request, routeParamsProvider) -> response(Route.GET_IMAGE_ACTION_FOR_IMAGE, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_IMAGE_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_IMAGE_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.UPDATE_IMAGE, request, routeParamsProvider) -> response(Route.UPDATE_IMAGE, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_IMAGE, request, routeParamsProvider) -> response(Route.DELETE_IMAGE, HttpStatusCode.NoContent, defaultHeaders)
 

@@ -25,8 +25,6 @@ import tech.sco.hetznerkloud.request.FilterFields
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.RebuildFromImageById
 import tech.sco.hetznerkloud.request.RebuildFromImageByName
-import tech.sco.hetznerkloud.request.ServerActionFilter
-import tech.sco.hetznerkloud.request.ServerActionSorting
 import tech.sco.hetznerkloud.request.ServerFilter
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.ServerSorting
@@ -74,37 +72,6 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
             ) + other.toQueryParams(),
         )
     }
-
-    @Throws(Failure::class)
-    suspend fun actions(filter: Set<ServerActionFilter> = emptySet(), sorting: Set<ServerActionSorting> = emptySet(), pagination: Pagination = Pagination()): Items<Action> =
-        httpClient.makeRequest(
-            Route.GET_ALL_SERVER_ACTIONS,
-            queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
-        )
-
-    @Throws(Failure::class)
-    suspend fun actions(
-        serverId: Id,
-        filter: Set<ServerActionFilter> = emptySet(),
-        sorting: Set<ServerActionSorting> = emptySet(),
-        pagination: Pagination = Pagination(),
-    ): Items<Action> = httpClient.makeRequest(
-        Route.GET_SERVER_ACTIONS,
-        resourceId = serverId.value,
-        queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
-    )
-
-    @Throws(Failure::class)
-    suspend fun action(actionId: Action.Id): Item<Action> = httpClient.makeRequest(Route.GET_SERVER_ACTION, resourceId = actionId.value)
-
-    @Throws(Failure::class)
-    suspend fun action(serverId: Id, actionId: Action.Id): Item<Action> = httpClient.makeRequest(
-        Route.GET_SERVER_ACTION_FOR_SERVER,
-        routeParams = mapOf(
-            "id" to serverId.value.toString(),
-            "action_id" to actionId.value.toString(),
-        ),
-    )
 
     @Throws(Failure::class)
     suspend fun addToPlacementGroup(id: Id, body: AddToPlacementGroup): Item<Action> =

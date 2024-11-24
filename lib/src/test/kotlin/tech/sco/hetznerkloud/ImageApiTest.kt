@@ -3,10 +3,14 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpMethod
+import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Image.Id
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -20,7 +24,7 @@ class ImageApiTest :
         val mockEngine = createMockEngine(apiToken) { request ->
             when {
                 request.method == HttpMethod.Patch -> mapOf("id" to updateImageId.value.toString())
-                else -> mapOf("id" to imageId.value.toString())
+                else -> mapOf("id" to imageId.value.toString(), "action_id" to "42")
             }
         }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
@@ -57,6 +61,72 @@ class ImageApiTest :
 
             should("get Image by id") {
                 underTest.images.find(id = imageId) shouldBe Item(expectedImage)
+            }
+
+            should("get all Image actions") {
+                underTest.actions.all(ResourceType.IMAGE) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 42, type = "server")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Image actions") {
+                underTest.actions.all(resourceId = imageId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "change_protection",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(Resource(id = 4711, type = "image")),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Image action") {
+                underTest.actions.find(ResourceType.IMAGE, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 42, type = "server")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Image action for server") {
+                underTest.actions.find(resourceId = imageId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 4711, type = "image")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
 

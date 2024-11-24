@@ -77,7 +77,7 @@ class NetworkApiTest :
             }
 
             should("get all Network actions") {
-                underTest.servers.actions() shouldBe Items(
+                underTest.actions.all(ResourceType.NETWORK) shouldBe Items(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                     items = listOf(
                         Action(

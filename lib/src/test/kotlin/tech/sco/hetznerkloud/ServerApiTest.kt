@@ -318,7 +318,7 @@ class ServerApiTest :
             }
 
             should("get Server actions") {
-                underTest.servers.actions(serverId = serverId) shouldBe Items(
+                underTest.actions.all(resourceId = serverId) shouldBe Items(
                     meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                     items = listOf(
                         Action(
@@ -336,7 +336,7 @@ class ServerApiTest :
             }
 
             should("get a Server action") {
-                underTest.servers.action(actionId = Action.Id(42)) shouldBe Item(
+                underTest.actions.find(ResourceType.SERVER, actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",
@@ -351,7 +351,7 @@ class ServerApiTest :
             }
 
             should("get a Server action for server") {
-                underTest.servers.action(serverId = serverId, actionId = Action.Id(42)) shouldBe Item(
+                underTest.actions.find(resourceId = serverId, actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(13),
                         command = "start_server",

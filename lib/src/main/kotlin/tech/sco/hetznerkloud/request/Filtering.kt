@@ -5,7 +5,6 @@ import tech.sco.hetznerkloud.QueryParams
 typealias Filter = Pair<FilterField, String>
 typealias ActionFilter = Pair<FilterFields.Action, String>
 typealias ServerFilter = Pair<FilterFields.Server, String>
-typealias ServerActionFilter = Pair<FilterFields.ServerAction, String>
 typealias ServerMetricsFilter = Pair<FilterFields.ServerMetrics, String>
 typealias ServerTypeFilter = Pair<FilterFields.ServerType, String>
 typealias DatacenterFilter = Pair<FilterFields.Datacenter, String>
@@ -20,7 +19,6 @@ typealias CertificateFilter = Pair<FilterFields.Certificate, String>
 typealias FirewallFilter = Pair<FilterFields.Firewall, String>
 typealias PrimaryIpFilter = Pair<FilterFields.PrimaryIp, String>
 typealias FloatingIpFilter = Pair<FilterFields.FloatingIp, String>
-typealias NetworkActionFilter = Pair<FilterFields.NetworkAction, String>
 
 sealed interface FilterField {
     val value: String
@@ -37,11 +35,6 @@ object FilterFields {
     enum class Server(override val value: String) : FilterField {
         NAME("name"),
         LABEL_SELECTOR("label_selector"),
-        STATUS("status"),
-    }
-
-    enum class ServerAction(override val value: String) : FilterField {
-        ID("id"),
         STATUS("status"),
     }
 
@@ -121,9 +114,5 @@ object FilterFields {
     enum class FloatingIp(override val value: String) : FilterField {
         NAME("name"),
         LABEL_SELECTOR("label_selector"),
-    }
-
-    enum class NetworkAction(override val value: String) : FilterField {
-        ID("id"),
     }
 }
