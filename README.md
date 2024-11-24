@@ -5,7 +5,6 @@
 > * Certificate Actions,
 > * Firewall Actions,
 > * Floating IP Actions,
-> * Image Actions,
 > * Load Balancer Actions,
 > * Network Actions,
 > * Primary IP Actions,

@@ -63,6 +63,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     GET_ALL_IMAGE_ACTIONS(Pair(HttpMethod.Get, Path("/images/actions"))),
     UPDATE_IMAGE(Pair(HttpMethod.Patch, Path("/images/{id}"))),
     DELETE_IMAGE(Pair(HttpMethod.Delete, Path("/images/{id}"))),
+    CHANGE_IMAGE_PROTECTION(Pair(HttpMethod.Post, Path("/images/{id}/actions/change_protection"))),
 
     GET_ALL_ISOS(Pair(HttpMethod.Get, Path("/isos"))),
     GET_ISO(Pair(HttpMethod.Get, Path("/isos/{id}"))),

@@ -87,6 +87,7 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.GET_ALL_IMAGE_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_IMAGE_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.UPDATE_IMAGE, request, routeParamsProvider) -> response(Route.UPDATE_IMAGE, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_IMAGE, request, routeParamsProvider) -> response(Route.DELETE_IMAGE, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.CHANGE_IMAGE_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_IMAGE_PROTECTION, HttpStatusCode.OK, defaultHeaders)
 
         matchRoute(Route.GET_ALL_ISOS, request, routeParamsProvider) -> response(Route.GET_ALL_ISOS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_ISO, request, routeParamsProvider) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
@@ -244,6 +245,7 @@ private fun content(route: Route): String = when (route) {
     Route.GET_ALL_IMAGE_ACTIONS -> "src/test/resources/examples/response/image/get_all_image_actions.json"
     Route.UPDATE_IMAGE -> "src/test/resources/examples/response/image/update_an_image.json"
     Route.DELETE_IMAGE -> "src/test/resources/examples/response/no_content.json"
+    Route.CHANGE_IMAGE_PROTECTION -> "src/test/resources/examples/response/image/change_image_protection.json"
 
     Route.GET_ALL_PLACEMENT_GROUPS -> "src/test/resources/examples/response/placement_group/get_all_placement_groups.json"
     Route.GET_A_PLACEMENT_GROUP -> "src/test/resources/examples/response/placement_group/get_a_placement_group.json"

@@ -11,6 +11,7 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.ResourceType
+import tech.sco.hetznerkloud.request.ChangeImageProtection
 import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -165,6 +166,21 @@ class ImageApiTest :
 
             should("delete an Image") {
                 underTest.images.delete(imageId) shouldBe Unit
+            }
+
+            should("change an Image protection") {
+                underTest.images.changeImageProtection(imageId, ChangeImageProtection(true)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(Resource(id = 4711, type = "image")),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
     })
