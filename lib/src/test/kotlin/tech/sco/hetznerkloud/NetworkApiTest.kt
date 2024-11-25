@@ -8,11 +8,12 @@ import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Network
+import tech.sco.hetznerkloud.model.NetworkResource
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
-import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.CreateNetwork
 import tech.sco.hetznerkloud.request.UpdateNetwork
 import tech.sco.hetznerkloud.response.Item
@@ -86,7 +87,7 @@ class NetworkApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.RUNNING,
                         ),
@@ -104,7 +105,7 @@ class NetworkApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.SUCCESS,
                         ),
@@ -120,7 +121,7 @@ class NetworkApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 42, type = "server")),
+                        resources = listOf(ServerResource(id = Server.Id(42))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.RUNNING,
                     ),
@@ -135,7 +136,7 @@ class NetworkApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 4711, type = "network")),
+                        resources = listOf(NetworkResource(id = Network.Id(4711))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),

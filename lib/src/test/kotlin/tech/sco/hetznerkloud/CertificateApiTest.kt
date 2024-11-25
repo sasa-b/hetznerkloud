@@ -7,10 +7,14 @@ import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
 import tech.sco.hetznerkloud.model.Certificate.Id
+import tech.sco.hetznerkloud.model.CertificateResource
+import tech.sco.hetznerkloud.model.LoadBalancer
+import tech.sco.hetznerkloud.model.LoadBalancerResource
 import tech.sco.hetznerkloud.model.ManagedCertificate
 import tech.sco.hetznerkloud.model.Meta
-import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.ResourceType
+import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.UploadedCertificate
 import tech.sco.hetznerkloud.request.CreateManagedCertificate
 import tech.sco.hetznerkloud.request.CreateUploadedCertificate
@@ -57,7 +61,7 @@ class CertificateApiTest :
                             notValidBefore = OffsetDateTime.parse("2019-01-08T10:00:00+00:00"),
                             status = null,
                             usedBy = listOf(
-                                Resource(id = 4711, type = "load_balancer"),
+                                LoadBalancerResource(id = LoadBalancer.Id(4711)),
                             ),
                         ),
                         ManagedCertificate(
@@ -79,7 +83,7 @@ class CertificateApiTest :
                                 renewal = Certificate.Status.Renewal.UNAVAILABLE,
                             ),
                             usedBy = listOf(
-                                Resource(id = 4711, type = "load_balancer"),
+                                LoadBalancerResource(id = LoadBalancer.Id(4711)),
                             ),
                         ),
                     ),
@@ -106,7 +110,7 @@ class CertificateApiTest :
                         notValidBefore = OffsetDateTime.parse("2019-01-08T10:00:00+00:00"),
                         status = null,
                         usedBy = listOf(
-                            Resource(id = 4711, type = "load_balancer"),
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
                         ),
                     ),
                 )
@@ -122,7 +126,7 @@ class CertificateApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.RUNNING,
                         ),
@@ -140,7 +144,7 @@ class CertificateApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2021-01-30T23:57Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 896, type = "certificate")),
+                            resources = listOf(CertificateResource(id = Id(896))),
                             started = OffsetDateTime.parse("2021-01-30T23:55Z"),
                             status = Action.Status.SUCCESS,
                         ),
@@ -156,7 +160,7 @@ class CertificateApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 42, type = "server")),
+                        resources = listOf(ServerResource(id = Server.Id(42))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.RUNNING,
                     ),
@@ -171,7 +175,7 @@ class CertificateApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2021-01-30T23:57Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 896, type = "certificate")),
+                        resources = listOf(CertificateResource(id = Id(896))),
                         started = OffsetDateTime.parse("2021-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),
@@ -199,7 +203,7 @@ class CertificateApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 879, type = "certificate"),
+                            CertificateResource(id = Id(879)),
                         ),
                         started = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),
                         status = Action.Status.RUNNING,
@@ -223,7 +227,7 @@ class CertificateApiTest :
                             renewal = Certificate.Status.Renewal.UNAVAILABLE,
                         ),
                         usedBy = listOf(
-                            Resource(id = 4711, type = "load_balancer"),
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
                         ),
                     ),
                 )
@@ -244,7 +248,7 @@ class CertificateApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 879, type = "certificate"),
+                            CertificateResource(id = Id(879)),
                         ),
                         started = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),
                         status = Action.Status.RUNNING,
@@ -268,7 +272,7 @@ class CertificateApiTest :
                             renewal = Certificate.Status.Renewal.UNAVAILABLE,
                         ),
                         usedBy = listOf(
-                            Resource(id = 4711, type = "load_balancer"),
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
                         ),
                     ),
                 )
@@ -301,7 +305,7 @@ class CertificateApiTest :
                         notValidBefore = OffsetDateTime.parse("2019-01-08T10:00:00+00:00"),
                         status = null,
                         usedBy = listOf(
-                            Resource(id = 4711, type = "load_balancer"),
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
                         ),
                     ),
                 )
@@ -319,7 +323,7 @@ class CertificateApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2021-01-30T23:57Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 896, type = "certificate")),
+                        resources = listOf(CertificateResource(id = Id(896))),
                         started = OffsetDateTime.parse("2021-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),

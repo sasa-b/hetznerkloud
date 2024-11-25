@@ -10,15 +10,16 @@ import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Network
+import tech.sco.hetznerkloud.model.NetworkResource
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
-import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.SSHKey
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
@@ -309,7 +310,7 @@ class ServerApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.RUNNING,
                         ),
@@ -327,7 +328,7 @@ class ServerApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.SUCCESS,
                         ),
@@ -343,7 +344,7 @@ class ServerApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 42, type = "server")),
+                        resources = listOf(ServerResource(id = Server.Id(42))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.RUNNING,
                     ),
@@ -358,7 +359,7 @@ class ServerApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 42, type = "server")),
+                        resources = listOf(ServerResource(id = Server.Id(42))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),
@@ -406,9 +407,8 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(
-                                id = 42,
-                                type = "server",
+                            ServerResource(
+                                id = Server.Id(42),
                             ),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
@@ -421,7 +421,7 @@ class ServerApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = null,
                             progress = 0,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                             status = Action.Status.RUNNING,
                         ),
@@ -563,7 +563,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         status = Action.Status.RUNNING,
@@ -582,7 +582,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -599,7 +599,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
@@ -618,7 +618,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -637,7 +637,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -654,7 +654,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -677,8 +677,8 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
-                            Resource(id = 4711, type = "network"),
+                            ServerResource(id = Server.Id(42)),
+                            NetworkResource(id = Network.Id(4711)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -699,8 +699,8 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
-                            Resource(id = 4711, type = "network"),
+                            ServerResource(id = Server.Id(42)),
+                            NetworkResource(id = Network.Id(4711)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -717,7 +717,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -734,7 +734,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -751,7 +751,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -768,7 +768,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -785,7 +785,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -802,7 +802,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -820,7 +820,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
@@ -839,7 +839,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -857,7 +857,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -875,7 +875,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
@@ -892,7 +892,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
@@ -914,7 +914,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
@@ -932,7 +932,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -959,7 +959,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                         status = Action.Status.SUCCESS,
@@ -1004,7 +1004,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -1026,7 +1026,7 @@ class ServerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
@@ -1048,7 +1048,7 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
@@ -1070,8 +1070,8 @@ class ServerApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
-                            Resource(id = 4711, type = "network"),
+                            ServerResource(id = Server.Id(42)),
+                            NetworkResource(id = Network.Id(4711)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,

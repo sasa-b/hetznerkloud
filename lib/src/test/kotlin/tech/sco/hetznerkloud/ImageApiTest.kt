@@ -7,10 +7,12 @@ import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Image.Id
+import tech.sco.hetznerkloud.model.ImageResource
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Protection
-import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.ResourceType
+import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.ChangeImageProtection
 import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.response.Item
@@ -74,7 +76,7 @@ class ImageApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 42, type = "server")),
+                            resources = listOf(ServerResource(id = Server.Id(42))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.RUNNING,
                         ),
@@ -92,7 +94,7 @@ class ImageApiTest :
                             error = ActionFailedError(message = "Action failed"),
                             finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                             progress = 100,
-                            resources = listOf(Resource(id = 4711, type = "image")),
+                            resources = listOf(ImageResource(id = Id(4711))),
                             started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.SUCCESS,
                         ),
@@ -108,7 +110,7 @@ class ImageApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 42, type = "server")),
+                        resources = listOf(ServerResource(id = Server.Id(42))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.RUNNING,
                     ),
@@ -123,7 +125,7 @@ class ImageApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 4711, type = "image")),
+                        resources = listOf(ImageResource(id = Id(4711))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),
@@ -176,7 +178,7 @@ class ImageApiTest :
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
-                        resources = listOf(Resource(id = 4711, type = "image")),
+                        resources = listOf(ImageResource(id = Id(4711))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),

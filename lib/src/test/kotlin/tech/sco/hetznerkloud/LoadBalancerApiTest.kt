@@ -6,6 +6,7 @@ import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
 import tech.sco.hetznerkloud.model.LoadBalancer
+import tech.sco.hetznerkloud.model.LoadBalancerResource
 import tech.sco.hetznerkloud.model.LoadBalancerType
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
@@ -13,7 +14,6 @@ import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
-import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.UpdateResource
@@ -390,7 +390,7 @@ class LoadBalancerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
                         progress = 100,
                         resources = listOf(
-                            Resource(id = 4711L, "load_balancer"),
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,

@@ -6,7 +6,8 @@ import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Action.Id
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Meta
-import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
@@ -28,7 +29,7 @@ class ActionApiTest :
                 ),
                 finished = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                 progress = 100,
-                resources = listOf(Resource(id = 42, type = "server")),
+                resources = listOf(ServerResource(id = Server.Id(42))),
                 started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                 status = Action.Status.RUNNING,
             )

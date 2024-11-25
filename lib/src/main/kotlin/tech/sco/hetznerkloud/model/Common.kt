@@ -69,6 +69,49 @@ enum class ResourceType {
 }
 
 @Serializable
+// @JsonClassDiscriminator("type")
+sealed interface Resource {
+    @Serializable
+    val id: ResourceId
+}
+
+@Serializable
+@SerialName("server")
+data class ServerResource(override val id: Server.Id) : Resource
+
+@Serializable
+@SerialName("network")
+data class NetworkResource(override val id: Network.Id) : Resource
+
+@Serializable
+@SerialName("image")
+data class ImageResource(override val id: Image.Id) : Resource
+
+@Serializable
+@SerialName("load_balancer")
+data class LoadBalancerResource(override val id: LoadBalancer.Id) : Resource
+
+@Serializable
+@SerialName("volume")
+data class VolumeResource(override val id: Volume.Id) : Resource
+
+@Serializable
+@SerialName("certificate")
+data class CertificateResource(override val id: Certificate.Id) : Resource
+
+@Serializable
+@SerialName("firewall")
+data class FirewallResource(override val id: Firewall.Id) : Resource
+
+@Serializable
+@SerialName("primary_ip")
+data class PrimaryIpResource(override val id: PrimaryIp.Id) : Resource
+
+@Serializable
+@SerialName("floating_ip")
+data class FloatingIpResource(override val id: FloatingIp.Id) : Resource
+
+@Serializable
 data class Meta(val pagination: Pagination) {
     @Serializable
     data class Pagination(
@@ -125,10 +168,6 @@ enum class NetworkZone {
     @SerialName("ap-southeast")
     AP_SOUTHEAST,
 }
-
-// TODO: add a sealed interface serialization approach for the resource
-@Serializable
-data class Resource(val id: Long, val type: String)
 
 @Serializable
 data class DnsPtr(

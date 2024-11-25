@@ -11,8 +11,8 @@ import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
-import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.CreateFloatingIp
 import tech.sco.hetznerkloud.request.UpdateFloatingIp
 import tech.sco.hetznerkloud.response.Item
@@ -95,7 +95,7 @@ class FloatingIpApiTest :
                         finished = null,
                         progress = 0,
                         resources = listOf(
-                            Resource(id = 42, type = "server"),
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
                         status = Action.Status.RUNNING,

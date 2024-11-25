@@ -5,9 +5,11 @@ import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Firewall
+import tech.sco.hetznerkloud.model.FirewallResource
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.CreateFirewall
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.FirewallCreated
@@ -115,9 +117,8 @@ class FirewallApiTest :
                             finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
                             progress = 100,
                             resources = listOf(
-                                Resource(
-                                    id = 38,
-                                    type = "firewall",
+                                FirewallResource(
+                                    id = Firewall.Id(38),
                                 ),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
@@ -130,13 +131,11 @@ class FirewallApiTest :
                             finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
                             progress = 100,
                             resources = listOf(
-                                Resource(
-                                    id = 42,
-                                    type = "server",
+                                ServerResource(
+                                    id = Server.Id(42),
                                 ),
-                                Resource(
-                                    id = 38,
-                                    type = "firewall",
+                                FirewallResource(
+                                    id = Firewall.Id(38),
                                 ),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),

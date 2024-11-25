@@ -13,6 +13,7 @@ import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.ServerType
 import java.time.OffsetDateTime
 
@@ -167,7 +168,7 @@ object ActionFixture {
         command: String = "create_server",
         finished: OffsetDateTime? = null,
         progress: Int = 0,
-        resources: List<Resource> = listOf(Resource(id = 42, type = "server")),
+        resources: List<Resource> = listOf(ServerResource(id = Server.Id(42))),
         started: OffsetDateTime = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
         status: Action.Status = Action.Status.RUNNING,
     ) = Action(
