@@ -157,7 +157,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     UPDATE_FLOATING_IP(Pair(HttpMethod.Patch, Path("/floating_ips/{id}"))),
     DELETE_FLOATING_IP(Pair(HttpMethod.Delete, Path("/floating_ips/{id}"))),
 
-    GET_ALL_PRICES(Pair(HttpMethod.Post, Path("/pricing"))),
+    GET_ALL_PRICES(Pair(HttpMethod.Get, Path("/pricing"))),
     ;
 
     val method: HttpMethod

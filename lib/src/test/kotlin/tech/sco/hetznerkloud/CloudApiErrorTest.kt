@@ -114,6 +114,7 @@ class CloudApiErrorTest :
                 row(ErrorCode.SERVICE_ERROR, HttpStatusCode.InternalServerError),
                 row(ErrorCode.NOT_FOUND, HttpStatusCode.NotFound),
                 row(ErrorCode.JSON_ERROR, HttpStatusCode.BadRequest),
+                row(ErrorCode.METHOD_NOT_ALLOWED, HttpStatusCode.MethodNotAllowed),
             ) { errorCode, statusCode ->
 
                 val mockEngine = createErrorEngine(errorCode, statusCode)

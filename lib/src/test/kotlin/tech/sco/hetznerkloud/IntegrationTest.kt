@@ -104,4 +104,14 @@ class IntegrationTest : AnnotationSpec() {
             }
         }
     }
+
+    @Test fun itGetsPricing() {
+        assertDoesNotThrow {
+            runBlocking {
+                cloudApiClient.pricing.all().let {
+                    println(it)
+                }
+            }
+        }
+    }
 }

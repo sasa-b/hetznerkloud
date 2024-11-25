@@ -28,6 +28,12 @@ data class ForbiddenError(override val message: String) : Error() {
 }
 
 @Serializable
+@SerialName("method_not_allowed")
+data class MethodNotAllowed(override val message: String) : Error() {
+    override val errorCode = ErrorCode.METHOD_NOT_ALLOWED
+}
+
+@Serializable
 @SerialName("invalid_input")
 data class InvalidInputError(override val message: String, val details: Details) : Error() {
 
@@ -336,6 +342,7 @@ enum class ErrorCode(val value: String) {
     JSON_ERROR("json_error"),
     LOCKED("locked"),
     NOT_FOUND("not_found"),
+    METHOD_NOT_ALLOWED("method_not_allowed"),
     RATE_LIMIT_EXCEEDED("rate_limit_exceeded"),
     RESOURCE_LIMIT_EXCEEDED("resource_limit_exceeded"),
     RESOURCE_UNAVAILABLE("resource_unavailable"),

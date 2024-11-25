@@ -358,6 +358,7 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.NOT_FOUND -> "src/test/resources/examples/error/not_found.json"
     ErrorCode.FORBIDDEN -> "src/test/resources/examples/error/forbidden.json"
     ErrorCode.UNAUTHORIZED -> "src/test/resources/examples/error/unauthorized.json"
+    ErrorCode.METHOD_NOT_ALLOWED -> "src/test/resources/examples/error/method_not_allowed.json"
     ErrorCode.INVALID_INPUT -> "src/test/resources/examples/error/invalid_input.json"
     ErrorCode.JSON_ERROR -> "src/test/resources/examples/error/json_error.json"
     ErrorCode.LOCKED -> "src/test/resources/examples/error/locked.json"
