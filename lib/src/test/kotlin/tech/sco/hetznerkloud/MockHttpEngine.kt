@@ -166,6 +166,8 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.UPDATE_FLOATING_IP, request, routeParamsProvider) -> response(Route.UPDATE_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_FLOATING_IP, request, routeParamsProvider) -> response(Route.DELETE_FLOATING_IP, HttpStatusCode.NoContent, defaultHeaders)
 
+        matchRoute(Route.GET_ALL_PRICES, request, routeParamsProvider) -> response(Route.GET_ALL_PRICES, HttpStatusCode.OK, defaultHeaders)
+
         else -> respondError(HttpStatusCode.NotFound)
     }
 }
@@ -345,6 +347,8 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/create_a_floating_ip.json"
     Route.UPDATE_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/update_a_floating_ip.json"
     Route.DELETE_FLOATING_IP -> "src/test/resources/examples/response/no_content.json"
+
+    Route.GET_ALL_PRICES -> "src/test/resources/examples/response/get_all_prices.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

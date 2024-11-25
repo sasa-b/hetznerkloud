@@ -53,6 +53,7 @@ data class Item<out T>(
         "floating_ip",
         "firewall",
         "certificate",
+        "pricing",
     )
     val value: T,
 )

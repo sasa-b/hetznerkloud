@@ -25,6 +25,7 @@ import tech.sco.hetznerkloud.api.LoadBalancerTypes
 import tech.sco.hetznerkloud.api.LoadBalancers
 import tech.sco.hetznerkloud.api.Networks
 import tech.sco.hetznerkloud.api.PlacementGroups
+import tech.sco.hetznerkloud.api.Pricing
 import tech.sco.hetznerkloud.api.PrimaryIps
 import tech.sco.hetznerkloud.api.SSHKeys
 import tech.sco.hetznerkloud.api.ServerTypes
@@ -54,6 +55,7 @@ class CloudApiClient private constructor(
     val firewalls: Firewalls,
     val primaryIps: PrimaryIps,
     val floatingIps: FloatingIps,
+    val pricing: Pricing,
 ) {
     companion object {
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create(), block: HttpClientConfig<*>.() -> Unit = {}): CloudApiClient = HttpClient(httpEngine) {
@@ -121,6 +123,7 @@ class CloudApiClient private constructor(
                 firewalls = Firewalls(httpClient),
                 primaryIps = PrimaryIps(httpClient),
                 floatingIps = FloatingIps(httpClient),
+                pricing = Pricing(httpClient),
             )
         }
     }
