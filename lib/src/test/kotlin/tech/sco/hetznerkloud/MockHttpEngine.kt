@@ -121,6 +121,8 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CREATE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.CREATE_LOAD_BALANCER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.LOAD_BALANCER_ADD_SERVICE, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_ADD_SERVICE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.LOAD_BALANCER_ADD_TARGET, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_ADD_TARGET, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_LOAD_BALANCER_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_LOAD_BALANCER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_LOAD_BALANCER_TYPE, request, routeParamsProvider) -> response(Route.GET_LOAD_BALANCER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -295,8 +297,8 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/create_a_load_balancer.json"
     Route.UPDATE_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/update_a_load_balancer.json"
     Route.DELETE_LOAD_BALANCER -> "src/test/resources/examples/response/no_content.json"
-    Route.LOAD_BALANCER_ADD_SERVICE -> TODO()
-    Route.LOAD_BALANCER_ADD_TARGET -> TODO()
+    Route.LOAD_BALANCER_ADD_SERVICE -> "src/test/resources/examples/response/load_balancer/load_balancer_add_service.json"
+    Route.LOAD_BALANCER_ADD_TARGET -> "src/test/resources/examples/response/load_balancer/load_balancer_add_target.json"
 
     Route.GET_ALL_LOAD_BALANCER_TYPES -> "src/test/resources/examples/response/load_balancer/get_all_load_balancer_types.json"
     Route.GET_LOAD_BALANCER_TYPE -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer_type.json"

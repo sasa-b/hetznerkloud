@@ -19,7 +19,9 @@ import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.AddService
+import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
+import tech.sco.hetznerkloud.request.LabelSelector
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
@@ -530,6 +532,50 @@ class LoadBalancerApiTest :
                 )
 
                 jsonEncoder().encodeToString(addServiceRequest) shouldBeEqualToRequest "load_balancer_add_service.json"
+
+                underTest.loadBalancers.addService(addServiceRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "add_service",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("add Target to Load balancer") {
+                val addTargetRequest = AddTarget(
+                    ip = LoadBalancer.Target.Ip(
+                        "203.0.113.1",
+                    ),
+                    labelSelector = LabelSelector(
+                        selector = "env=prod",
+                    ),
+                    server = LoadBalancer.Target.Server(
+                        id = Server.Id(80),
+                    ),
+                    type = LoadBalancer.Target.Type.SERVER,
+                    usePrivateIp = true,
+                )
+
+                jsonEncoder().encodeToString(addTargetRequest) shouldBeEqualToRequest "load_balancer_add_target.json"
+
+                underTest.loadBalancers.addTarget(addTargetRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "add_target",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
     })
