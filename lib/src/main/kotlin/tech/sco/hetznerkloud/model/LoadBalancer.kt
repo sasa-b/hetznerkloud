@@ -71,15 +71,15 @@ data class LoadBalancer(
 
     @Serializable
     data class Service(
-        @JsonNames("destination_port")
+        @SerialName("destination_port")
         val destinationPort: Int,
-        @JsonNames("health_check")
+        @SerialName("health_check")
         val healthCheck: HealthCheck,
         val http: Http? = null,
-        @JsonNames("listen_port")
+        @SerialName("listen_port")
         val listenPort: Int,
         val protocol: Protocol,
-        @JsonNames("proxyprotocol")
+        @SerialName("proxyprotocol")
         val proxyProtocol: Boolean,
     ) {
         @Serializable
@@ -89,7 +89,7 @@ data class LoadBalancer(
                 val domain: String?,
                 val path: String,
                 val response: String,
-                @JsonNames("status_codes")
+                @SerialName("status_codes")
                 val statusCodes: List<String>,
                 val tls: Boolean,
             )
@@ -98,13 +98,13 @@ data class LoadBalancer(
         @Serializable
         data class Http(
             val certificates: List<Certificate.Id>,
-            @JsonNames("cookie_lifetime")
+            @SerialName("cookie_lifetime")
             val cookieLifetime: Int = 300,
-            @JsonNames("cookie_name")
+            @SerialName("cookie_name")
             val cookieName: String = "HCLBSTICKY",
-            @JsonNames("redirect_http")
+            @SerialName("redirect_http")
             val redirectHttp: Boolean = false,
-            @JsonNames("sticky_sessions")
+            @SerialName("sticky_sessions")
             val stickySessions: Boolean = false,
         )
 
@@ -123,20 +123,20 @@ data class LoadBalancer(
 
     @Serializable
     data class Target(
-        @JsonNames("health_status")
-        val healthStatus: List<HealthStatus> = emptyList(),
+        @SerialName("health_status")
+        val healthStatus: List<HealthStatus>? = null,
         val ip: Ip? = null,
-        @JsonNames("label_selector")
+        @SerialName("label_selector")
         val labelSelector: Map<String, String> = emptyMap(),
         val server: Server? = null,
-        val targets: List<Target> = emptyList(),
+        val targets: List<Target>? = null,
         val type: Type,
-        @JsonNames("use_private_ip")
+        @SerialName("use_private_ip")
         val usePrivateIp: Boolean = false,
     ) {
         @Serializable
         data class HealthStatus(
-            @JsonNames("listen_port")
+            @SerialName("listen_port")
             val listenPort: Int,
             val status: String,
         )

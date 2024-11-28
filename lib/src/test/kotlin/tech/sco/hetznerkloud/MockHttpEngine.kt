@@ -295,6 +295,8 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/create_a_load_balancer.json"
     Route.UPDATE_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/update_a_load_balancer.json"
     Route.DELETE_LOAD_BALANCER -> "src/test/resources/examples/response/no_content.json"
+    Route.LOAD_BALANCER_ADD_SERVICE -> TODO()
+    Route.LOAD_BALANCER_ADD_TARGET -> TODO()
 
     Route.GET_ALL_LOAD_BALANCER_TYPES -> "src/test/resources/examples/response/load_balancer/get_all_load_balancer_types.json"
     Route.GET_LOAD_BALANCER_TYPE -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer_type.json"

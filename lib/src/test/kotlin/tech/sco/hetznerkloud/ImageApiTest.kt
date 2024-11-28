@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpMethod
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Image
@@ -142,6 +143,8 @@ class ImageApiTest :
                     labels = mapOf("environment" to "prod", "example.com/my" to "label", "just-a-key" to ""),
                 )
 
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_an_image.json"
+
                 underTest.images.update(updateImageId, updateRequest) shouldBe Item(
                     Image(
                         id = Id(4711),
@@ -171,6 +174,7 @@ class ImageApiTest :
             }
 
             should("change an Image protection") {
+
                 underTest.images.changeImageProtection(imageId, ChangeImageProtection(true)) shouldBe Item(
                     Action(
                         id = Action.Id(13),

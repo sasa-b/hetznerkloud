@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.DnsPtr
@@ -79,13 +80,17 @@ class FloatingIpApiTest :
                 val createRequest = CreateFloatingIp(
                     homeLocation = "fsn1",
                     labels = mapOf(
-                        "env" to "dev",
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
                     ),
                     name = "my-resource",
                     type = IpType.IPV4,
                     server = Server.Id(42),
                     description = "This describes my resource",
                 )
+
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_floating_ip.json"
 
                 underTest.floatingIps.create(createRequest) shouldBe ItemCreated(
                     action = Action(
@@ -122,8 +127,10 @@ class FloatingIpApiTest :
                         "example.com/my" to "label",
                         "just-a-key" to "",
                     ),
-                    description = "Web Frontend",
+                    description = "This describes my resource",
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_floating_ip.json"
 
                 underTest.floatingIps.update(floatingIpId, updateRequest) shouldBe Item(
                     expectedIp.copy(

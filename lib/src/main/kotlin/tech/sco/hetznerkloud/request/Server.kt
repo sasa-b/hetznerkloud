@@ -20,7 +20,7 @@ data class CreateServer(
     val datacenter: String,
     val firewalls: List<Firewall> = emptyList(),
     val image: String,
-    val labels: Labels = emptyMap(),
+    val labels: Labels? = null,
     val location: String,
     val name: String,
     val networks: List<Int> = emptyList(),
@@ -98,11 +98,7 @@ data class EnableRescueMode(
 data class DetachFromNetwork(val network: Network.Id) : HttpBody
 
 @Serializable
-data class CreateImageFromServer(
-    val description: String,
-    val labels: Labels = emptyMap(),
-    val type: Type,
-) : HttpBody {
+data class CreateImageFromServer(val description: String, val labels: Labels? = null, val type: Type) : HttpBody {
 
     @Serializable
     enum class Type {
@@ -123,10 +119,7 @@ data class ChangeServerType(
 ) : HttpBody
 
 @Serializable
-data class ChangeServerProtections(
-    val delete: Boolean,
-    val rebuild: Boolean,
-) : HttpBody
+data class ChangeServerProtections(val delete: Boolean, val rebuild: Boolean) : HttpBody
 
 @Serializable
 data class ChangeServerReverseDns(

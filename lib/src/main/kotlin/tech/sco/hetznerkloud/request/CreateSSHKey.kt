@@ -3,14 +3,14 @@
 package tech.sco.hetznerkloud.request
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Labels
 
 @Serializable
 data class CreateSSHKey(
     val labels: Labels,
     val name: String,
-    @JsonNames("public_key")
+    @SerialName("public_key")
     val publicKey: String,
 ) : HttpBody

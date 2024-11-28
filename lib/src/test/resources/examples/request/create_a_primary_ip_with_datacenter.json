@@ -1,7 +1,7 @@
 {
-  "assignee_id": 17,
   "assignee_type": "server",
   "auto_delete": false,
+  "datacenter": "fsn1-dc8",
   "labels": {
     "environment": "prod",
     "example.com/my": "label",

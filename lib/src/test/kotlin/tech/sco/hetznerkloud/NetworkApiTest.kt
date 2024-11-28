@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.http.toURI
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.LoadBalancer
@@ -163,15 +164,16 @@ class NetworkApiTest :
                         ),
                     ),
                     subnets = listOf(
-                        Network.Subnet(
+                        CreateNetwork.Subnet(
                             ipRange = "10.0.1.0/24",
                             networkZone = NetworkZone.EU_CENTRAL,
                             type = Network.Type.CLOUD,
                             vSwitchId = 1000,
-                            gateway = "10.0.0.1",
                         ),
                     ),
                 )
+
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_network.json"
 
                 underTest.networks.create(createRequest) shouldBe Item(expectedNetwork)
             }
@@ -179,7 +181,7 @@ class NetworkApiTest :
             should("update a Network") {
 
                 val updateRequest = UpdateNetwork(
-                    exposeRoutesToVSwitch = true,
+                    exposeRoutesToVSwitch = false,
                     labels = mapOf(
                         "environment" to "prod",
                         "example.com/my" to "label",
@@ -187,6 +189,8 @@ class NetworkApiTest :
                     ),
                     name = "new-name",
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_network.json"
 
                 underTest.networks.update(networkId, updateRequest) shouldBe Item(
                     Network(

@@ -96,6 +96,8 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_LOAD_BALANCER(Pair(HttpMethod.Post, Path("/load_balancers"))),
     UPDATE_LOAD_BALANCER(Pair(HttpMethod.Patch, Path("/load_balancers/{id}"))),
     DELETE_LOAD_BALANCER(Pair(HttpMethod.Delete, Path("/load_balancers/{id}"))),
+    LOAD_BALANCER_ADD_SERVICE(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/add_service"))),
+    LOAD_BALANCER_ADD_TARGET(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/add_target"))),
 
     GET_ALL_LOAD_BALANCER_TYPES(Pair(HttpMethod.Get, Path("/load_balancer_types"))),
     GET_LOAD_BALANCER_TYPE(Pair(HttpMethod.Get, Path("/load_balancer_types/{id}"))),

@@ -3,18 +3,18 @@
 package tech.sco.hetznerkloud.request
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.IpType
 import tech.sco.hetznerkloud.model.Labels
 import tech.sco.hetznerkloud.model.Server
 
 @Serializable
-class CreateFloatingIp(
+data class CreateFloatingIp(
     // id or name of the location
-    @JsonNames("home_location")
+    @SerialName("home_location")
     val homeLocation: String?,
-    val labels: Labels = emptyMap(),
+    val labels: Labels? = null,
     val name: String,
     val type: IpType,
     val server: Server.Id?,

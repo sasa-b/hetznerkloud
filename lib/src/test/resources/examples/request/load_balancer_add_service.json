@@ -1,0 +1,32 @@
+{
+  "destination_port": 80,
+  "health_check": {
+    "http": {
+      "domain": "example.com",
+      "path": "/",
+      "response": "{\"status\": \"ok\"}",
+      "status_codes": [
+        "2??",
+        "3??"
+      ],
+      "tls": false
+    },
+    "interval": 15,
+    "port": 4711,
+    "protocol": "http",
+    "retries": 3,
+    "timeout": 10
+  },
+  "http": {
+    "certificates": [
+      897
+    ],
+    "cookie_lifetime": 300,
+    "cookie_name": "HCLBSTICKY",
+    "redirect_http": true,
+    "sticky_sessions": true
+  },
+  "listen_port": 443,
+  "protocol": "https",
+  "proxyprotocol": false
+}

@@ -6,6 +6,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.request.LabelSelector
 import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
 import java.time.OffsetDateTime
 
@@ -16,7 +17,7 @@ data class Firewall(
     val appliedTo: List<AppliedTo>,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val created: OffsetDateTime,
-    val labels: Labels,
+    val labels: Labels? = null,
     val name: String,
     val rules: List<Rule>,
 ) {
@@ -30,13 +31,13 @@ data class Firewall(
     @Serializable
     data class Rule(
         val description: String?,
-        @JsonNames("destination_ips")
-        val destinationIps: List<String>,
+        @SerialName("destination_ips")
+        val destinationIps: List<String>? = null,
         val direction: Direction,
-        val port: String,
+        val port: String? = null,
         val protocol: Protocol,
-        @JsonNames("source_ips")
-        val sourceIps: List<String>,
+        @SerialName("source_ips")
+        val sourceIps: List<String>? = null,
     )
 
     @Serializable
@@ -81,8 +82,5 @@ data class Firewall(
         @Serializable
         @SerialName("server")
         data class ServerResource(val id: Server.Id)
-
-        @Serializable
-        data class LabelSelector(val selector: String)
     }
 }

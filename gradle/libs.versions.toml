@@ -20,6 +20,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist"}
 #maven-central-publisher = { module = "org.sonatype.central:central-publishing-maven-plugin", version.ref = "maven-central-publisher"}
 

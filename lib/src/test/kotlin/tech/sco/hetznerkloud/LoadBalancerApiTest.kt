@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
@@ -17,6 +18,7 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
+import tech.sco.hetznerkloud.request.AddService
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
@@ -433,7 +435,7 @@ class LoadBalancerApiTest :
                                 stickySessions = true,
                             ),
                             listenPort = 443,
-                            protocol = LoadBalancer.Service.Protocol.HTTP,
+                            protocol = LoadBalancer.Service.Protocol.HTTPS,
                             proxyProtocol = false,
                         ),
                     ),
@@ -447,6 +449,8 @@ class LoadBalancerApiTest :
                         ),
                     ),
                 )
+
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_load_balancer.json"
 
                 underTest.loadBalancers.create(createRequest) shouldBe ItemCreated(
                     action = Action(
@@ -478,6 +482,8 @@ class LoadBalancerApiTest :
                     name = "new-name",
                 )
 
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_load_balancer.json"
+
                 underTest.loadBalancers.update(loadBalancerId, updateRequest) shouldBe Item(
                     expectedLoadBalancer.copy(
                         labels = mapOf("labelkey" to "value"),
@@ -494,6 +500,36 @@ class LoadBalancerApiTest :
 
             should("delete a Load balancer") {
                 underTest.loadBalancers.delete(loadBalancerId) shouldBe Unit
+            }
+
+            should("add Service to Load balancer") {
+                val addServiceRequest = AddService(
+                    destinationPort = 80,
+                    LoadBalancer.Service.HealthCheck(
+                        http = LoadBalancer.Service.HealthCheck.Http(
+                            domain = "example.com",
+                            path = "/",
+                            response = "{\"status\": \"ok\"}",
+                            statusCodes = listOf("2??", "3??"),
+                            tls = false,
+                        ),
+                        interval = 15,
+                        port = 4711,
+                        protocol = LoadBalancer.Service.Protocol.HTTP,
+                        retries = 3,
+                        timeout = 10,
+                    ),
+                    http = LoadBalancer.Service.Http(
+                        certificates = listOf(Certificate.Id(897)),
+                        redirectHttp = true,
+                        stickySessions = true,
+                    ),
+                    listenPort = 443,
+                    protocol = LoadBalancer.Service.Protocol.HTTPS,
+                    proxyProtocol = false,
+                )
+
+                jsonEncoder().encodeToString(addServiceRequest) shouldBeEqualToRequest "load_balancer_add_service.json"
             }
         }
     })

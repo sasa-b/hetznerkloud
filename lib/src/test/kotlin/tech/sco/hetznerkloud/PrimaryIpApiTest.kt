@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Datacenter
@@ -16,7 +17,7 @@ import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.ServerType
 import tech.sco.hetznerkloud.request.CreatePrimaryIp
-import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.request.UpdatePrimaryIp
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
@@ -93,11 +94,15 @@ class PrimaryIpApiTest :
                     autoDelete = false,
                     datacenter = null,
                     labels = mapOf(
-                        "labelkey" to "value",
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
                     ),
                     name = "my-resource",
                     type = IpType.IPV4,
                 )
+
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_primary_ip.json"
 
                 underTest.primaryIps.create(createRequest) shouldBe ItemCreated(
                     action = Action(
@@ -124,15 +129,19 @@ class PrimaryIpApiTest :
             should("create a primary ip with datacenter") {
                 val createRequest = CreatePrimaryIp(
                     assigneeId = null,
-                    assigneeType = null,
+                    assigneeType = PrimaryIp.AssigneeType.SERVER,
                     autoDelete = false,
                     datacenter = "fsn1-dc8",
                     labels = mapOf(
-                        "labelkey" to "value",
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
                     ),
                     name = "my-resource",
                     type = IpType.IPV4,
                 )
+
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_primary_ip_with_datacenter.json"
 
                 underTest.primaryIps.create(createRequest) shouldBe ItemCreated(
                     action = Action(
@@ -158,14 +167,17 @@ class PrimaryIpApiTest :
 
             should("update a primary ip") {
 
-                val updateRequest = UpdateResource(
+                val updateRequest = UpdatePrimaryIp(
                     name = "my-resource",
                     labels = mapOf(
                         "environment" to "prod",
                         "example.com/my" to "label",
                         "just-a-key" to "",
                     ),
+                    autoDelete = true,
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_primary_ip.json"
 
                 underTest.primaryIps.update(primaryIpId, updateRequest) shouldBe Item(expectedIp)
             }

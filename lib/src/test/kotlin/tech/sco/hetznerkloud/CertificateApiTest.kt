@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.http.toURI
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Certificate
@@ -195,6 +196,8 @@ class CertificateApiTest :
                     name = "my website cert",
                 )
 
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_managed_certificate.json"
+
                 underTest.certificates.create(createRequest) shouldBe ItemCreated(
                     action = Action(
                         id = Action.Id(13),
@@ -240,6 +243,8 @@ class CertificateApiTest :
                     privateKey = "-----BEGIN PRIVATE KEY-----\n...",
                 )
 
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_an_uploaded_certificate.json"
+
                 underTest.certificates.create(createRequest) shouldBe ItemCreated(
                     action = Action(
                         id = Action.Id(13),
@@ -281,10 +286,14 @@ class CertificateApiTest :
             should("update a Certificate") {
                 val updateRequest = UpdateResource(
                     labels = mapOf(
-                        "labelkey" to "value",
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
                     ),
                     name = "my website cert",
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_certificate.json"
 
                 underTest.certificates.update(certificateId, updateRequest) shouldBe Item(
                     UploadedCertificate(

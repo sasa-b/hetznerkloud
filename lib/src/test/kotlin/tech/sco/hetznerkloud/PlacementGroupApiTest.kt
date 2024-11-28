@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.Server
@@ -54,6 +55,8 @@ class PlacementGroupApiTest :
                     "spread",
                 )
 
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_placement_group.json"
+
                 underTest.placementGroups.create(createRequest) shouldBe Item(
                     PlacementGroup(
                         id = placementGroupId,
@@ -68,12 +71,18 @@ class PlacementGroupApiTest :
 
             should("update a Placement Group") {
 
-                val createRequest = UpdateResource(
+                val updateRequest = UpdateResource(
                     "my Placement Group",
-                    mapOf("key" to "value"),
+                    mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
                 )
 
-                underTest.placementGroups.update(placementGroupId, createRequest) shouldBe Item(
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_placement_group.json"
+
+                underTest.placementGroups.update(placementGroupId, updateRequest) shouldBe Item(
                     PlacementGroup(
                         id = placementGroupId,
                         created = OffsetDateTime.parse("2019-01-08T12:10:00+00:00"),

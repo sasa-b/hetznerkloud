@@ -1,0 +1,13 @@
+{
+  "ip": {
+    "ip": "203.0.113.1"
+  },
+  "label_selector": {
+    "selector": "env=prod"
+  },
+  "server": {
+    "id": 80
+  },
+  "type": "server",
+  "use_private_ip": true
+}

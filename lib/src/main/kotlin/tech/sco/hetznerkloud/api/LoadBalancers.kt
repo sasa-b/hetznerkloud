@@ -5,8 +5,11 @@ import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Failure
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
+import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.LoadBalancer.Id
+import tech.sco.hetznerkloud.request.AddService
+import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.LoadBalancerFilter
 import tech.sco.hetznerkloud.request.LoadBalancerSorting
@@ -20,14 +23,11 @@ import tech.sco.hetznerkloud.response.Items
 class LoadBalancers @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
-    suspend fun all(
-        filter: Set<LoadBalancerFilter> = emptySet(),
-        sorting: Set<LoadBalancerSorting> = emptySet(),
-        pagination: Pagination = Pagination(),
-    ): Items<LoadBalancer> = httpClient.makeRequest(
-        Route.GET_ALL_LOAD_BALANCERS,
-        queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
-    )
+    suspend fun all(filter: Set<LoadBalancerFilter> = emptySet(), sorting: Set<LoadBalancerSorting> = emptySet(), pagination: Pagination = Pagination()): Items<LoadBalancer> =
+        httpClient.makeRequest(
+            Route.GET_ALL_LOAD_BALANCERS,
+            queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams(),
+        )
 
     @Throws(Failure::class)
     suspend fun find(id: Id): Item<LoadBalancer> = httpClient.makeRequest(Route.GET_LOAD_BALANCER, resourceId = id.value)
@@ -40,4 +40,10 @@ class LoadBalancers @InternalAPI constructor(private val httpClient: HttpClient)
 
     @Throws(Failure::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_LOAD_BALANCER, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun addService(body: AddService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_SERVICE, body = body)
+
+    @Throws(Failure::class)
+    suspend fun addTarget(body: AddTarget): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_TARGET, body = body)
 }

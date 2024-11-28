@@ -5,24 +5,34 @@ package tech.sco.hetznerkloud.request
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNames
 
-@Serializable
 sealed interface CreateCertificate : HttpBody
 
 @Serializable
 @SerialName("managed")
 data class CreateManagedCertificate(
-    @JsonNames("domain_names")
+    @SerialName("domain_names")
     val domainNames: List<String>,
     val name: String,
-) : CreateCertificate
+) : CreateCertificate {
+    val type: CertificateType = CertificateType.MANAGED
+}
 
 @Serializable
 @SerialName("uploaded")
 data class CreateUploadedCertificate(
     val certificate: String,
     val name: String,
-    @JsonNames("private_key")
+    @SerialName("private_key")
     val privateKey: String,
-) : CreateCertificate
+) : CreateCertificate {
+    val type: CertificateType = CertificateType.UPLOADED
+}
+
+enum class CertificateType {
+    @SerialName("managed")
+    MANAGED,
+
+    @SerialName("uploaded")
+    UPLOADED,
+}

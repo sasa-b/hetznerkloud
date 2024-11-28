@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Firewall
@@ -11,6 +12,7 @@ import tech.sco.hetznerkloud.model.Resource
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.CreateFirewall
+import tech.sco.hetznerkloud.request.LabelSelector
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.FirewallCreated
 import tech.sco.hetznerkloud.response.Item
@@ -34,7 +36,7 @@ class FirewallApiTest :
                             type = "server",
                         ),
                     ),
-                    labelSelector = Firewall.AppliedTo.LabelSelector(selector = "env=prod"),
+                    labelSelector = LabelSelector(selector = "env=prod"),
                     server = Firewall.AppliedTo.ServerResource(id = Server.Id(42)),
                     type = "server",
                 ),
@@ -95,7 +97,6 @@ class FirewallApiTest :
                     rules = listOf(
                         Firewall.Rule(
                             description = "Allow port 80",
-                            destinationIps = emptyList(),
                             direction = Firewall.Direction.IN,
                             port = "80",
                             protocol = Firewall.Protocol.TCP,
@@ -107,6 +108,8 @@ class FirewallApiTest :
                         ),
                     ),
                 )
+
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_firewall.json"
 
                 underTest.firewalls.create(createRequest) shouldBe FirewallCreated(
                     actions = listOf(
@@ -155,6 +158,8 @@ class FirewallApiTest :
                         "just-a-key" to "",
                     ),
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_firewall.json"
 
                 underTest.firewalls.update(firewallId, updateRequest) shouldBe Item(expectedFirewall)
             }

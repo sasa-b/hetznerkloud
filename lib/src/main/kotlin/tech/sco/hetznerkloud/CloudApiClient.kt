@@ -36,6 +36,14 @@ import tech.sco.hetznerkloud.response.Error
 
 internal const val BASE_URL = "https://api.hetzner.cloud/v1"
 
+private val json = Json {
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+    explicitNulls = false
+}
+
+internal fun jsonEncoder() = json
+
 @Suppress("LongParameterList")
 @OptIn(InternalAPI::class)
 class CloudApiClient private constructor(
@@ -58,17 +66,14 @@ class CloudApiClient private constructor(
     val pricing: Pricing,
 ) {
     companion object {
+        @Suppress("LongMethod")
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create(), block: HttpClientConfig<*>.() -> Unit = {}): CloudApiClient = HttpClient(httpEngine) {
             // throws RedirectResponseException, ClientRequestException, ServerResponseException
             // on 3xx, 4xx and 5xx status codes
             expectSuccess = true
 
             install(ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                    },
-                )
+                json(json)
             }
 
             install(Auth) {
