@@ -20,9 +20,7 @@
   "placement_group": 1,
   "public_net": {
     "enable_ipv4": false,
-    "enable_ipv6": false,
-    "ipv4": null,
-    "ipv6": null
+    "enable_ipv6": false
   },
   "server_type": "cpx11",
   "ssh_keys": ["my-ssh-key"],

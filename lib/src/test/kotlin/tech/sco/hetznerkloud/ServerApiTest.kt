@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Datacenter
@@ -397,6 +398,8 @@ class ServerApiTest :
                     volumes = listOf(123),
                 )
 
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_server.json"
+
                 underTest.servers.create(requestBody) shouldBe ServerCreated(
                     action = Action(
                         id = Action.Id(1),
@@ -551,6 +554,8 @@ class ServerApiTest :
                     name = "my-server",
                 )
 
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_server.json"
+
                 underTest.servers.update(serverId, requestBody) shouldBe Item(expectedServer)
             }
 
@@ -663,13 +668,15 @@ class ServerApiTest :
             }
 
             should("attach Server to a Network") {
-                val attachToNetwork = AttachToNetwork(
+                val attachToNetworkRequest = AttachToNetwork(
                     aliasIps = listOf("10.0.1.2"),
                     ip = "10.0.1.1",
                     network = Network.Id(4711),
                 )
 
-                underTest.servers.attachToNetwork(serverId, attachToNetwork) shouldBe Item(
+                jsonEncoder().encodeToString(attachToNetworkRequest) shouldBeEqualToRequest "attach_a_server_to_network.json"
+
+                underTest.servers.attachToNetwork(serverId, attachToNetworkRequest) shouldBe Item(
                     Action(
                         id = Action.Id(13),
                         command = "attach_to_network",
@@ -831,7 +838,7 @@ class ServerApiTest :
             }
 
             should("rebuild Server from an image by name") {
-                underTest.servers.rebuildFromImage(serverId, RebuildFromImageByName("")) shouldBe ServerActionWithRootPassword(
+                underTest.servers.rebuildFromImage(serverId, RebuildFromImageByName("ubuntu-20.04")) shouldBe ServerActionWithRootPassword(
                     action = Action(
                         id = Action.Id(13),
                         command = "rebuild_server",
@@ -901,11 +908,16 @@ class ServerApiTest :
             }
 
             should("enable rescue mode for a Server") {
+
+                val enableRescueModeRequest = EnableRescueMode(
+                    sshKeys = listOf(SSHKey.Id(2323)),
+                )
+
+                jsonEncoder().encodeToString(enableRescueModeRequest) shouldBeEqualToRequest "enable_rescue_mode_for_server.json"
+
                 underTest.servers.enableRescueMode(
                     serverId,
-                    EnableRescueMode(
-                        sshKeys = listOf(SSHKey.Id(2323)),
-                    ),
+                    enableRescueModeRequest,
                 ) shouldBe ServerActionWithRootPassword(
                     Action(
                         id = Action.Id(13),
@@ -940,8 +952,8 @@ class ServerApiTest :
                 )
             }
 
-            should("create an Image fromServer") {
-                val createImage = CreateImageFromServer(
+            should("create an Image from Server") {
+                val createImageRequest = CreateImageFromServer(
                     description = "my image",
                     labels = mapOf(
                         "environment" to "prod",
@@ -951,7 +963,9 @@ class ServerApiTest :
                     type = CreateImageFromServer.Type.SNAPSHOT,
                 )
 
-                underTest.servers.createImage(serverId, createImage) shouldBe ServerActionWithImage(
+                jsonEncoder().encodeToString(createImageRequest) shouldBeEqualToRequest "create_an_image_from_server.json"
+
+                underTest.servers.createImage(serverId, createImageRequest) shouldBe ServerActionWithImage(
                     action = Action(
                         id = Action.Id(13),
                         command = "create_image",
@@ -996,6 +1010,8 @@ class ServerApiTest :
                     upgradeDisk = true,
                 )
 
+                jsonEncoder().encodeToString(changeServerTypeRequest) shouldBeEqualToRequest "change_server_type.json"
+
                 underTest.servers.changeType(serverId, changeServerTypeRequest) shouldBe Item(
                     Action(
                         id = Action.Id(13),
@@ -1017,6 +1033,8 @@ class ServerApiTest :
                     delete = true,
                     rebuild = true,
                 )
+
+                jsonEncoder().encodeToString(changeServerProtection) shouldBeEqualToRequest "change_server_protection.json"
 
                 underTest.servers.changeProtection(serverId, changeServerProtection) shouldBe Item(
                     Action(
@@ -1040,6 +1058,8 @@ class ServerApiTest :
                     ip = "1.2.3.4",
                 )
 
+                jsonEncoder().encodeToString(changeReverseDnsPtrRequest) shouldBeEqualToRequest "change_server_reverse_dns.json"
+
                 underTest.servers.changeReverseDns(serverId, changeReverseDnsPtrRequest) shouldBe Item(
                     Action(
                         id = Action.Id(13),
@@ -1061,6 +1081,8 @@ class ServerApiTest :
                     aliasIps = listOf("10.0.1.2"),
                     network = Network.Id(4711),
                 )
+
+                jsonEncoder().encodeToString(changeReverseDnsPtrRequest) shouldBeEqualToRequest "change_alias_ips_of_a_network.json"
 
                 underTest.servers.changeAliasIps(serverId, changeReverseDnsPtrRequest) shouldBe Item(
                     Action(

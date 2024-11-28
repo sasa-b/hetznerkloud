@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Location
@@ -108,6 +109,8 @@ class VolumeApiTest :
                     size = 42,
                 )
 
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_a_volume.json"
+
                 underTest.volumes.create(createRequest) shouldBe ItemCreated(
                     action = Action(
                         id = Action.Id(13),
@@ -145,12 +148,14 @@ class VolumeApiTest :
 
                 val updateRequest = UpdateResource(
                     labels = mapOf(
-                        "labelkey" to "value",
+                        "environment" to "prod",
                         "example.com/my" to "label",
                         "just-a-key" to "",
                     ),
                     name = "database-storage",
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_a_volume.json"
 
                 underTest.volumes.update(volumeId, updateRequest) shouldBe Item(expectedVolume.copy(labels = mapOf("labelkey" to "value")))
             }

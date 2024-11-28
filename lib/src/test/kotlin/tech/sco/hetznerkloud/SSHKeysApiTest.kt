@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.SSHKey
 import tech.sco.hetznerkloud.request.CreateSSHKey
@@ -59,15 +60,23 @@ class SSHKeysApiTest :
                     publicKey = "ssh-rsa AAAjjk76kgf...Xt",
                 )
 
+                jsonEncoder().encodeToString(createRequest) shouldBeEqualToRequest "create_an_ssh_key.json"
+
                 underTest.sshKeys.create(createRequest) shouldBe Item(expectedSSHKey)
             }
 
             should("update an ssh key") {
 
                 val updateRequest = UpdateResource(
-                    labels = mapOf(),
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
                     name = "My ssh key",
                 )
+
+                jsonEncoder().encodeToString(updateRequest) shouldBeEqualToRequest "update_an_ssh_key.json"
 
                 underTest.sshKeys.update(sshKeyId, updateRequest) shouldBe Item(
                     SSHKey(
