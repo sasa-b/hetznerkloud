@@ -110,6 +110,14 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
 
         matchRoute(Route.GET_ALL_LOAD_BALANCERS, request, routeParamsProvider) -> response(Route.GET_ALL_LOAD_BALANCERS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.GET_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_LOAD_BALANCER_ACTIONS, request, routeParamsProvider) -> response(Route.GET_LOAD_BALANCER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_LOAD_BALANCER_ACTION, request, routeParamsProvider) -> response(Route.GET_LOAD_BALANCER_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(
+            Route.GET_LOAD_BALANCER_ACTION_FOR_LOAD_BALANCER,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.GET_LOAD_BALANCER_ACTION_FOR_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_LOAD_BALANCER_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_LOAD_BALANCER_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.CREATE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.CREATE_LOAD_BALANCER, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
@@ -280,10 +288,10 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_LOAD_BALANCERS -> "src/test/resources/examples/response/load_balancer/get_all_load_balancers.json"
     Route.GET_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer.json"
-    Route.GET_LOAD_BALANCER_ACTIONS -> TODO()
-    Route.GET_LOAD_BALANCER_ACTION -> TODO()
-    Route.GET_LOAD_BALANCER_ACTION_FOR_LOAD_BALANCER -> TODO()
-    Route.GET_ALL_LOAD_BALANCER_ACTIONS -> TODO()
+    Route.GET_LOAD_BALANCER_ACTIONS -> "src/test/resources/examples/response/load_balancer/get_load_balancer_actions.json"
+    Route.GET_LOAD_BALANCER_ACTION -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer_action.json"
+    Route.GET_LOAD_BALANCER_ACTION_FOR_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer_action_for_load_balancer.json"
+    Route.GET_ALL_LOAD_BALANCER_ACTIONS -> "src/test/resources/examples/response/load_balancer/get_all_load_balancer_actions.json"
     Route.CREATE_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/create_a_load_balancer.json"
     Route.UPDATE_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/update_a_load_balancer.json"
     Route.DELETE_LOAD_BALANCER -> "src/test/resources/examples/response/no_content.json"

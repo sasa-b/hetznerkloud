@@ -14,7 +14,9 @@ import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
@@ -27,7 +29,7 @@ class LoadBalancerApiTest :
 
         val loadBalancerId = LoadBalancer.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to loadBalancerId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to loadBalancerId.value.toString(), "action_id" to "42") }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Load balancer resource read API") {
@@ -186,6 +188,72 @@ class LoadBalancerApiTest :
             should("get Load balancer by id") {
 
                 underTest.loadBalancers.find(loadBalancerId) shouldBe Item(expectedLoadBalancer)
+            }
+
+            should("get all Load Balancer actions") {
+                underTest.actions.all(ResourceType.LOAD_BALANCER) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(ServerResource(id = Server.Id(42))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Load Balancer actions") {
+                underTest.actions.all(resourceId = loadBalancerId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "add_service",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Load Balancer action") {
+                underTest.actions.find(ResourceType.LOAD_BALANCER, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(ServerResource(id = Server.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Load Balancer action for server") {
+                underTest.actions.find(resourceId = loadBalancerId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
 
