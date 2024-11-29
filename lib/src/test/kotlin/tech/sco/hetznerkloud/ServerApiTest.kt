@@ -27,8 +27,8 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAliasIps
+import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerProtections
-import tech.sco.hetznerkloud.request.ChangeServerReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
@@ -668,7 +668,7 @@ class ServerApiTest :
             }
 
             should("attach Server to a Network") {
-                val attachToNetworkRequest = AttachToNetwork(
+                val attachToNetworkRequest = AttachToNetwork.Server(
                     aliasIps = listOf("10.0.1.2"),
                     ip = "10.0.1.1",
                     network = Network.Id(4711),
@@ -1053,7 +1053,7 @@ class ServerApiTest :
             }
 
             should("change Server reverse DNS ptr") {
-                val changeReverseDnsPtrRequest = ChangeServerReverseDns(
+                val changeReverseDnsPtrRequest = ChangeReverseDns(
                     dnsPtr = "server01.example.com",
                     ip = "1.2.3.4",
                 )

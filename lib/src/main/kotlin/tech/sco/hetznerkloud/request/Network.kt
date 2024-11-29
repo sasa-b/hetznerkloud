@@ -40,3 +40,16 @@ data class UpdateNetwork(
     val labels: Labels,
     val name: String,
 ) : HttpBody
+
+object AttachToNetwork {
+    @Serializable
+    data class Server(
+        val network: Network.Id,
+        @SerialName("alias_ips")
+        val aliasIps: List<String>? = null,
+        val ip: String? = null,
+    ) : HttpBody
+
+    @Serializable
+    data class LoadBalancer(val network: Network.Id, val ip: String? = null) : HttpBody
+}

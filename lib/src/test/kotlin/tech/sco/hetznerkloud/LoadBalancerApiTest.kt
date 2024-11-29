@@ -12,6 +12,7 @@ import tech.sco.hetznerkloud.model.LoadBalancerType
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Network
+import tech.sco.hetznerkloud.model.NetworkResource
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
@@ -20,7 +21,11 @@ import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.AddService
 import tech.sco.hetznerkloud.request.AddTarget
+import tech.sco.hetznerkloud.request.AttachToNetwork
+import tech.sco.hetznerkloud.request.ChangeAlgorithm
+import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
+import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.LabelSelector
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
@@ -533,7 +538,7 @@ class LoadBalancerApiTest :
 
                 jsonEncoder().encodeToString(addServiceRequest) shouldBeEqualToRequest "load_balancer_add_service.json"
 
-                underTest.loadBalancers.addService(addServiceRequest) shouldBe Item(
+                underTest.loadBalancers.addService(loadBalancerId, addServiceRequest) shouldBe Item(
                     Action(
                         id = Action.Id(13),
                         command = "add_service",
@@ -564,7 +569,7 @@ class LoadBalancerApiTest :
 
                 jsonEncoder().encodeToString(addTargetRequest) shouldBeEqualToRequest "load_balancer_add_target.json"
 
-                underTest.loadBalancers.addTarget(addTargetRequest) shouldBe Item(
+                underTest.loadBalancers.addTarget(loadBalancerId, addTargetRequest) shouldBe Item(
                     Action(
                         id = Action.Id(13),
                         command = "add_target",
@@ -574,6 +579,93 @@ class LoadBalancerApiTest :
                         resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("attach Load Balancer to network") {
+                val attachToNetworkRequest = AttachToNetwork.LoadBalancer(
+                    ip = "10.0.1.1",
+                    network = Network.Id(4711),
+                )
+
+                jsonEncoder().encodeToString(attachToNetworkRequest) shouldBeEqualToRequest "attach_a_load_balancer_to_network.json"
+
+                underTest.loadBalancers.attachToNetwork(loadBalancerId, attachToNetworkRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "attach_to_network",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("detach Load Balancer from network") {
+                val detachFromNetworkRequest = DetachFromNetwork(Network.Id(4711))
+
+                jsonEncoder().encodeToString(detachFromNetworkRequest) shouldBeEqualToRequest "detach_a_load_balancer_from_network.json"
+
+                underTest.loadBalancers.detachFromNetwork(loadBalancerId, detachFromNetworkRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "detach_from_network",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            NetworkResource(id = Network.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("change Load Balancer algorithm") {
+                val changeAlgorithmRequest = ChangeAlgorithm(LoadBalancer.Algorithm.Type.ROUND_ROBIN)
+
+                jsonEncoder().encodeToString(changeAlgorithmRequest) shouldBeEqualToRequest "change_load_balancer_algorithm.json"
+
+                underTest.loadBalancers.changeAlgorithm(loadBalancerId, changeAlgorithmRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_algorithm",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change Load Balancer reverse dns") {
+                val changeReverseDnsRequest = ChangeReverseDns(
+                    dnsPtr = "lb1.example.com",
+                    ip = "1.2.3.4",
+                )
+
+                jsonEncoder().encodeToString(changeReverseDnsRequest) shouldBeEqualToRequest "change_load_balancer_reverse_dns.json"
+
+                underTest.loadBalancers.changeReverseDns(loadBalancerId, changeReverseDnsRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_dns_ptr",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            LoadBalancerResource(id = LoadBalancer.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
                     ),
                 )
             }

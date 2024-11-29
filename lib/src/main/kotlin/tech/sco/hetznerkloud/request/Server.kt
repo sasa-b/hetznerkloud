@@ -67,14 +67,6 @@ data class AttachIsoByName(val iso: String) : HttpBody
 data class AttachIsoById(val iso: Iso.Id) : HttpBody
 
 @Serializable
-data class AttachToNetwork(
-    @SerialName("alias_ips")
-    val aliasIps: List<String>,
-    val ip: String,
-    val network: Network.Id,
-) : HttpBody
-
-@Serializable
 data class RebuildFromImageByName(val image: String) : HttpBody
 
 @Serializable
@@ -93,9 +85,6 @@ data class EnableRescueMode(
         LINUX64,
     }
 }
-
-@Serializable
-data class DetachFromNetwork(val network: Network.Id) : HttpBody
 
 @Serializable
 data class CreateImageFromServer(val description: String, val labels: Labels? = null, val type: Type) : HttpBody {
@@ -120,13 +109,6 @@ data class ChangeServerType(
 
 @Serializable
 data class ChangeServerProtections(val delete: Boolean, val rebuild: Boolean) : HttpBody
-
-@Serializable
-data class ChangeServerReverseDns(
-    @SerialName("dns_ptr")
-    val dnsPtr: String,
-    val ip: String,
-) : HttpBody
 
 @Serializable
 data class ChangeAliasIps(

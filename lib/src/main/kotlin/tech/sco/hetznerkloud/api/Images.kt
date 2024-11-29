@@ -32,5 +32,6 @@ class Images @InternalAPI constructor(private val httpClient: HttpClient) {
     @Throws(Failure::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_IMAGE, resourceId = id.value)
 
+    @Throws(Failure::class)
     suspend fun changeImageProtection(id: Id, body: ChangeImageProtection): Item<Action> = httpClient.makeRequest(Route.CHANGE_IMAGE_PROTECTION, resourceId = id.value, body = body)
 }

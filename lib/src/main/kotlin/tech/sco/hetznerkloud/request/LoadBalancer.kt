@@ -51,3 +51,6 @@ data class AddTarget(
     @SerialName("use_private_ip")
     val usePrivateIp: Boolean,
 ) : HttpBody
+
+@Serializable
+data class ChangeAlgorithm(val type: LoadBalancer.Algorithm.Type) : HttpBody

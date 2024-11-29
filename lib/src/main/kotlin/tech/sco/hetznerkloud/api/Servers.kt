@@ -14,8 +14,8 @@ import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAliasIps
+import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerProtections
-import tech.sco.hetznerkloud.request.ChangeServerReverseDns
 import tech.sco.hetznerkloud.request.ChangeServerType
 import tech.sco.hetznerkloud.request.CreateImageFromServer
 import tech.sco.hetznerkloud.request.CreateServer
@@ -87,7 +87,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun detachIso(id: Id): Item<Action> = httpClient.makeRequest(Route.DETACH_ISO_FROM_SERVER, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun attachToNetwork(id: Id, body: AttachToNetwork): Item<Action> = httpClient.makeRequest(Route.ATTACH_SERVER_TO_NETWORK, resourceId = id.value, body = body)
+    suspend fun attachToNetwork(id: Id, body: AttachToNetwork.Server): Item<Action> = httpClient.makeRequest(Route.ATTACH_SERVER_TO_NETWORK, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun detachFromNetwork(id: Id, body: DetachFromNetwork): Item<Action> = httpClient.makeRequest(Route.DETACH_SERVER_FROM_NETWORK, resourceId = id.value, body = body)
@@ -147,7 +147,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun changeProtection(id: Id, body: ChangeServerProtections): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_PROTECTION, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun changeReverseDns(id: Id, body: ChangeServerReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_REVERSE_DNS, resourceId = id.value, body = body)
+    suspend fun changeReverseDns(id: Id, body: ChangeReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_REVERSE_DNS, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun changeAliasIps(id: Id, body: ChangeAliasIps): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_ALIAS_IP_OF_NETWORK, resourceId = id.value, body = body)
