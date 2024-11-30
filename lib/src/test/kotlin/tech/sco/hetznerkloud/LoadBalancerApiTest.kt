@@ -35,6 +35,7 @@ import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
+@Suppress("LargeClass")
 class LoadBalancerApiTest :
     ShouldSpec({
 
