@@ -104,6 +104,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CHANGE_LOAD_BALANCER_REVERSE_DNS(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_dns_ptr"))),
     CHANGE_LOAD_BALANCER_PROTECTION(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_protection"))),
     CHANGE_LOAD_BALANCER_TYPE(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_type"))),
+    LOAD_BALANCER_DELETE_SERVICE(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/delete_service"))),
 
     GET_ALL_LOAD_BALANCER_TYPES(Pair(HttpMethod.Get, Path("/load_balancer_types"))),
     GET_LOAD_BALANCER_TYPE(Pair(HttpMethod.Get, Path("/load_balancer_types/{id}"))),

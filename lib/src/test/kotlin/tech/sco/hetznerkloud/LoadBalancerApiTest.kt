@@ -27,6 +27,7 @@ import tech.sco.hetznerkloud.request.ChangeLoadBalancerProtection
 import tech.sco.hetznerkloud.request.ChangeLoadBalancerType
 import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
+import tech.sco.hetznerkloud.request.DeleteService
 import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.LabelSelector
 import tech.sco.hetznerkloud.request.UpdateResource
@@ -549,6 +550,27 @@ class LoadBalancerApiTest :
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
                         resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("delete service from Load Balancer") {
+                val deleteServiceRequest = DeleteService(listenPort = 443)
+
+                jsonEncoder().encodeToString(deleteServiceRequest) shouldBeEqualToRequest "load_balancer_delete_service.json"
+
+                underTest.loadBalancers.deleteService(loadBalancerId, deleteServiceRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "delete_service",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
+                        ),
                         started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                         status = Action.Status.SUCCESS,
                     ),

@@ -60,3 +60,6 @@ data class ChangeLoadBalancerProtection(val delete: Boolean) : HttpBody
 
 @Serializable
 data class ChangeLoadBalancerType(@SerialName("load_balancer_type") val loadBalancerType: String) : HttpBody
+
+@Serializable
+data class DeleteService(@SerialName("listen_port") val listenPort: Int) : HttpBody

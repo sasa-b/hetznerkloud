@@ -16,6 +16,7 @@ import tech.sco.hetznerkloud.request.ChangeLoadBalancerProtection
 import tech.sco.hetznerkloud.request.ChangeLoadBalancerType
 import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
+import tech.sco.hetznerkloud.request.DeleteService
 import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.LoadBalancerFilter
 import tech.sco.hetznerkloud.request.LoadBalancerSorting
@@ -50,6 +51,9 @@ class LoadBalancers @InternalAPI constructor(private val httpClient: HttpClient)
 
     @Throws(Failure::class)
     suspend fun addService(id: Id, body: AddService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_SERVICE, body = body, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun deleteService(id: Id, body: DeleteService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_DELETE_SERVICE, body = body, resourceId = id.value)
 
     @Throws(Failure::class)
     suspend fun addTarget(id: Id, body: AddTarget): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_TARGET, body = body, resourceId = id.value)
