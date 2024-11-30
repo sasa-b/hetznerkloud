@@ -102,6 +102,8 @@ internal enum class Route(val value: HttpMethodAndPath) {
     DETACH_LOAD_BALANCER_FROM_NETWORK(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/detach_from_network"))),
     CHANGE_LOAD_BALANCER_ALGORITHM(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_algorithm"))),
     CHANGE_LOAD_BALANCER_REVERSE_DNS(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_dns_ptr"))),
+    CHANGE_LOAD_BALANCER_PROTECTION(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_protection"))),
+    CHANGE_LOAD_BALANCER_TYPE(Pair(HttpMethod.Post, Path("/load_balancers/{id}/actions/change_type"))),
 
     GET_ALL_LOAD_BALANCER_TYPES(Pair(HttpMethod.Get, Path("/load_balancer_types"))),
     GET_LOAD_BALANCER_TYPE(Pair(HttpMethod.Get, Path("/load_balancer_types/{id}"))),

@@ -12,6 +12,8 @@ import tech.sco.hetznerkloud.request.AddService
 import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAlgorithm
+import tech.sco.hetznerkloud.request.ChangeLoadBalancerProtection
+import tech.sco.hetznerkloud.request.ChangeLoadBalancerType
 import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.DetachFromNetwork
@@ -65,4 +67,11 @@ class LoadBalancers @InternalAPI constructor(private val httpClient: HttpClient)
 
     @Throws(Failure::class)
     suspend fun changeReverseDns(id: Id, body: ChangeReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_LOAD_BALANCER_REVERSE_DNS, body = body, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun changeProtection(id: Id, body: ChangeLoadBalancerProtection): Item<Action> =
+        httpClient.makeRequest(Route.CHANGE_LOAD_BALANCER_PROTECTION, body = body, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun changeType(id: Id, body: ChangeLoadBalancerType): Item<Action> = httpClient.makeRequest(Route.CHANGE_LOAD_BALANCER_TYPE, body = body, resourceId = id.value)
 }

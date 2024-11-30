@@ -54,3 +54,9 @@ data class AddTarget(
 
 @Serializable
 data class ChangeAlgorithm(val type: LoadBalancer.Algorithm.Type) : HttpBody
+
+@Serializable
+data class ChangeLoadBalancerProtection(val delete: Boolean) : HttpBody
+
+@Serializable
+data class ChangeLoadBalancerType(@SerialName("load_balancer_type") val loadBalancerType: String) : HttpBody

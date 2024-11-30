@@ -23,6 +23,8 @@ import tech.sco.hetznerkloud.request.AddService
 import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAlgorithm
+import tech.sco.hetznerkloud.request.ChangeLoadBalancerProtection
+import tech.sco.hetznerkloud.request.ChangeLoadBalancerType
 import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.DetachFromNetwork
@@ -663,6 +665,48 @@ class LoadBalancerApiTest :
                         progress = 0,
                         resources = listOf(
                             LoadBalancerResource(id = LoadBalancer.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("change Load Balancer protection") {
+                val changeProtection = ChangeLoadBalancerProtection(delete = true)
+
+                jsonEncoder().encodeToString(changeProtection) shouldBeEqualToRequest "change_load_balancer_protection.json"
+
+                underTest.loadBalancers.changeProtection(loadBalancerId, changeProtection) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            LoadBalancerResource(id = LoadBalancer.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change Load Balancer type") {
+                val changeTypeRequest = ChangeLoadBalancerType(loadBalancerType = "lb21")
+
+                jsonEncoder().encodeToString(changeTypeRequest) shouldBeEqualToRequest "change_load_balancer_type.json"
+
+                underTest.loadBalancers.changeType(loadBalancerId, changeTypeRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_load_balancer_type",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
