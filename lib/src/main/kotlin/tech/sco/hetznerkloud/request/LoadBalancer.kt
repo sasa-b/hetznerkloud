@@ -28,7 +28,7 @@ data class CreateLoadBalancer(
 ) : HttpBody
 
 @Serializable
-data class AddService(
+data class UpsertService(
     @SerialName("destination_port")
     val destinationPort: Int,
     @SerialName("health_check")
@@ -51,6 +51,16 @@ data class AddTarget(
     @SerialName("use_private_ip")
     val usePrivateIp: Boolean,
 ) : HttpBody
+
+@Serializable
+data class RemoveTarget(
+    val ip: LoadBalancer.Target.Ip,
+    @SerialName("label_selector")
+    val labelSelector: LabelSelector,
+    val server: LoadBalancer.Target.Server,
+) : HttpBody {
+    val type = LoadBalancer.Target.Type.SERVER
+}
 
 @Serializable
 data class ChangeAlgorithm(val type: LoadBalancer.Algorithm.Type) : HttpBody

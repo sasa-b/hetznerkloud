@@ -8,7 +8,6 @@ import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.LoadBalancer
 import tech.sco.hetznerkloud.model.LoadBalancer.Id
-import tech.sco.hetznerkloud.request.AddService
 import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAlgorithm
@@ -21,7 +20,9 @@ import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.LoadBalancerFilter
 import tech.sco.hetznerkloud.request.LoadBalancerSorting
 import tech.sco.hetznerkloud.request.Pagination
+import tech.sco.hetznerkloud.request.RemoveTarget
 import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.request.UpsertService
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
@@ -50,13 +51,19 @@ class LoadBalancers @InternalAPI constructor(private val httpClient: HttpClient)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_LOAD_BALANCER, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun addService(id: Id, body: AddService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_SERVICE, body = body, resourceId = id.value)
+    suspend fun addService(id: Id, body: UpsertService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_SERVICE, body = body, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun updateService(id: Id, body: UpsertService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_UPDATE_SERVICE, body = body, resourceId = id.value)
 
     @Throws(Failure::class)
     suspend fun deleteService(id: Id, body: DeleteService): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_DELETE_SERVICE, body = body, resourceId = id.value)
 
     @Throws(Failure::class)
     suspend fun addTarget(id: Id, body: AddTarget): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_ADD_TARGET, body = body, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun removeTarget(id: Id, body: RemoveTarget): Item<Action> = httpClient.makeRequest(Route.LOAD_BALANCER_REMOVE_TARGET, body = body, resourceId = id.value)
 
     @Throws(Failure::class)
     suspend fun attachToNetwork(id: Id, body: AttachToNetwork.LoadBalancer): Item<Action> =
@@ -78,4 +85,10 @@ class LoadBalancers @InternalAPI constructor(private val httpClient: HttpClient)
 
     @Throws(Failure::class)
     suspend fun changeType(id: Id, body: ChangeLoadBalancerType): Item<Action> = httpClient.makeRequest(Route.CHANGE_LOAD_BALANCER_TYPE, body = body, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun enablePublicInterface(id: Id): Item<Action> = httpClient.makeRequest(Route.ENABLE_LOAD_BALANCER_PUBLIC_INTERFACE, id.value)
+
+    @Throws(Failure::class)
+    suspend fun disablePublicInterface(id: Id): Item<Action> = httpClient.makeRequest(Route.DISABLE_LOAD_BALANCER_PUBLIC_INTERFACE, id.value)
 }

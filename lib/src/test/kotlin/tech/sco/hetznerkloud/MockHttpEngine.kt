@@ -122,7 +122,10 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.UPDATE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.UPDATE_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.DELETE_LOAD_BALANCER, HttpStatusCode.NoContent, defaultHeaders)
         matchRoute(Route.LOAD_BALANCER_ADD_SERVICE, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_ADD_SERVICE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.LOAD_BALANCER_UPDATE_SERVICE, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_UPDATE_SERVICE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.LOAD_BALANCER_DELETE_SERVICE, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_DELETE_SERVICE, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.LOAD_BALANCER_ADD_TARGET, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_ADD_TARGET, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.LOAD_BALANCER_REMOVE_TARGET, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_REMOVE_TARGET, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.ATTACH_LOAD_BALANCER_TO_NETWORK, request, routeParamsProvider) -> response(Route.ATTACH_LOAD_BALANCER_TO_NETWORK, HttpStatusCode.Created, defaultHeaders)
         matchRoute(
             Route.DETACH_LOAD_BALANCER_FROM_NETWORK,
@@ -133,7 +136,16 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CHANGE_LOAD_BALANCER_REVERSE_DNS, request, routeParamsProvider) -> response(Route.CHANGE_LOAD_BALANCER_REVERSE_DNS, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.CHANGE_LOAD_BALANCER_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_LOAD_BALANCER_PROTECTION, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.CHANGE_LOAD_BALANCER_TYPE, request, routeParamsProvider) -> response(Route.CHANGE_LOAD_BALANCER_TYPE, HttpStatusCode.Created, defaultHeaders)
-        matchRoute(Route.LOAD_BALANCER_DELETE_SERVICE, request, routeParamsProvider) -> response(Route.LOAD_BALANCER_DELETE_SERVICE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.ENABLE_LOAD_BALANCER_PUBLIC_INTERFACE,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.ENABLE_LOAD_BALANCER_PUBLIC_INTERFACE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.DISABLE_LOAD_BALANCER_PUBLIC_INTERFACE,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.DISABLE_LOAD_BALANCER_PUBLIC_INTERFACE, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_LOAD_BALANCER_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_LOAD_BALANCER_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_LOAD_BALANCER_TYPE, request, routeParamsProvider) -> response(Route.GET_LOAD_BALANCER_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -316,6 +328,10 @@ private fun content(route: Route): String = when (route) {
     Route.CHANGE_LOAD_BALANCER_PROTECTION -> "src/test/resources/examples/response/load_balancer/change_load_balancer_protection.json"
     Route.CHANGE_LOAD_BALANCER_TYPE -> "src/test/resources/examples/response/load_balancer/change_load_balancer_type.json"
     Route.LOAD_BALANCER_DELETE_SERVICE -> "src/test/resources/examples/response/load_balancer/load_balancer_delete_service.json"
+    Route.ENABLE_LOAD_BALANCER_PUBLIC_INTERFACE -> "src/test/resources/examples/response/load_balancer/enable_load_balancer_public_interface.json"
+    Route.DISABLE_LOAD_BALANCER_PUBLIC_INTERFACE -> "src/test/resources/examples/response/load_balancer/disable_load_balancer_public_interface.json"
+    Route.LOAD_BALANCER_UPDATE_SERVICE -> "src/test/resources/examples/response/load_balancer/load_balancer_update_a_service.json"
+    Route.LOAD_BALANCER_REMOVE_TARGET -> "src/test/resources/examples/response/load_balancer/load_balancer_remove_a_target.json"
 
     Route.GET_ALL_LOAD_BALANCER_TYPES -> "src/test/resources/examples/response/load_balancer/get_all_load_balancer_types.json"
     Route.GET_LOAD_BALANCER_TYPE -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer_type.json"

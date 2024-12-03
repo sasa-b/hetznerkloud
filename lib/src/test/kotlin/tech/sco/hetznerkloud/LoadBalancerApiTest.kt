@@ -19,7 +19,6 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
-import tech.sco.hetznerkloud.request.AddService
 import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAlgorithm
@@ -30,7 +29,9 @@ import tech.sco.hetznerkloud.request.CreateLoadBalancer
 import tech.sco.hetznerkloud.request.DeleteService
 import tech.sco.hetznerkloud.request.DetachFromNetwork
 import tech.sco.hetznerkloud.request.LabelSelector
+import tech.sco.hetznerkloud.request.RemoveTarget
 import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.request.UpsertService
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.Items
@@ -514,7 +515,7 @@ class LoadBalancerApiTest :
             }
 
             should("add Service to Load balancer") {
-                val addServiceRequest = AddService(
+                val addServiceRequest = UpsertService(
                     destinationPort = 80,
                     LoadBalancer.Service.HealthCheck(
                         http = LoadBalancer.Service.HealthCheck.Http(
@@ -546,6 +547,49 @@ class LoadBalancerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "add_service",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("update a Load balancer service") {
+                val updateServiceRequest = UpsertService(
+                    destinationPort = 80,
+                    LoadBalancer.Service.HealthCheck(
+                        http = LoadBalancer.Service.HealthCheck.Http(
+                            domain = "example.com",
+                            path = "/",
+                            response = "{\"status\": \"ok\"}",
+                            statusCodes = listOf("2??", "3??"),
+                            tls = false,
+                        ),
+                        interval = 15,
+                        port = 4711,
+                        protocol = LoadBalancer.Service.Protocol.HTTP,
+                        retries = 3,
+                        timeout = 10,
+                    ),
+                    http = LoadBalancer.Service.Http(
+                        certificates = listOf(Certificate.Id(897)),
+                        redirectHttp = true,
+                        stickySessions = true,
+                    ),
+                    listenPort = 443,
+                    protocol = LoadBalancer.Service.Protocol.HTTPS,
+                    proxyProtocol = false,
+                )
+
+                jsonEncoder().encodeToString(updateServiceRequest) shouldBeEqualToRequest "load_balancer_update_a_service.json"
+
+                underTest.loadBalancers.updateService(loadBalancerId, updateServiceRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "update_service",
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
@@ -598,6 +642,35 @@ class LoadBalancerApiTest :
                     Action(
                         id = Action.Id(13),
                         command = "add_target",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(LoadBalancerResource(id = LoadBalancer.Id(4711))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("remove Target to Load balancer") {
+                val removeTargetRequest = RemoveTarget(
+                    ip = LoadBalancer.Target.Ip(
+                        ip = "203.0.113.1",
+                    ),
+                    labelSelector = LabelSelector(
+                        selector = "env=prod",
+                    ),
+                    server = LoadBalancer.Target.Server(
+                        id = Server.Id(80),
+                    ),
+                )
+
+                jsonEncoder().encodeToString(removeTargetRequest) shouldBeEqualToRequest "load_balancer_remove_a_target.json"
+
+                underTest.loadBalancers.removeTarget(loadBalancerId, removeTargetRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "remove_target",
                         error = ActionFailedError(message = "Action failed"),
                         finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
                         progress = 100,
@@ -730,6 +803,42 @@ class LoadBalancerApiTest :
                         progress = 0,
                         resources = listOf(
                             ServerResource(id = Server.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("enable Load Balancer public interface") {
+                underTest.loadBalancers.enablePublicInterface(loadBalancerId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "enable_public_interface",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            NetworkResource(id = Network.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("disable Load Balancer public interface") {
+                underTest.loadBalancers.disablePublicInterface(loadBalancerId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "disable_public_interface",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            NetworkResource(id = Network.Id(4711)),
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.RUNNING,
