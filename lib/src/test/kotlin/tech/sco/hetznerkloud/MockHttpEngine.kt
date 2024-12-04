@@ -106,7 +106,13 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.GET_ALL_NETWORK_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_NETWORK_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.CREATE_NETWORK, request, routeParamsProvider) -> response(Route.CREATE_NETWORK, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_NETWORK, request, routeParamsProvider) -> response(Route.UPDATE_NETWORK, HttpStatusCode.OK, defaultHeaders)
-        matchRoute(Route.DELETE_NETWORK, request, routeParamsProvider) -> response(Route.DELETE_NETWORK, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.DELETE_NETWORK, request, routeParamsProvider) -> response(Route.DELETE_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ADD_ROUTE_TO_NETWORK, request, routeParamsProvider) -> response(Route.ADD_ROUTE_TO_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.DELETE_ROUTE_FROM_NETWORK, request, routeParamsProvider) -> response(Route.DELETE_ROUTE_FROM_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ADD_SUBNET_TO_NETWORK, request, routeParamsProvider) -> response(Route.ADD_SUBNET_TO_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.DELETE_SUBNET_FROM_NETWORK, request, routeParamsProvider) -> response(Route.DELETE_SUBNET_FROM_NETWORK, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_NETWORK_IP_RANGE, request, routeParamsProvider) -> response(Route.CHANGE_NETWORK_IP_RANGE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_NETWORK_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_NETWORK_PROTECTION, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_LOAD_BALANCERS, request, routeParamsProvider) -> response(Route.GET_ALL_LOAD_BALANCERS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_LOAD_BALANCER, request, routeParamsProvider) -> response(Route.GET_LOAD_BALANCER, HttpStatusCode.OK, defaultHeaders)
@@ -309,6 +315,12 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_NETWORK -> "src/test/resources/examples/response/network/create_a_network.json"
     Route.UPDATE_NETWORK -> "src/test/resources/examples/response/network/update_a_network.json"
     Route.DELETE_NETWORK -> "src/test/resources/examples/response/no_content.json"
+    Route.ADD_ROUTE_TO_NETWORK -> "src/test/resources/examples/response/network/add_a_route_to_network.json"
+    Route.DELETE_ROUTE_FROM_NETWORK -> "src/test/resources/examples/response/network/delete_a_route_from_network.json"
+    Route.ADD_SUBNET_TO_NETWORK -> "src/test/resources/examples/response/network/add_a_subnet_to_network.json"
+    Route.DELETE_SUBNET_FROM_NETWORK -> "src/test/resources/examples/response/network/delete_a_subnet_from_network.json"
+    Route.CHANGE_NETWORK_IP_RANGE -> "src/test/resources/examples/response/network/change_ip_range_of_network.json"
+    Route.CHANGE_NETWORK_PROTECTION -> "src/test/resources/examples/response/network/change_network_protection.json"
 
     Route.GET_ALL_LOAD_BALANCERS -> "src/test/resources/examples/response/load_balancer/get_all_load_balancers.json"
     Route.GET_LOAD_BALANCER -> "src/test/resources/examples/response/load_balancer/get_a_load_balancer.json"

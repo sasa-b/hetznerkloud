@@ -1,13 +1,9 @@
-@file:OptIn(ExperimentalSerializationApi::class)
-
 package tech.sco.hetznerkloud.request
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import tech.sco.hetznerkloud.model.Labels
 import tech.sco.hetznerkloud.model.Network
-import tech.sco.hetznerkloud.model.Network.Type
 import tech.sco.hetznerkloud.model.NetworkZone
 
 @Serializable
@@ -27,7 +23,7 @@ data class CreateNetwork(
         val ipRange: String? = null,
         @SerialName("network_zone")
         val networkZone: NetworkZone,
-        val type: Type,
+        val type: Network.Type,
         @SerialName("vswitch_id")
         val vSwitchId: Long? = null,
     )
@@ -53,3 +49,29 @@ object AttachToNetwork {
     @Serializable
     data class LoadBalancer(val network: Network.Id, val ip: String? = null) : HttpBody
 }
+
+@Serializable
+data class AddRoute(val destination: String, val gateway: String) : HttpBody
+
+@Serializable
+data class AddSubnet(
+    @SerialName("ip_range")
+    val ipRange: String? = null,
+    @SerialName("network_zone")
+    val networkZone: NetworkZone,
+    val type: Network.Type,
+    @SerialName("vswitch_id")
+    val vSwitchId: Long? = null,
+) : HttpBody
+
+@Serializable
+data class ChangeIpRange(
+    @SerialName("ip_range")
+    val ipRange: String,
+) : HttpBody
+
+@Serializable
+data class DeleteSubnet(@SerialName("ip_range") val ipRange: String) : HttpBody
+
+@Serializable
+data class DeleteRoute(val destination: String, val gateway: String) : HttpBody

@@ -86,6 +86,12 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_NETWORK(Pair(HttpMethod.Post, Path("/networks"))),
     UPDATE_NETWORK(Pair(HttpMethod.Patch, Path("/networks/{id}"))),
     DELETE_NETWORK(Pair(HttpMethod.Delete, Path("/networks/{id}"))),
+    ADD_ROUTE_TO_NETWORK(Pair(HttpMethod.Post, Path("/networks/{id}/actions/add_route"))),
+    DELETE_ROUTE_FROM_NETWORK(Pair(HttpMethod.Post, Path("/networks/{id}/actions/delete_route"))),
+    ADD_SUBNET_TO_NETWORK(Pair(HttpMethod.Post, Path("/networks/{id}/actions/add_subnet"))),
+    DELETE_SUBNET_FROM_NETWORK(Pair(HttpMethod.Post, Path("/networks/{id}/actions/delete_subnet"))),
+    CHANGE_NETWORK_IP_RANGE(Pair(HttpMethod.Post, Path("/networks/{id}/actions/change_ip_range"))),
+    CHANGE_NETWORK_PROTECTION(Pair(HttpMethod.Post, Path("/networks/{id}/actions/change_protection"))),
 
     GET_ALL_LOAD_BALANCERS(Pair(HttpMethod.Get, Path("/load_balancers"))),
     GET_LOAD_BALANCER(Pair(HttpMethod.Get, Path("/load_balancers/{id}"))),

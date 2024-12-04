@@ -4,7 +4,6 @@
 > The API is not yet 100% covered. The following are missing:
 > * Firewall Actions,
 > * Floating IP Actions,
-> * Network Actions,
 > * Primary IP Actions,
 > * Volume Actions,
 

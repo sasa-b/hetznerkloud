@@ -1,0 +1,6 @@
+{
+  "ip_range": "10.0.1.0/24",
+  "network_zone": "eu-central",
+  "type": "cloud",
+  "vswitch_id": 1000
+}

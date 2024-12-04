@@ -22,3 +22,6 @@ data class ChangeReverseDns(
     val dnsPtr: String,
     val ip: String,
 ) : HttpBody
+
+@Serializable
+data class ChangeDeleteProtection(val delete: Boolean) : HttpBody

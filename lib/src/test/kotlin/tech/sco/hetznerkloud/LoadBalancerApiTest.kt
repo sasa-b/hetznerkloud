@@ -22,7 +22,7 @@ import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.AddTarget
 import tech.sco.hetznerkloud.request.AttachToNetwork
 import tech.sco.hetznerkloud.request.ChangeAlgorithm
-import tech.sco.hetznerkloud.request.ChangeLoadBalancerProtection
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.ChangeLoadBalancerType
 import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateLoadBalancer
@@ -769,7 +769,7 @@ class LoadBalancerApiTest :
             }
 
             should("change Load Balancer protection") {
-                val changeProtection = ChangeLoadBalancerProtection(delete = true)
+                val changeProtection = ChangeDeleteProtection(delete = true)
 
                 jsonEncoder().encodeToString(changeProtection) shouldBeEqualToRequest "change_load_balancer_protection.json"
 

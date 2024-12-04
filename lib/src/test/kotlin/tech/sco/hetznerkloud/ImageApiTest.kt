@@ -14,7 +14,7 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
-import tech.sco.hetznerkloud.request.ChangeImageProtection
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.UpdateImage
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -175,7 +175,7 @@ class ImageApiTest :
 
             should("change an Image protection") {
 
-                underTest.images.changeImageProtection(imageId, ChangeImageProtection(true)) shouldBe Item(
+                underTest.images.changeProtection(imageId, ChangeDeleteProtection(true)) shouldBe Item(
                     Action(
                         id = Action.Id(13),
                         command = "change_protection",

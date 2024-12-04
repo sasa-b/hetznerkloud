@@ -8,7 +8,7 @@ import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Image.Id
-import tech.sco.hetznerkloud.request.ChangeImageProtection
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.ImageFilter
 import tech.sco.hetznerkloud.request.ImageSorting
 import tech.sco.hetznerkloud.request.Pagination
@@ -33,5 +33,5 @@ class Images @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_IMAGE, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun changeImageProtection(id: Id, body: ChangeImageProtection): Item<Action> = httpClient.makeRequest(Route.CHANGE_IMAGE_PROTECTION, resourceId = id.value, body = body)
+    suspend fun changeProtection(id: Id, body: ChangeDeleteProtection): Item<Action> = httpClient.makeRequest(Route.CHANGE_IMAGE_PROTECTION, resourceId = id.value, body = body)
 }
