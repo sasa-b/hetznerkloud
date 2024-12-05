@@ -200,6 +200,10 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CREATE_FIREWALL, request, routeParamsProvider) -> response(Route.CREATE_FIREWALL, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_FIREWALL, request, routeParamsProvider) -> response(Route.UPDATE_FIREWALL, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_FIREWALL, request, routeParamsProvider) -> response(Route.DELETE_FIREWALL, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.GET_FIREWALL_ACTIONS, request, routeParamsProvider) -> response(Route.GET_FIREWALL_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_FIREWALL_ACTION, request, routeParamsProvider) -> response(Route.GET_FIREWALL_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_FIREWALL_ACTION_FOR_FIREWALL, request, routeParamsProvider) -> response(Route.GET_FIREWALL_ACTION_FOR_FIREWALL, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_FIREWALL_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_FIREWALL_ACTIONS, HttpStatusCode.OK, defaultHeaders)
 
         matchRoute(Route.GET_ALL_PRIMARY_IPS, request, routeParamsProvider) -> response(Route.GET_ALL_PRIMARY_IPS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_PRIMARY_IP, request, routeParamsProvider) -> response(Route.GET_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
@@ -389,10 +393,10 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_FIREWALLS -> "src/test/resources/examples/response/firewall/get_all_firewalls.json"
     Route.GET_FIREWALL -> "src/test/resources/examples/response/firewall/get_a_firewall.json"
-    Route.GET_FIREWALL_ACTIONS -> TODO()
-    Route.GET_FIREWALL_ACTION -> TODO()
-    Route.GET_FIREWALL_ACTION_FOR_FIREWALL -> TODO()
-    Route.GET_ALL_FIREWALL_ACTIONS -> TODO()
+    Route.GET_FIREWALL_ACTIONS -> "src/test/resources/examples/response/firewall/get_firewall_actions.json"
+    Route.GET_FIREWALL_ACTION -> "src/test/resources/examples/response/firewall/get_a_firewall_action.json"
+    Route.GET_FIREWALL_ACTION_FOR_FIREWALL -> "src/test/resources/examples/response/firewall/get_a_firewall_action_for_firewall.json"
+    Route.GET_ALL_FIREWALL_ACTIONS -> "src/test/resources/examples/response/firewall/get_all_firewall_actions.json"
     Route.CREATE_FIREWALL -> "src/test/resources/examples/response/firewall/create_a_firewall.json"
     Route.UPDATE_FIREWALL -> "src/test/resources/examples/response/firewall/update_a_firewall.json"
     Route.DELETE_FIREWALL -> "src/test/resources/examples/response/no_content.json"

@@ -8,7 +8,7 @@ import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Firewall
 import tech.sco.hetznerkloud.model.FirewallResource
 import tech.sco.hetznerkloud.model.Meta
-import tech.sco.hetznerkloud.model.Resource
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.CreateFirewall
@@ -23,7 +23,7 @@ class FirewallApiTest :
     ShouldSpec({
         val firewallId = Firewall.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to firewallId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to firewallId.value.toString(), "action_id" to "42") }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedFirewall = Firewall(
@@ -77,6 +77,74 @@ class FirewallApiTest :
             should("get firewall by id") {
 
                 underTest.firewalls.find(firewallId) shouldBe Item(expectedFirewall)
+            }
+
+            should("get all Firewall actions") {
+                underTest.actions.all(ResourceType.FIREWALL) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(ServerResource(id = Server.Id(42))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Firewall actions") {
+                underTest.actions.all(resourceId = firewallId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "set_firewall_rules",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(
+                                FirewallResource(id = Firewall.Id(38)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Firewall action") {
+                underTest.actions.find(ResourceType.FIREWALL, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(ServerResource(id = Server.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Firewall action for volume") {
+                underTest.actions.find(resourceId = firewallId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "set_firewall_rules",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(FirewallResource(id = Firewall.Id(38))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
 
