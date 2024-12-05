@@ -5,7 +5,6 @@
 > * Firewall Actions,
 > * Floating IP Actions,
 > * Primary IP Actions,
-> * Volume Actions,
 
 ## Installing the package
 

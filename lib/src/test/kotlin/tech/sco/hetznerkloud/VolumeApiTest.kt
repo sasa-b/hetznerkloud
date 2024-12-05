@@ -9,11 +9,15 @@ import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.Volume
 import tech.sco.hetznerkloud.model.VolumeResource
+import tech.sco.hetznerkloud.request.AttachToServer
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.CreateVolume
+import tech.sco.hetznerkloud.request.ResizeVolume
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
@@ -24,7 +28,9 @@ class VolumeApiTest :
     ShouldSpec({
         val volumeId = Volume.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to volumeId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) {
+            mapOf("id" to volumeId.value.toString(), "action_id" to "42")
+        }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         context("Volume resource read API") {
@@ -67,6 +73,75 @@ class VolumeApiTest :
             should("get Volume by id") {
 
                 underTest.volumes.find(volumeId) shouldBe Item(expectedVolume)
+            }
+
+            should("get all Volume actions") {
+                underTest.actions.all(ResourceType.VOLUME) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(ServerResource(id = Server.Id(42))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Volume actions") {
+                underTest.actions.all(resourceId = volumeId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "attach_volume",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(
+                                ServerResource(id = Server.Id(42)),
+                                VolumeResource(id = Volume.Id(13)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Volume action") {
+                underTest.actions.find(ResourceType.VOLUME, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(ServerResource(id = Server.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Volume action for volume") {
+                underTest.actions.find(resourceId = volumeId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "attach_volume",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(ServerResource(id = Server.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
 
@@ -162,6 +237,89 @@ class VolumeApiTest :
 
             should("delete a Volume") {
                 underTest.volumes.delete(volumeId) shouldBe Unit
+            }
+
+            should("change Volume protection") {
+                val changeProtectionRequest = ChangeDeleteProtection(true)
+
+                jsonEncoder().encodeToString(changeProtectionRequest) shouldBeEqualToRequest "change_volume_protection.json"
+
+                underTest.volumes.changeProtection(volumeId, changeProtectionRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            VolumeResource(id = Volume.Id(554)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("resize a Volume") {
+                val resizeRequest = ResizeVolume(50)
+
+                jsonEncoder().encodeToString(resizeRequest) shouldBeEqualToRequest "resize_a_volume.json"
+
+                underTest.volumes.resize(volumeId, resizeRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "resize_volume",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            VolumeResource(id = Volume.Id(554)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("attach a Volume to server") {
+                val attachVolumeRequest = AttachToServer(false, Server.Id(43))
+
+                jsonEncoder().encodeToString(attachVolumeRequest) shouldBeEqualToRequest "attach_a_volume_to_Server.json"
+
+                underTest.volumes.attachToServer(volumeId, attachVolumeRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "attach_volume",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(43)),
+                            VolumeResource(id = Volume.Id(554)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("detach a Volume from server") {
+
+                underTest.volumes.detachFromServer(volumeId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "detach_volume",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
             }
         }
     })

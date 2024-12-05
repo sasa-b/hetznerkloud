@@ -134,6 +134,10 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_VOLUME(Pair(HttpMethod.Post, Path("/volumes"))),
     UPDATE_VOLUME(Pair(HttpMethod.Patch, Path("/volumes/{id}"))),
     DELETE_VOLUME(Pair(HttpMethod.Delete, Path("/volumes/{id}"))),
+    CHANGE_VOLUME_PROTECTION(Pair(HttpMethod.Post, Path("/volumes/{id}/actions/change_protection"))),
+    ATTACH_VOLUME_TO_SERVER(Pair(HttpMethod.Post, Path("/volumes/{id}/actions/attach"))),
+    DETACH_VOLUME_FROM_SERVER(Pair(HttpMethod.Post, Path("/volumes/{id}/actions/detach"))),
+    RESIZE_VOLUME(Pair(HttpMethod.Post, Path("/volumes/{id}/actions/resize"))),
 
     GET_ALL_CERTIFICATES(Pair(HttpMethod.Get, Path("/certificates"))),
     GET_CERTIFICATE(Pair(HttpMethod.Get, Path("/certificates/{id}"))),

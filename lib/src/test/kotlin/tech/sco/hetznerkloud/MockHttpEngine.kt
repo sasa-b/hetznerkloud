@@ -167,6 +167,14 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CREATE_VOLUME, request, routeParamsProvider) -> response(Route.CREATE_VOLUME, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_VOLUME, request, routeParamsProvider) -> response(Route.UPDATE_VOLUME, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_VOLUME, request, routeParamsProvider) -> response(Route.DELETE_VOLUME, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.GET_VOLUME_ACTIONS, request, routeParamsProvider) -> response(Route.GET_VOLUME_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_VOLUME_ACTION, request, routeParamsProvider) -> response(Route.GET_VOLUME_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_VOLUME_ACTION_FOR_VOLUME, request, routeParamsProvider) -> response(Route.GET_VOLUME_ACTION_FOR_VOLUME, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_VOLUME_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_VOLUME_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CHANGE_VOLUME_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_VOLUME_PROTECTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.RESIZE_VOLUME, request, routeParamsProvider) -> response(Route.RESIZE_VOLUME, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.ATTACH_VOLUME_TO_SERVER, request, routeParamsProvider) -> response(Route.ATTACH_VOLUME_TO_SERVER, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DETACH_VOLUME_FROM_SERVER, request, routeParamsProvider) -> response(Route.DETACH_VOLUME_FROM_SERVER, HttpStatusCode.OK, defaultHeaders)
 
         matchRoute(Route.GET_ALL_CERTIFICATES, request, routeParamsProvider) -> response(Route.GET_ALL_CERTIFICATES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_CERTIFICATE, request, routeParamsProvider) -> response(Route.GET_CERTIFICATE, HttpStatusCode.OK, defaultHeaders)
@@ -356,13 +364,17 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_VOLUMES -> "src/test/resources/examples/response/volume/get_all_volumes.json"
     Route.GET_VOLUME -> "src/test/resources/examples/response/volume/get_a_volume.json"
-    Route.GET_VOLUME_ACTIONS -> TODO()
-    Route.GET_VOLUME_ACTION -> TODO()
-    Route.GET_VOLUME_ACTION_FOR_VOLUME -> TODO()
-    Route.GET_ALL_VOLUME_ACTIONS -> TODO()
+    Route.GET_VOLUME_ACTIONS -> "src/test/resources/examples/response/volume/get_volume_actions.json"
+    Route.GET_VOLUME_ACTION -> "src/test/resources/examples/response/volume/get_a_volume_action.json"
+    Route.GET_VOLUME_ACTION_FOR_VOLUME -> "src/test/resources/examples/response/volume/get_a_volume_action_for_volume.json"
+    Route.GET_ALL_VOLUME_ACTIONS -> "src/test/resources/examples/response/volume/get_all_volume_actions.json"
     Route.CREATE_VOLUME -> "src/test/resources/examples/response/volume/create_a_volume.json"
     Route.UPDATE_VOLUME -> "src/test/resources/examples/response/volume/update_a_volume.json"
     Route.DELETE_VOLUME -> "src/test/resources/examples/response/no_content.json"
+    Route.CHANGE_VOLUME_PROTECTION -> "src/test/resources/examples/response/volume/change_volume_protection.json"
+    Route.ATTACH_VOLUME_TO_SERVER -> "src/test/resources/examples/response/volume/attach_a_volume_to_server.json"
+    Route.DETACH_VOLUME_FROM_SERVER -> "src/test/resources/examples/response/volume/detach_a_volume_from_server.json"
+    Route.RESIZE_VOLUME -> "src/test/resources/examples/response/volume/resize_a_volume.json"
 
     Route.GET_ALL_CERTIFICATES -> "src/test/resources/examples/response/certificate/get_all_certificates.json"
     Route.GET_CERTIFICATE -> "src/test/resources/examples/response/certificate/get_a_certificate.json"
