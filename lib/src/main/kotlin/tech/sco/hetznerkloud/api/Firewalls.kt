@@ -13,9 +13,10 @@ import tech.sco.hetznerkloud.request.FirewallFilter
 import tech.sco.hetznerkloud.request.FirewallSorting
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.RemoveFrom
+import tech.sco.hetznerkloud.request.SetRules
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
-import tech.sco.hetznerkloud.response.FirewallActions
+import tech.sco.hetznerkloud.response.FirewallActioned
 import tech.sco.hetznerkloud.response.FirewallCreated
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -39,8 +40,11 @@ class Firewalls @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_FIREWALL, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun applyTo(id: Id, body: ApplyTo): FirewallActions = httpClient.makeRequest(Route.APPLY_FIREWALL_TO_RESOURCES, resourceId = id.value, body = body)
+    suspend fun applyTo(id: Id, body: ApplyTo): FirewallActioned = httpClient.makeRequest(Route.APPLY_FIREWALL_TO_RESOURCES, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun removeFrom(id: Id, body: RemoveFrom): FirewallActions = httpClient.makeRequest(Route.REMOVE_FIREWALL_FROM_RESOURCES, resourceId = id.value, body = body)
+    suspend fun removeFrom(id: Id, body: RemoveFrom): FirewallActioned = httpClient.makeRequest(Route.REMOVE_FIREWALL_FROM_RESOURCES, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun setRules(id: Id, body: SetRules): FirewallActioned = httpClient.makeRequest(Route.SET_FIREWALL_RULES, resourceId = id.value, body = body)
 }

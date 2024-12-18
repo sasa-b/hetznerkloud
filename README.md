@@ -2,7 +2,6 @@
 
 > [!NOTE]  
 > The API is not yet 100% covered. The following are missing:
-> * Firewall Actions,
 > * Floating IP Actions,
 > * Primary IP Actions,
 

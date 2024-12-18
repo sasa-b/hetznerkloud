@@ -39,7 +39,11 @@ data class ApplyTo(
     }
 }
 
+@Serializable
 data class RemoveFrom(
     @SerialName("remove_from")
     val removeFrom: List<ApplyTo.Resource>,
 ) : HttpBody
+
+@Serializable
+data class SetRules(val rules: List<Firewall.Rule>) : HttpBody

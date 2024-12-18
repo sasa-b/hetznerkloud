@@ -1,0 +1,16 @@
+{
+  "remove_from": [
+    {
+      "type": "server",
+      "server": {
+        "id": 42
+      }
+    },
+    {
+      "type": "label_selector",
+      "label_selector": {
+        "selector": "foo=bar"
+      }
+    }
+  ]
+}

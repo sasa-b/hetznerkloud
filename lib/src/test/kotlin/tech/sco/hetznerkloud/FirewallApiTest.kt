@@ -14,8 +14,10 @@ import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.request.ApplyTo
 import tech.sco.hetznerkloud.request.CreateFirewall
 import tech.sco.hetznerkloud.request.LabelSelector
+import tech.sco.hetznerkloud.request.RemoveFrom
+import tech.sco.hetznerkloud.request.SetRules
 import tech.sco.hetznerkloud.request.UpdateResource
-import tech.sco.hetznerkloud.response.FirewallActions
+import tech.sco.hetznerkloud.response.FirewallActioned
 import tech.sco.hetznerkloud.response.FirewallCreated
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -235,7 +237,7 @@ class FirewallApiTest :
                 underTest.firewalls.delete(firewallId) shouldBe Unit
             }
 
-            should("apply firewall to server resources") {
+            should("apply Firewall to resources") {
                 val applyToRequest = ApplyTo(
                     applyTo = listOf(
                         ApplyTo.Server(ServerResource(Server.Id(42))),
@@ -245,7 +247,7 @@ class FirewallApiTest :
 
                 jsonEncoder().encodeToString(applyToRequest) shouldBeEqualToRequest "apply_firewall_to_resources.json"
 
-                underTest.firewalls.applyTo(firewallId, applyToRequest) shouldBe FirewallActions(
+                underTest.firewalls.applyTo(firewallId, applyToRequest) shouldBe FirewallActioned(
                     listOf(
                         Action(
                             id = Action.Id(14),
@@ -258,6 +260,85 @@ class FirewallApiTest :
                                 FirewallResource(id = Firewall.Id(value = 38)),
                             ),
                             started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("remove Firewall from resources") {
+                val removeFromRequest = RemoveFrom(
+                    removeFrom = listOf(
+                        ApplyTo.Server(ServerResource(Server.Id(42))),
+                        ApplyTo.LabelSelector(ApplyTo.LabelSelector.Value("foo=bar")),
+                    ),
+                )
+
+                jsonEncoder().encodeToString(removeFromRequest) shouldBeEqualToRequest "remove_firewall_from_resources.json"
+
+                underTest.firewalls.removeFrom(id = firewallId, removeFromRequest) shouldBe FirewallActioned(
+                    listOf(
+                        Action(
+                            id = Action.Id(14),
+                            command = "remove_firewall",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
+                            progress = 100,
+                            resources = listOf(
+                                ServerResource(id = Server.Id(value = 42)),
+                                FirewallResource(id = Firewall.Id(value = 38)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("set Firewall rules") {
+                val setRulesRequest = SetRules(
+                    rules = listOf(
+                        Firewall.Rule(
+                            description = "Allow port 80",
+                            direction = Firewall.Direction.IN,
+                            port = "80",
+                            protocol = Firewall.Protocol.TCP,
+                            sourceIps = listOf(
+                                "28.239.13.1/32",
+                                "28.239.14.0/24",
+                                "ff21:1eac:9a3b:ee58:5ca:990c:8bc9:c03b/128",
+                            ),
+                        ),
+                    ),
+                )
+
+                jsonEncoder().encodeToString(setRulesRequest) shouldBeEqualToRequest "set_firewall_rules.json"
+
+                underTest.firewalls.setRules(id = firewallId, body = setRulesRequest) shouldBe FirewallActioned(
+                    listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "set_firewall_rules",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
+                            progress = 100,
+                            resources = listOf(
+                                FirewallResource(id = Firewall.Id(value = 38)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                        Action(
+                            id = Action.Id(value = 14),
+                            command = "apply_firewall",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(
+                                FirewallResource(id = Firewall.Id(value = 38)),
+                                ServerResource(id = Server.Id(value = 42)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
                             status = Action.Status.SUCCESS,
                         ),
                     ),
