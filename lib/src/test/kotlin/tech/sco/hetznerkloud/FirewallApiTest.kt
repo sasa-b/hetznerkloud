@@ -11,9 +11,11 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
+import tech.sco.hetznerkloud.request.ApplyTo
 import tech.sco.hetznerkloud.request.CreateFirewall
 import tech.sco.hetznerkloud.request.LabelSelector
 import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.response.FirewallActions
 import tech.sco.hetznerkloud.response.FirewallCreated
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.Items
@@ -153,10 +155,7 @@ class FirewallApiTest :
             should("create a Firewall") {
                 val createRequest = CreateFirewall(
                     applyTo = listOf(
-                        CreateFirewall.ApplyTo(
-                            server = Firewall.AppliedTo.ServerResource(id = Server.Id(42)),
-                            type = "server",
-                        ),
+                        ApplyTo.Server(ServerResource(Server.Id(42))),
                     ),
                     labels = mapOf(
                         "env" to "dev",
@@ -234,6 +233,35 @@ class FirewallApiTest :
 
             should("delete a Firewall") {
                 underTest.firewalls.delete(firewallId) shouldBe Unit
+            }
+
+            should("apply firewall to server resources") {
+                val applyToRequest = ApplyTo(
+                    applyTo = listOf(
+                        ApplyTo.Server(ServerResource(Server.Id(42))),
+                        ApplyTo.LabelSelector(ApplyTo.LabelSelector.Value("foo=bar")),
+                    ),
+                )
+
+                jsonEncoder().encodeToString(applyToRequest) shouldBeEqualToRequest "apply_firewall_to_resources.json"
+
+                underTest.firewalls.applyTo(firewallId, applyToRequest) shouldBe FirewallActions(
+                    listOf(
+                        Action(
+                            id = Action.Id(14),
+                            command = "apply_firewall",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56:00+00:00"),
+                            progress = 100,
+                            resources = listOf(
+                                ServerResource(id = Server.Id(value = 42)),
+                                FirewallResource(id = Firewall.Id(value = 38)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
             }
         }
     })

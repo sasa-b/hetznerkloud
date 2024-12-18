@@ -335,6 +335,34 @@ data class DnsZoneIsSecondaryZoneError(override val message: String) : Error() {
         get() = ErrorCode.DNS_ZONE_IS_SECONDARY_ZONE
 }
 
+@Serializable
+@SerialName("firewall_already_removed")
+data class FirewallAlreadyRemovedError(override val message: String) : Error() {
+    override val errorCode: ErrorCode
+        get() = ErrorCode.FIREWALL_ALREADY_REMOVED
+}
+
+@Serializable
+@SerialName("firewall_managed_by_label_selector")
+data class FirewallManagedByLabelSelectorError(override val message: String) : Error() {
+    override val errorCode: ErrorCode
+        get() = ErrorCode.FIREWALL_MANAGED_BY_LABEL_SELECTOR
+}
+
+@Serializable
+@SerialName("firewall_already_applied")
+data class FirewallAlreadyAppliedError(override val message: String) : Error() {
+    override val errorCode: ErrorCode
+        get() = ErrorCode.FIREWALL_ALREADY_APPLIED
+}
+
+@Serializable
+@SerialName("private_net_only_server")
+data class PrivateNetOnlyServerError(override val message: String) : Error() {
+    override val errorCode: ErrorCode
+        get() = ErrorCode.PRIVATE_NET_ONLY_SERVER
+}
+
 enum class ErrorCode(val value: String) {
     FORBIDDEN("forbidden"),
     UNAUTHORIZED("unauthorized"),
@@ -376,6 +404,9 @@ enum class ErrorCode(val value: String) {
     SERVER_ALREADY_ADDED("server_already_added"),
     INCOMPATIBLE_NETWORK_TYPE("incompatible_network_type"),
     FIREWALL_RESOURCE_NOT_FOUND("firewall_resource_not_found"),
+    FIREWALL_ALREADY_APPLIED("firewall_already_applied"),
+    FIREWALL_ALREADY_REMOVED("firewall_already_removed"),
+    FIREWALL_MANAGED_BY_LABEL_SELECTOR("firewall_managed_by_label_selector"),
     SERVER_NOT_STOPPED("server_not_stopped"),
     SERVER_HAS_IPV4("server_has_ipv4"),
     SERVER_HAS_IPV6("server_has_ipv6"),
@@ -388,4 +419,5 @@ enum class ErrorCode(val value: String) {
     COULD_NOT_VERIFY_DOMAIN_DELEGATE_TO_ZONE("could_not_verify_domain_delegated_to_zone"),
     DNS_ZONE_NOT_FOUND("dns_zone_not_found"),
     DNS_ZONE_IS_SECONDARY_ZONE("dns_zone_is_secondary_zone"),
+    PRIVATE_NET_ONLY_SERVER("private_net_only_server"),
 }

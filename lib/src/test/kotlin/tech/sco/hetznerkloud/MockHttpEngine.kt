@@ -204,6 +204,9 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.GET_FIREWALL_ACTION, request, routeParamsProvider) -> response(Route.GET_FIREWALL_ACTION, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_FIREWALL_ACTION_FOR_FIREWALL, request, routeParamsProvider) -> response(Route.GET_FIREWALL_ACTION_FOR_FIREWALL, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_ALL_FIREWALL_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_FIREWALL_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.APPLY_FIREWALL_TO_RESOURCES, request, routeParamsProvider) -> response(Route.APPLY_FIREWALL_TO_RESOURCES, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.REMOVE_FIREWALL_FROM_RESOURCES, request, routeParamsProvider) -> response(Route.REMOVE_FIREWALL_FROM_RESOURCES, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.SET_FIREWALL_RULES, request, routeParamsProvider) -> response(Route.SET_FIREWALL_RULES, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_PRIMARY_IPS, request, routeParamsProvider) -> response(Route.GET_ALL_PRIMARY_IPS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_PRIMARY_IP, request, routeParamsProvider) -> response(Route.GET_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
@@ -400,6 +403,9 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_FIREWALL -> "src/test/resources/examples/response/firewall/create_a_firewall.json"
     Route.UPDATE_FIREWALL -> "src/test/resources/examples/response/firewall/update_a_firewall.json"
     Route.DELETE_FIREWALL -> "src/test/resources/examples/response/no_content.json"
+    Route.APPLY_FIREWALL_TO_RESOURCES -> "src/test/resources/examples/response/firewall/apply_firewall_to_resources.json"
+    Route.REMOVE_FIREWALL_FROM_RESOURCES -> "src/test/resources/examples/response/firewall/remove_firewall_from_resources.json"
+    Route.SET_FIREWALL_RULES -> "src/test/resources/examples/response/firewall/set_firewall_rules.json"
 
     Route.GET_ALL_PRIMARY_IPS -> "src/test/resources/examples/response/primary_ip/get_all_primary_ips.json"
     Route.GET_PRIMARY_IP -> "src/test/resources/examples/response/primary_ip/get_a_primary_ip.json"
@@ -426,7 +432,7 @@ private fun content(route: Route): String = when (route) {
     File(it).readText(Charsets.UTF_8)
 }
 
-@Suppress("CyclomaticComplexMethod")
+@Suppress("CyclomaticComplexMethod", "LongMethod")
 private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.NOT_FOUND -> "src/test/resources/examples/error/not_found.json"
     ErrorCode.FORBIDDEN -> "src/test/resources/examples/error/forbidden.json"
@@ -480,6 +486,10 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.COULD_NOT_VERIFY_DOMAIN_DELEGATE_TO_ZONE -> TODO()
     ErrorCode.DNS_ZONE_NOT_FOUND -> TODO()
     ErrorCode.DNS_ZONE_IS_SECONDARY_ZONE -> TODO()
+    ErrorCode.FIREWALL_ALREADY_REMOVED -> TODO()
+    ErrorCode.FIREWALL_MANAGED_BY_LABEL_SELECTOR -> TODO()
+    ErrorCode.FIREWALL_ALREADY_APPLIED -> TODO()
+    ErrorCode.PRIVATE_NET_ONLY_SERVER -> TODO()
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

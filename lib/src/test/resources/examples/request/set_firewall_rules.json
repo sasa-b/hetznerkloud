@@ -1,16 +1,4 @@
 {
-  "apply_to": [
-    {
-      "type": "server",
-      "server": {
-        "id": 42
-      }
-    }
-  ],
-  "labels": {
-    "env": "dev"
-  },
-  "name": "Corporate Intranet Protection",
   "rules": [
     {
       "description": "Allow port 80",

@@ -159,6 +159,9 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_FIREWALL(Pair(HttpMethod.Post, Path("/firewalls"))),
     UPDATE_FIREWALL(Pair(HttpMethod.Patch, Path("/firewalls/{id}"))),
     DELETE_FIREWALL(Pair(HttpMethod.Delete, Path("/firewalls/{id}"))),
+    APPLY_FIREWALL_TO_RESOURCES(Pair(HttpMethod.Post, Path("/firewalls/{id}/actions/apply_to_resources"))),
+    REMOVE_FIREWALL_FROM_RESOURCES(Pair(HttpMethod.Post, Path("/firewalls/{id}/actions/remove_from_resources"))),
+    SET_FIREWALL_RULES(Pair(HttpMethod.Post, Path("/firewalls/{id}/actions/set_rules"))),
 
     GET_ALL_PRIMARY_IPS(Pair(HttpMethod.Get, Path("/primary_ips"))),
     GET_PRIMARY_IP(Pair(HttpMethod.Get, Path("/primary_ips/{id}"))),

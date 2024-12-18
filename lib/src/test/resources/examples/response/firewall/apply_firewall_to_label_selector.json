@@ -1,0 +1,26 @@
+{
+  "actions": [
+    {
+      "command": "apply_firewall",
+      "error": {
+        "code": "action_failed",
+        "message": "Action failed"
+      },
+      "finished": "2016-01-30T23:56:00+00:00",
+      "id": 14,
+      "progress": 100,
+      "resources": [
+        {
+          "id": 42,
+          "type": "server"
+        },
+        {
+          "id": 38,
+          "type": "firewall"
+        }
+      ],
+      "started": "2016-01-30T23:55:00+00:00",
+      "status": "success"
+    }
+  ]
+}
