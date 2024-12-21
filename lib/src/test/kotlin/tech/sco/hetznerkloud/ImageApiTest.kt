@@ -103,7 +103,7 @@ class ImageApiTest :
                 )
             }
 
-            should("get a Image action") {
+            should("get an Image action") {
                 underTest.actions.find(ResourceType.IMAGE, actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(42),
@@ -118,7 +118,7 @@ class ImageApiTest :
                 )
             }
 
-            should("get a Image action for server") {
+            should("get an Image action for image") {
                 underTest.actions.find(resourceId = imageId, actionId = Action.Id(42)) shouldBe Item(
                     Action(
                         id = Action.Id(13),

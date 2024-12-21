@@ -1,9 +1,5 @@
 # Getting Started
 
-> [!NOTE]  
-> The API is not yet 100% covered. The following are missing:
-> * Floating IP Actions,
-
 ## Installing the package
 
 Add to `build.gradle.kt` dependencies block.

@@ -184,6 +184,10 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_FLOATING_IP(Pair(HttpMethod.Post, Path("/floating_ips"))),
     UPDATE_FLOATING_IP(Pair(HttpMethod.Patch, Path("/floating_ips/{id}"))),
     DELETE_FLOATING_IP(Pair(HttpMethod.Delete, Path("/floating_ips/{id}"))),
+    ASSIGN_FLOATING_IP_TO_SERVER(Pair(HttpMethod.Post, Path("/floating_ips/{id}/actions/assign"))),
+    CHANGE_FLOATING_IP_REVERSE_DNS(Pair(HttpMethod.Post, Path("/floating_ips/{id}/actions/change_dns_ptr"))),
+    CHANGE_FLOATING_IP_PROTECTION(Pair(HttpMethod.Post, Path("/floating_ips/{id}/actions/change_protection"))),
+    UNASSIGN_FLOATING_IP_FROM_SERVER(Pair(HttpMethod.Post, Path("/floating_ips/{id}/actions/unassign"))),
 
     GET_ALL_PRICES(Pair(HttpMethod.Get, Path("/pricing"))),
     ;

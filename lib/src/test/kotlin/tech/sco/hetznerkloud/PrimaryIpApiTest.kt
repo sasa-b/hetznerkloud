@@ -300,13 +300,13 @@ class PrimaryIpApiTest :
                         id = Action.Id(13),
                         command = "change_dns_ptr",
                         error = ActionFailedError(message = "Action failed"),
-                        finished = null,
-                        progress = 0,
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
                         resources = listOf(
-                            ServerResource(id = Server.Id(42)),
+                            PrimaryIpResource(id = PrimaryIp.Id(4711)),
                         ),
-                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
-                        status = Action.Status.RUNNING,
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
                     ),
                 )
             }

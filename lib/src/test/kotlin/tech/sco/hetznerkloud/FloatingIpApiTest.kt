@@ -2,18 +2,24 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.http.HttpMethod
 import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.DnsPtr
 import tech.sco.hetznerkloud.model.FloatingIp
+import tech.sco.hetznerkloud.model.FloatingIpResource
 import tech.sco.hetznerkloud.model.IpType
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
+import tech.sco.hetznerkloud.request.AssignFloatingIp
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
+import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreateFloatingIp
 import tech.sco.hetznerkloud.request.UpdateFloatingIp
 import tech.sco.hetznerkloud.response.Item
@@ -25,7 +31,12 @@ class FloatingIpApiTest :
     ShouldSpec({
         val floatingIpId = FloatingIp.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to floatingIpId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) { request ->
+            when {
+                request.method == HttpMethod.Patch -> mapOf("id" to floatingIpId.value.toString())
+                else -> mapOf("id" to floatingIpId.value.toString(), "action_id" to "42")
+            }
+        }
         val underTest = CloudApiClient.of(apiToken, mockEngine)
 
         val expectedIp = FloatingIp(
@@ -71,6 +82,78 @@ class FloatingIpApiTest :
             should("get a floating ip") {
 
                 underTest.floatingIps.find(floatingIpId) shouldBe Item(expectedIp)
+            }
+
+            should("get all Floating Ip actions") {
+                underTest.actions.all(ResourceType.FLOATING_IP) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(ServerResource(id = Server.Id(42))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Floating Ip actions") {
+                underTest.actions.all(resourceId = floatingIpId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "assign_floating_ip",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(
+                                ServerResource(id = Server.Id(4711)),
+                                FloatingIpResource(id = FloatingIp.Id(value = 4712)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Floating Ip action") {
+                underTest.actions.find(ResourceType.FLOATING_IP, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(ServerResource(id = Server.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Floating Ip action for floating ip") {
+                underTest.actions.find(resourceId = floatingIpId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "assign_floating_ip",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(value = 42)),
+                            FloatingIpResource(id = FloatingIp.Id(value = 4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
 
@@ -148,6 +231,91 @@ class FloatingIpApiTest :
 
             should("delete a floating ip") {
                 underTest.floatingIps.delete(floatingIpId) shouldBe Unit
+            }
+
+            should("assign a Floating Ip to a server") {
+                val assignToServerRequest = AssignFloatingIp(Server.Id(42))
+
+                jsonEncoder().encodeToString(assignToServerRequest) shouldBeEqualToRequest "assign_a_floating_ip_to_a_server.json"
+
+                underTest.floatingIps.assign(floatingIpId, assignToServerRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "assign_floating_ip",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            FloatingIpResource(id = FloatingIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("unassign a floating ip from a server") {
+                underTest.floatingIps.unassign(floatingIpId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "unassign_floating_ip",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            FloatingIpResource(id = FloatingIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change floating ip protection") {
+                val changeProtectionRequest = ChangeDeleteProtection(false)
+
+                jsonEncoder().encodeToString(changeProtectionRequest) shouldBeEqualToRequest "change_floating_ip_protection.json"
+
+                underTest.floatingIps.changeProtection(floatingIpId, changeProtectionRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            FloatingIpResource(id = FloatingIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change floating ip reverse dns") {
+                val changeReverseDnsRequest = ChangeReverseDns(
+                    "server.example.com",
+                    "2001:db8::1",
+                )
+
+                jsonEncoder().encodeToString(changeReverseDnsRequest) shouldBeEqualToRequest "change_floating_ip_reverse_dns.json"
+
+                underTest.floatingIps.changeReverseDns(floatingIpId, changeReverseDnsRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_dns_ptr",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            FloatingIpResource(id = FloatingIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
     })

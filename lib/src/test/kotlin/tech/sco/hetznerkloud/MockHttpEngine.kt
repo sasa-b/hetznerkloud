@@ -226,9 +226,25 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
 
         matchRoute(Route.GET_ALL_FLOATING_IPS, request, routeParamsProvider) -> response(Route.GET_ALL_FLOATING_IPS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_FLOATING_IP, request, routeParamsProvider) -> response(Route.GET_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_FLOATING_IP_ACTIONS, request, routeParamsProvider) -> response(Route.GET_FLOATING_IP_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_FLOATING_IP_ACTION, request, routeParamsProvider) -> response(Route.GET_FLOATING_IP_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(
+            Route.GET_FLOATING_IP_ACTION_FOR_FLOATING_IP,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.GET_FLOATING_IP_ACTION_FOR_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_FLOATING_IP_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_FLOATING_IP_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.CREATE_FLOATING_IP, request, routeParamsProvider) -> response(Route.CREATE_FLOATING_IP, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_FLOATING_IP, request, routeParamsProvider) -> response(Route.UPDATE_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_FLOATING_IP, request, routeParamsProvider) -> response(Route.DELETE_FLOATING_IP, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.ASSIGN_FLOATING_IP_TO_SERVER, request, routeParamsProvider) -> response(Route.ASSIGN_FLOATING_IP_TO_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.UNASSIGN_FLOATING_IP_FROM_SERVER,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.UNASSIGN_FLOATING_IP_FROM_SERVER, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_FLOATING_IP_REVERSE_DNS, request, routeParamsProvider) -> response(Route.CHANGE_FLOATING_IP_REVERSE_DNS, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_FLOATING_IP_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_FLOATING_IP_PROTECTION, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_PRICES, request, routeParamsProvider) -> response(Route.GET_ALL_PRICES, HttpStatusCode.OK, defaultHeaders)
 
@@ -431,13 +447,17 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_FLOATING_IPS -> "src/test/resources/examples/response/floating_ip/get_all_floating_ips.json"
     Route.GET_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/get_a_floating_ip.json"
-    Route.GET_FLOATING_IP_ACTIONS -> TODO()
-    Route.GET_FLOATING_IP_ACTION -> TODO()
-    Route.GET_FLOATING_IP_ACTION_FOR_FLOATING_IP -> TODO()
-    Route.GET_ALL_FLOATING_IP_ACTIONS -> TODO()
+    Route.GET_FLOATING_IP_ACTIONS -> "src/test/resources/examples/response/floating_ip/get_floating_ip_actions.json"
+    Route.GET_FLOATING_IP_ACTION -> "src/test/resources/examples/response/floating_ip/get_a_floating_ip_action.json"
+    Route.GET_FLOATING_IP_ACTION_FOR_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/get_a_floating_ip_action_for_floating_ip.json"
+    Route.GET_ALL_FLOATING_IP_ACTIONS -> "src/test/resources/examples/response/floating_ip/get_all_floating_ip_actions.json"
     Route.CREATE_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/create_a_floating_ip.json"
     Route.UPDATE_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/update_a_floating_ip.json"
     Route.DELETE_FLOATING_IP -> "src/test/resources/examples/response/no_content.json"
+    Route.CHANGE_FLOATING_IP_PROTECTION -> "src/test/resources/examples/response/floating_ip/change_floating_ip_protection.json"
+    Route.CHANGE_FLOATING_IP_REVERSE_DNS -> "src/test/resources/examples/response/floating_ip/change_floating_ip_reverse_dns.json"
+    Route.ASSIGN_FLOATING_IP_TO_SERVER -> "src/test/resources/examples/response/floating_ip/assign_a_floating_ip_to_a_server.json"
+    Route.UNASSIGN_FLOATING_IP_FROM_SERVER -> "src/test/resources/examples/response/floating_ip/unassign_a_floating_ip_from_a_server.json"
 
     Route.GET_ALL_PRICES -> "src/test/resources/examples/response/get_all_prices.json"
 }.let {

@@ -44,7 +44,7 @@ class PrimaryIps @InternalAPI constructor(private val httpClient: HttpClient) {
         httpClient.makeRequest(Route.CHANGE_PRIMARY_IP_PROTECTION, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun changeReverseDns(id: Id, body: ChangeReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_REVERSE_DNS, resourceId = id.value, body = body)
+    suspend fun changeReverseDns(id: Id, body: ChangeReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_PRIMARY_IP_REVERSE_DNS, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun assign(id: Id, body: AssignPrimaryIp): Item<Action> = httpClient.makeRequest(Route.ASSIGN_PRIMARY_IP_TO_RESOURCE, resourceId = id.value, body = body)
