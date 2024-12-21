@@ -12,10 +12,15 @@ import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.PrimaryIp
+import tech.sco.hetznerkloud.model.PrimaryIpResource
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.ServerType
+import tech.sco.hetznerkloud.request.AssignPrimaryIp
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
+import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreatePrimaryIp
 import tech.sco.hetznerkloud.request.UpdatePrimaryIp
 import tech.sco.hetznerkloud.response.Item
@@ -82,6 +87,41 @@ class PrimaryIpApiTest :
 
             should("get all primary ips") {
                 underTest.primaryIps.find(primaryIpId) shouldBe Item(expectedIp)
+            }
+
+            should("get a primary ip action") {
+                underTest.actions.find(ResourceType.PRIMARY_IP, Action.Id(42)) shouldBe Item(
+                    value = Action(
+                        id = Action.Id(value = 42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(ServerResource(id = Server.Id(value = 42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get all primary ip actions") {
+                underTest.actions.all(ResourceType.PRIMARY_IP) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(
+                                ServerResource(id = Server.Id(42)),
+                            ),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
             }
         }
 
@@ -184,6 +224,91 @@ class PrimaryIpApiTest :
 
             should("delete a primary ip") {
                 underTest.primaryIps.delete(primaryIpId) shouldBe Unit
+            }
+
+            should("assign a primary ip to a resource") {
+                val assignToResourceRequest = AssignPrimaryIp(4711)
+
+                jsonEncoder().encodeToString(assignToResourceRequest) shouldBeEqualToRequest "assign_a_primary_ip_to_a_resource.json"
+
+                underTest.primaryIps.assign(primaryIpId, assignToResourceRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "assign_primary_ip",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            PrimaryIpResource(id = PrimaryIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("unassign a primary ip from a resource") {
+                underTest.primaryIps.unassign(primaryIpId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "unassign_primary_ip",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                            PrimaryIpResource(id = PrimaryIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("change primary ip protection") {
+                val changeProtectionRequest = ChangeDeleteProtection(true)
+
+                jsonEncoder().encodeToString(changeProtectionRequest) shouldBeEqualToRequest "change_primary_ip_protection.json"
+
+                underTest.primaryIps.changeProtection(primaryIpId, changeProtectionRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_protection",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(
+                            PrimaryIpResource(id = PrimaryIp.Id(4711)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change primary ip reverse dns") {
+                val changeReverseDnsRequest = ChangeReverseDns(
+                    "server.example.com",
+                    "2001:db8::1",
+                )
+
+                jsonEncoder().encodeToString(changeReverseDnsRequest) shouldBeEqualToRequest "change_primary_ip_reverse_dns.json"
+
+                underTest.primaryIps.changeReverseDns(primaryIpId, changeReverseDnsRequest) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "change_dns_ptr",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            ServerResource(id = Server.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
             }
         }
     })

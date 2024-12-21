@@ -213,6 +213,16 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CREATE_PRIMARY_IP, request, routeParamsProvider) -> response(Route.CREATE_PRIMARY_IP, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_PRIMARY_IP, request, routeParamsProvider) -> response(Route.UPDATE_PRIMARY_IP, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_PRIMARY_IP, request, routeParamsProvider) -> response(Route.DELETE_PRIMARY_IP, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.GET_ALL_PRIMARY_IP_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_PRIMARY_IP_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_PRIMARY_IP_ACTION, request, routeParamsProvider) -> response(Route.GET_PRIMARY_IP_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.ASSIGN_PRIMARY_IP_TO_RESOURCE, request, routeParamsProvider) -> response(Route.ASSIGN_PRIMARY_IP_TO_RESOURCE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.UNASSIGN_PRIMARY_IP_FROM_RESOURCE,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.UNASSIGN_PRIMARY_IP_FROM_RESOURCE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_PRIMARY_IP_REVERSE_DNS, request, routeParamsProvider) -> response(Route.CHANGE_PRIMARY_IP_REVERSE_DNS, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_PRIMARY_IP_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_PRIMARY_IP_PROTECTION, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_FLOATING_IPS, request, routeParamsProvider) -> response(Route.GET_ALL_FLOATING_IPS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_FLOATING_IP, request, routeParamsProvider) -> response(Route.GET_FLOATING_IP, HttpStatusCode.OK, defaultHeaders)
@@ -409,13 +419,15 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_PRIMARY_IPS -> "src/test/resources/examples/response/primary_ip/get_all_primary_ips.json"
     Route.GET_PRIMARY_IP -> "src/test/resources/examples/response/primary_ip/get_a_primary_ip.json"
-    Route.GET_PRIMARY_IP_ACTIONS -> TODO()
-    Route.GET_PRIMARY_IP_ACTION -> TODO()
-    Route.GET_PRIMARY_IP_ACTION_FOR_PRIMARY_IP -> TODO()
-    Route.GET_ALL_PRIMARY_IP_ACTIONS -> TODO()
+    Route.GET_ALL_PRIMARY_IP_ACTIONS -> "src/test/resources/examples/response/primary_ip/get_all_primary_ip_actions.json"
+    Route.GET_PRIMARY_IP_ACTION -> "src/test/resources/examples/response/primary_ip/get_a_primary_ip_action.json"
     Route.CREATE_PRIMARY_IP -> "src/test/resources/examples/response/primary_ip/create_a_primary_ip.json"
     Route.UPDATE_PRIMARY_IP -> "src/test/resources/examples/response/primary_ip/update_a_primary_ip.json"
     Route.DELETE_PRIMARY_IP -> "src/test/resources/examples/response/no_content.json"
+    Route.CHANGE_PRIMARY_IP_PROTECTION -> "src/test/resources/examples/response/primary_ip/change_primary_ip_protection.json"
+    Route.CHANGE_PRIMARY_IP_REVERSE_DNS -> "src/test/resources/examples/response/primary_ip/change_primary_ip_reverse_dns.json"
+    Route.ASSIGN_PRIMARY_IP_TO_RESOURCE -> "src/test/resources/examples/response/primary_ip/assign_a_primary_ip_to_a_resource.json"
+    Route.UNASSIGN_PRIMARY_IP_FROM_RESOURCE -> "src/test/resources/examples/response/primary_ip/unassign_a_primary_ip_from_a_resource.json"
 
     Route.GET_ALL_FLOATING_IPS -> "src/test/resources/examples/response/floating_ip/get_all_floating_ips.json"
     Route.GET_FLOATING_IP -> "src/test/resources/examples/response/floating_ip/get_a_floating_ip.json"
@@ -490,6 +502,8 @@ private fun error(code: ErrorCode): String = when (code) {
     ErrorCode.FIREWALL_MANAGED_BY_LABEL_SELECTOR -> TODO()
     ErrorCode.FIREWALL_ALREADY_APPLIED -> TODO()
     ErrorCode.PRIVATE_NET_ONLY_SERVER -> TODO()
+    ErrorCode.PRIMARY_IP_ALREADY_ASSIGNED -> TODO()
+    ErrorCode.SERVER_IS_LOAD_BALANCER_TARGET_ERROR -> TODO()
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

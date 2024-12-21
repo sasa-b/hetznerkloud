@@ -280,6 +280,12 @@ data class ServerHasIpv6Error(override val message: String) : Error() {
 }
 
 @Serializable
+@SerialName("server_is_load_balancer_target")
+data class ServerIsLoadBalancerTargetError(override val message: String) : Error() {
+    override val errorCode = ErrorCode.SERVER_IS_LOAD_BALANCER_TARGET_ERROR
+}
+
+@Serializable
 @SerialName("caa_record_does_not_allow_ca")
 data class CaaRecordDoesNotAllowCaError(override val message: String) : Error() {
     override val errorCode: ErrorCode
@@ -363,6 +369,13 @@ data class PrivateNetOnlyServerError(override val message: String) : Error() {
         get() = ErrorCode.PRIVATE_NET_ONLY_SERVER
 }
 
+@Serializable
+@SerialName("primary_ip_already_assigned")
+data class PrimaryIpAlreadyAssignedError(override val message: String) : Error() {
+    override val errorCode: ErrorCode
+        get() = ErrorCode.PRIMARY_IP_ALREADY_ASSIGNED
+}
+
 enum class ErrorCode(val value: String) {
     FORBIDDEN("forbidden"),
     UNAUTHORIZED("unauthorized"),
@@ -420,4 +433,6 @@ enum class ErrorCode(val value: String) {
     DNS_ZONE_NOT_FOUND("dns_zone_not_found"),
     DNS_ZONE_IS_SECONDARY_ZONE("dns_zone_is_secondary_zone"),
     PRIVATE_NET_ONLY_SERVER("private_net_only_server"),
+    PRIMARY_IP_ALREADY_ASSIGNED("primary_ip_already_assigned"),
+    SERVER_IS_LOAD_BALANCER_TARGET_ERROR("server_is_load_balancer_target"),
 }

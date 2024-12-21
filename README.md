@@ -3,7 +3,6 @@
 > [!NOTE]  
 > The API is not yet 100% covered. The following are missing:
 > * Floating IP Actions,
-> * Primary IP Actions,
 
 ## Installing the package
 

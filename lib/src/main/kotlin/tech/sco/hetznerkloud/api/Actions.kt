@@ -67,7 +67,6 @@ class Actions @InternalAPI constructor(private val httpClient: HttpClient) {
             is Volume.Id -> Route.GET_VOLUME_ACTIONS
             is Certificate.Id -> Route.GET_CERTIFICATE_ACTIONS
             is Firewall.Id -> Route.GET_FIREWALL_ACTIONS
-            is PrimaryIp.Id -> Route.GET_PRIMARY_IP_ACTIONS
             is FloatingIp.Id -> Route.GET_FLOATING_IP_ACTIONS
             else -> throw InvalidResourceId(resourceId)
         },
@@ -105,7 +104,6 @@ class Actions @InternalAPI constructor(private val httpClient: HttpClient) {
             is Volume.Id -> Route.GET_VOLUME_ACTION_FOR_VOLUME
             is Certificate.Id -> Route.GET_CERTIFICATE_ACTION_FOR_CERTIFICATE
             is Firewall.Id -> Route.GET_FIREWALL_ACTION_FOR_FIREWALL
-            is PrimaryIp.Id -> Route.GET_PRIMARY_IP_ACTION
             is FloatingIp.Id -> Route.GET_FLOATING_IP_ACTION_FOR_FLOATING_IP
             else -> throw InvalidResourceId(resourceId)
         },

@@ -5,8 +5,12 @@ import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Failure
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
+import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.PrimaryIp
 import tech.sco.hetznerkloud.model.PrimaryIp.Id
+import tech.sco.hetznerkloud.request.AssignPrimaryIp
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
+import tech.sco.hetznerkloud.request.ChangeReverseDns
 import tech.sco.hetznerkloud.request.CreatePrimaryIp
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.PrimaryIpFilter
@@ -34,4 +38,17 @@ class PrimaryIps @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
     suspend fun delete(id: Id): Unit = httpClient.makeRequest(Route.DELETE_PRIMARY_IP, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun changeProtection(id: Id, body: ChangeDeleteProtection): Item<Action> =
+        httpClient.makeRequest(Route.CHANGE_PRIMARY_IP_PROTECTION, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun changeReverseDns(id: Id, body: ChangeReverseDns): Item<Action> = httpClient.makeRequest(Route.CHANGE_SERVER_REVERSE_DNS, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun assign(id: Id, body: AssignPrimaryIp): Item<Action> = httpClient.makeRequest(Route.ASSIGN_PRIMARY_IP_TO_RESOURCE, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun unassign(id: Id): Item<Action> = httpClient.makeRequest(Route.UNASSIGN_PRIMARY_IP_FROM_RESOURCE, resourceId = id.value)
 }

@@ -34,3 +34,18 @@ data class UpdatePrimaryIp(
     val labels: Labels? = null,
     val name: String? = null,
 ) : HttpBody
+
+@Serializable
+data class AssignPrimaryIp(
+    @SerialName("assignee_id")
+    val assigneeId: Long,
+    @SerialName("assignee_type")
+    val assigneeType: PrimaryIp.AssigneeType = PrimaryIp.AssigneeType.SERVER,
+) : HttpBody
+
+@Serializable
+data class ChangePrimaryIpReverseDns(
+    @SerialName("dns_ptr")
+    val dnsPtr: String,
+    val ip: String,
+) : HttpBody

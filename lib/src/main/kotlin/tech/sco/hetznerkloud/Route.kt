@@ -165,13 +165,15 @@ internal enum class Route(val value: HttpMethodAndPath) {
 
     GET_ALL_PRIMARY_IPS(Pair(HttpMethod.Get, Path("/primary_ips"))),
     GET_PRIMARY_IP(Pair(HttpMethod.Get, Path("/primary_ips/{id}"))),
-    GET_PRIMARY_IP_ACTIONS(Pair(HttpMethod.Get, Path("/primary_ips/{id}/actions"))),
     GET_PRIMARY_IP_ACTION(Pair(HttpMethod.Get, Path("/primary_ips/actions/{id}"))),
-    GET_PRIMARY_IP_ACTION_FOR_PRIMARY_IP(Pair(HttpMethod.Get, Path("/primary_ips/{id}/actions/{action_id}"))),
     GET_ALL_PRIMARY_IP_ACTIONS(Pair(HttpMethod.Get, Path("/primary_ips/actions"))),
     CREATE_PRIMARY_IP(Pair(HttpMethod.Post, Path("/primary_ips"))),
     UPDATE_PRIMARY_IP(Pair(HttpMethod.Patch, Path("/primary_ips/{id}"))),
     DELETE_PRIMARY_IP(Pair(HttpMethod.Delete, Path("/primary_ips/{id}"))),
+    ASSIGN_PRIMARY_IP_TO_RESOURCE(Pair(HttpMethod.Post, Path("/primary_ips/{id}/actions/assign"))),
+    CHANGE_PRIMARY_IP_REVERSE_DNS(Pair(HttpMethod.Post, Path("/primary_ips/{id}/actions/change_dns_ptr"))),
+    CHANGE_PRIMARY_IP_PROTECTION(Pair(HttpMethod.Post, Path("/primary_ips/{id}/actions/change_protection"))),
+    UNASSIGN_PRIMARY_IP_FROM_RESOURCE(Pair(HttpMethod.Post, Path("/primary_ips/{id}/actions/unassign"))),
 
     GET_ALL_FLOATING_IPS(Pair(HttpMethod.Get, Path("/floating_ips"))),
     GET_FLOATING_IP(Pair(HttpMethod.Get, Path("/floating_ips/{id}"))),

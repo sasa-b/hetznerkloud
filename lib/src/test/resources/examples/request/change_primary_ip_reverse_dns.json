@@ -1,0 +1,4 @@
+{
+  "dns_ptr": "server.example.com",
+  "ip": "2001:db8::1"
+}
