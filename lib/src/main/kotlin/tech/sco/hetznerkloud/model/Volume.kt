@@ -21,7 +21,7 @@ data class Volume(
     val location: Location,
     val name: String,
     val protection: Protection,
-    val server: Server.Id,
+    val server: Server.Id?,
     val size: Long,
     val status: Status,
 ) {
