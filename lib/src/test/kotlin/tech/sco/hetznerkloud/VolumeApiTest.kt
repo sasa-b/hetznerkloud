@@ -285,7 +285,7 @@ class VolumeApiTest :
             should("attach a Volume to server") {
                 val attachVolumeRequest = AttachToServer(false, Server.Id(43))
 
-                jsonEncoder().encodeToString(attachVolumeRequest) shouldBeEqualToRequest "attach_a_volume_to_Server.json"
+                jsonEncoder().encodeToString(attachVolumeRequest) shouldBeEqualToRequest "attach_a_volume_to_server.json"
 
                 underTest.volumes.attachToServer(volumeId, attachVolumeRequest) shouldBe Item(
                     Action(
