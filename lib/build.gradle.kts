@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
  * This project uses @Incubating APIs which are subject to change.
  */
 group = "tech.s-co"
-version = "0.2.6"
+version = "0.2.7"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -46,11 +46,6 @@ repositories {
 }
 
 dependencies {
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-//    api(libs.commons.math3)
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-//    implementation(libs.guava)
-
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.auth)
