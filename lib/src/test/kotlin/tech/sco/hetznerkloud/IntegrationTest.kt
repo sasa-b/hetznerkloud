@@ -16,7 +16,9 @@ class IntegrationTest : AnnotationSpec() {
             runBlocking {
                 cloudApiClient.servers.all().let {
                     println(it)
-                    cloudApiClient.servers.find(it.items.first().id)
+                    it.items.firstOrNull()?.let { item ->
+                        cloudApiClient.servers.find(item.id)
+                    }
                 }
             }
         }
@@ -38,7 +40,9 @@ class IntegrationTest : AnnotationSpec() {
             runBlocking {
                 cloudApiClient.loadBalancers.all().let {
                     println(it)
-                    cloudApiClient.loadBalancers.find(it.items.first().id)
+                    it.items.firstOrNull()?.let { item ->
+                        cloudApiClient.loadBalancers.find(item.id)
+                    }
                 }
             }
         }
@@ -60,7 +64,9 @@ class IntegrationTest : AnnotationSpec() {
             runBlocking {
                 cloudApiClient.networks.all().let {
                     println(it)
-                    cloudApiClient.networks.find(it.items.first().id)
+                    it.items.firstOrNull()?.let { item ->
+                        cloudApiClient.networks.find(item.id)
+                    }
                 }
             }
         }
