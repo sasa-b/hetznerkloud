@@ -1,14 +1,14 @@
 package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.mpp.env
 import kotlinx.coroutines.runBlocking
-import kotlinx.io.files.Path
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 
 class IntegrationTest : AnnotationSpec() {
 
     private val cloudApiClient = CloudApiClient.of(
-        ApiToken.load(Path("src/test/resources/token.txt")),
+        ApiToken(env("API_TEST_TOKEN") ?: error("Missing environment variable API_TEST_TOKEN.")),
     )
 
     @Test fun itGetsServers() {
