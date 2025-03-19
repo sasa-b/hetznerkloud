@@ -4,8 +4,6 @@
 # Ignore Gradle build output directory
 build
 
-lib/src/test/resources/token.txt
-
 .kotlin
 
 local.properties
