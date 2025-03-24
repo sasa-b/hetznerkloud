@@ -2,7 +2,12 @@ package tech.sco.hetznerkloud.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import tech.sco.hetznerkloud.model.*
+import tech.sco.hetznerkloud.model.Image
+import tech.sco.hetznerkloud.model.Iso
+import tech.sco.hetznerkloud.model.Labels
+import tech.sco.hetznerkloud.model.Network
+import tech.sco.hetznerkloud.model.PlacementGroup
+import tech.sco.hetznerkloud.model.SSHKey
 
 // TODO: check which values can be omitted and which ones can be sent as null
 @Serializable
