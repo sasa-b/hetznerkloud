@@ -1,26 +1,18 @@
-@file:OptIn(ExperimentalSerializationApi::class)
-
 package tech.sco.hetznerkloud.request
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import tech.sco.hetznerkloud.model.Image
-import tech.sco.hetznerkloud.model.Iso
-import tech.sco.hetznerkloud.model.Labels
-import tech.sco.hetznerkloud.model.Network
-import tech.sco.hetznerkloud.model.PlacementGroup
-import tech.sco.hetznerkloud.model.SSHKey
+import tech.sco.hetznerkloud.model.*
 
 // TODO: check which values can be omitted and which ones can be sent as null
 @Serializable
-data class CreateServer(
+data class CreateServer internal constructor(
     val automount: Boolean = false,
-    val datacenter: String,
+    val datacenter: String? = null,
     val firewalls: List<Firewall> = emptyList(),
     val image: String,
     val labels: Labels? = null,
-    val location: String,
+    val location: String? = null,
     val name: String,
     val networks: List<Int> = emptyList(),
     @SerialName("placement_group")
@@ -37,11 +29,53 @@ data class CreateServer(
     val userData: String,
     val volumes: List<Int> = emptyList(),
 ) : HttpBody {
+    constructor(
+        automount: Boolean = false,
+        firewalls: List<Firewall> = emptyList(),
+        image: String,
+        labels: Labels? = null,
+        name: String,
+        networks: List<Int> = emptyList(),
+        serverPosition: Position,
+        placementGroup: PlacementGroup.Id? = null,
+        publicNetwork: PublicNetwork,
+        serverType: String,
+        sshKeys: List<String>,
+        startAfterCreate: Boolean = true,
+        userData: String,
+        volumes: List<Int> = emptyList(),
+    ) : this(
+        automount,
+        datacenter = serverPosition.takeValueIf<Position.Datacenter>(),
+        firewalls,
+        image,
+        labels,
+        location = serverPosition.takeValueIf<Position.Location>(),
+        name,
+        networks,
+        placementGroup,
+        publicNetwork,
+        serverType,
+        sshKeys,
+        startAfterCreate,
+        userData,
+        volumes
+    )
+
     @Serializable
     data class Firewall(
         @SerialName("firewall")
         val id: Long,
     )
+
+    sealed class Position(val value: String) {
+        class Location(value: String) : Position(value)
+        class Datacenter(value: String) : Position(value)
+
+        internal inline fun <reified T> takeValueIf(): String? {
+            return this.value.takeIf { this is T }
+        }
+    }
 
     @Serializable
     data class PublicNetwork(
