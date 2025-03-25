@@ -16,11 +16,11 @@ import tech.sco.hetznerkloud.model.SSHKey
 @Serializable
 data class CreateServer(
     val automount: Boolean = false,
-    val datacenter: String,
+    val datacenter: String? = null,
     val firewalls: List<Firewall> = emptyList(),
     val image: String,
     val labels: Labels? = null,
-    val location: String,
+    val location: String? = null,
     val name: String,
     val networks: List<Int> = emptyList(),
     @SerialName("placement_group")
@@ -37,6 +37,13 @@ data class CreateServer(
     val userData: String,
     val volumes: List<Int> = emptyList(),
 ) : HttpBody {
+
+    init {
+        require(!(datacenter == null && location == null)) {
+            "Datacenter or location must be provided"
+        }
+    }
+
     @Serializable
     data class Firewall(
         @SerialName("firewall")
