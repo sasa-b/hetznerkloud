@@ -14,7 +14,7 @@ data class Volume(
     val id: Id,
     @Serializable(with = OffsetDateTimeSerializer::class)
     val created: OffsetDateTime,
-    val format: String,
+    val format: String?,
     val labels: Labels,
     @JsonNames("linux_device")
     val linuxDevice: String,
