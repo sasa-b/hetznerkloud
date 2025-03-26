@@ -7,3 +7,5 @@ build
 .kotlin
 
 local.properties
+
+lib/src/test/resources/token.txt

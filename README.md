@@ -84,3 +84,9 @@ val client = CloudApiClient(ApiToken("xxx-xxx-xxx")) {
     }
 }
 ```
+
+# Contributing
+
+## Running integration tests
+
+You need to provide a Hetzner API token either in an env variable `API_TEST_TOKEN=` or in a file `src/test/resources/token.txt`
