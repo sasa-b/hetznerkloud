@@ -3,16 +3,18 @@ package tech.sco.hetznerkloud
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.mpp.env
 import kotlinx.coroutines.runBlocking
-import kotlinx.io.files.Path
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import java.io.File
 
 class IntegrationTest : AnnotationSpec() {
 
     private val cloudApiClient = CloudApiClient.of(
-        try {
-            env("API_TEST_TOKEN")?.let { ApiToken(it) } ?: ApiToken.load(Path("src/test/resources/token.txt"))
-        } catch (e: Throwable) {
-            error("Missing API token, set API_TEST_TOKEN environment variable or provide it in to src/test/resources/token.txt file")
+        env("API_TEST_TOKEN")?.let { ApiToken(it) } ?: File("src/test/resources/token.txt").let {
+            if (it.exists()) {
+                ApiToken.load(it.toPath())
+            } else {
+                error("Missing API token, provide it in API_TEST_TOKEN environment variable or \"src/test/resources/token.txt\" file")
+            }
         },
     )
 
