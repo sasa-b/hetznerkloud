@@ -1,8 +1,8 @@
 package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
-import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Failure
+import tech.sco.hetznerkloud.InternalAPI
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.SSHKey
@@ -19,11 +19,8 @@ import tech.sco.hetznerkloud.response.Items
 class SSHKeys @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
-    suspend fun all(
-        filter: Set<SSHKeyFilter> = emptySet(),
-        sorting: Set<SSHKeySorting> = emptySet(),
-        pagination: Pagination = Pagination(),
-    ): Items<SSHKey> = httpClient.makeRequest(Route.GET_ALL_SSH_KEYS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
+    suspend fun all(filter: Set<SSHKeyFilter> = emptySet(), sorting: Set<SSHKeySorting> = emptySet(), pagination: Pagination = Pagination()): Items<SSHKey> =
+        httpClient.makeRequest(Route.GET_ALL_SSH_KEYS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Failure::class)
     suspend fun find(id: Id): Item<SSHKey> = httpClient.makeRequest(Route.GET_SSH_KEY, resourceId = id.value)

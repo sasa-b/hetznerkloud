@@ -12,8 +12,8 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.utils.io.InternalAPI
 import kotlinx.serialization.json.Json
+import tech.sco.hetznerkloud.InternalAPI
 import tech.sco.hetznerkloud.api.Actions
 import tech.sco.hetznerkloud.api.Certificates
 import tech.sco.hetznerkloud.api.Datacenters

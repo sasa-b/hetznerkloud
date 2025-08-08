@@ -1,8 +1,8 @@
 package tech.sco.hetznerkloud.api
 
 import io.ktor.client.HttpClient
-import io.ktor.utils.io.InternalAPI
 import tech.sco.hetznerkloud.Failure
+import tech.sco.hetznerkloud.InternalAPI
 import tech.sco.hetznerkloud.Route
 import tech.sco.hetznerkloud.makeRequest
 import tech.sco.hetznerkloud.model.LoadBalancerType
@@ -15,10 +15,7 @@ import tech.sco.hetznerkloud.response.Items
 class LoadBalancerTypes @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
-    suspend fun all(
-        filter: Set<LoadBalancerTypeFilter> = emptySet(),
-        pagination: Pagination = Pagination(),
-    ): Items<LoadBalancerType> = httpClient.makeRequest(
+    suspend fun all(filter: Set<LoadBalancerTypeFilter> = emptySet(), pagination: Pagination = Pagination()): Items<LoadBalancerType> = httpClient.makeRequest(
         Route.GET_ALL_LOAD_BALANCER_TYPES,
         queryParams = filter.toQueryParams() + pagination.toQueryParams(),
     )
