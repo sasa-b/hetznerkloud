@@ -11,6 +11,13 @@ import org.jetbrains.kotlin.konan.properties.Properties
  */
 group = "tech.s-co"
 version = "0.3.0"
+gitVersioning.apply {
+    refs {
+        tag("(?<version>.*)") {
+            version = "\${ref.version}"
+        }
+    }
+}
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -21,17 +28,9 @@ plugins {
 //    `maven-publish`
 //    signing
 
-    alias(libs.plugins.detek)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.maven.deployer)
     alias(libs.plugins.git.version)
-}
-
-gitVersioning.apply {
-    refs {
-        tag("(?<version>.*)") {
-            version = "\${ref.version}"
-        }
-    }
 }
 
 // Load local.properties

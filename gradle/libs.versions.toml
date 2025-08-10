@@ -25,7 +25,7 @@ ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json"
 
 #maven-central-publisher = { module = "org.sonatype.central:central-publishing-maven-plugin", version.ref = "maven-central-publisher"}
 [plugins]
-detek = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 git-version = { id = "me.qoomon.git-versioning", version.ref = "git-version" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
