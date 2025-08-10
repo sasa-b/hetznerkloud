@@ -16,6 +16,13 @@ gitVersioning.apply {
         tag("(?<version>.*)") {
             version = "\${ref.version}"
         }
+        branch(".+") {
+            version = "\${ref}-SNAPSHOT"
+        }
+    }
+    // optional fallback configuration in case of no matching ref configuration
+    rev {
+        version = "\${commit}"
     }
 }
 
