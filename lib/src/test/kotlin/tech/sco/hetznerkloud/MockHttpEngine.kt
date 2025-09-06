@@ -248,6 +248,12 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
 
         matchRoute(Route.GET_ALL_PRICES, request, routeParamsProvider) -> response(Route.GET_ALL_PRICES, HttpStatusCode.OK, defaultHeaders)
 
+        matchRoute(Route.GET_ALL_STORAGE_BOXES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOXES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX, HttpStatusCode.OK, defaultHeaders)
+
+        matchRoute(Route.GET_ALL_STORAGE_BOX_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_TYPES, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_TYPE, HttpStatusCode.OK, defaultHeaders)
+
         else -> respondError(HttpStatusCode.NotFound)
     }
 }
@@ -460,6 +466,12 @@ private fun content(route: Route): String = when (route) {
     Route.UNASSIGN_FLOATING_IP_FROM_SERVER -> "src/test/resources/examples/response/floating_ip/unassign_a_floating_ip_from_a_server.json"
 
     Route.GET_ALL_PRICES -> "src/test/resources/examples/response/get_all_prices.json"
+
+    Route.GET_ALL_STORAGE_BOXES -> "src/test/resources/examples/response/storage_box/get_all_storage_boxes.json"
+    Route.GET_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/get_a_storage_box.json"
+
+    Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
+    Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

@@ -85,15 +85,6 @@ data class Server(
     }
 
     @Serializable
-    data class Deprecation(
-        @Serializable(with = OffsetDateTimeSerializer::class)
-        val announced: OffsetDateTime,
-        @JsonNames("unavailable_after")
-        @Serializable(with = OffsetDateTimeSerializer::class)
-        val unavailableAfter: OffsetDateTime,
-    )
-
-    @Serializable
     data class PrivateNetwork(
         @JsonNames("alias_ips")
         val aliasIps: List<String>,

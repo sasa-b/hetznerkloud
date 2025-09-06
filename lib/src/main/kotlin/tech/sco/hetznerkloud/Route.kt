@@ -190,6 +190,12 @@ internal enum class Route(val value: HttpMethodAndPath) {
     UNASSIGN_FLOATING_IP_FROM_SERVER(Pair(HttpMethod.Post, Path("/floating_ips/{id}/actions/unassign"))),
 
     GET_ALL_PRICES(Pair(HttpMethod.Get, Path("/pricing"))),
+
+    GET_ALL_STORAGE_BOXES(Pair(HttpMethod.Get, Path("/storage_boxes"))),
+    GET_STORAGE_BOX(Pair(HttpMethod.Get, Path("/storage_boxes/{id}"))),
+
+    GET_ALL_STORAGE_BOX_TYPES(Pair(HttpMethod.Get, Path("/storage_box_types"))),
+    GET_STORAGE_BOX_TYPE(Pair(HttpMethod.Get, Path("/storage_box_types/{id}"))),
     ;
 
     val method: HttpMethod

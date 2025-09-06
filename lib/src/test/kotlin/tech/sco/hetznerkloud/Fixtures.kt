@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Datacenter
+import tech.sco.hetznerkloud.model.Deprecation
 import tech.sco.hetznerkloud.model.Error
 import tech.sco.hetznerkloud.model.Image
 import tech.sco.hetznerkloud.model.Iso
@@ -17,6 +18,7 @@ import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.ServerType
 import java.time.OffsetDateTime
 
+// TODO: Move test object creation from tests to fixtures
 object ServerFixture {
     @Suppress("LongMethod")
     fun create(serverId: Server.Id): Server = Server(
@@ -73,8 +75,7 @@ object ServerFixture {
         Iso(
             id = Iso.Id(42),
             architecture = "x86",
-            deprecation =
-            Server.Deprecation(
+            deprecation = Deprecation(
                 announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
                 unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
             ),
@@ -134,8 +135,7 @@ object ServerFixture {
             cores = 2,
             cpuType = "shared",
             deprecated = false,
-            deprecation =
-            Server.Deprecation(
+            deprecation = Deprecation(
                 announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
                 unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
             ),

@@ -6,7 +6,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import tech.sco.hetznerkloud.model.Server.Deprecation
+import tech.sco.hetznerkloud.model.Deprecation
 
 @Serializable
 data class ServerType(

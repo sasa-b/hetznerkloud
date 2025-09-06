@@ -29,6 +29,8 @@ data class Items<out T>(
         "floating_ips",
         "firewalls",
         "certificates",
+        "storage_boxes",
+        "storage_box_types",
     )
     val items: List<T>,
 ) : Collection<T> by items
@@ -54,6 +56,8 @@ data class Item<out T>(
         "firewall",
         "certificate",
         "pricing",
+        "storage_box",
+        "storage_box_type",
     )
     val value: T,
 )

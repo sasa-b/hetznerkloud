@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import tech.sco.hetznerkloud.model.Deprecation
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Server
@@ -23,8 +24,7 @@ class ServerTypeApiTest :
             cores = 2,
             cpuType = "shared",
             deprecated = false,
-            deprecation =
-            Server.Deprecation(
+            deprecation = Deprecation(
                 announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
                 unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
             ),

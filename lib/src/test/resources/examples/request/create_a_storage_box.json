@@ -1,0 +1,21 @@
+{
+  "storage_box_type": "bx20",
+  "location": "fsn1",
+  "name": "my-resource",
+  "password": "string",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  },
+  "ssh_keys": [
+    "ssh-rsa AAAjjk76kgf...Xt"
+  ],
+  "access_settings": {
+    "samba_enabled": false,
+    "ssh_enabled": true,
+    "webdav_enabled": false,
+    "zfs_enabled": false,
+    "reachable_externally": false
+  }
+}

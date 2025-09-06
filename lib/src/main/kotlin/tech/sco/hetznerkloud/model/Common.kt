@@ -6,6 +6,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
+import tech.sco.hetznerkloud.serialization.OffsetDateTimeSerializer
+import java.time.OffsetDateTime
 
 typealias Labels = Map<String, String>
 
@@ -66,6 +68,12 @@ enum class ResourceType {
 
     @SerialName("volume")
     VOLUME,
+
+    @SerialName("storage_box")
+    STORAGE_BOX,
+
+    @SerialName("storage_box_type")
+    STORAGE_BOX_TYPE,
 }
 
 @Serializable
@@ -184,3 +192,12 @@ enum class IpType {
     @SerialName("ipv6")
     IPV6,
 }
+
+@Serializable
+data class Deprecation(
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val announced: OffsetDateTime,
+    @JsonNames("unavailable_after")
+    @Serializable(with = OffsetDateTimeSerializer::class)
+    val unavailableAfter: OffsetDateTime,
+)

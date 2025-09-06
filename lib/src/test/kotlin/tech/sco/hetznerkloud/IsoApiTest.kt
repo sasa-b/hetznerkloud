@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import tech.sco.hetznerkloud.model.Deprecation
 import tech.sco.hetznerkloud.model.Iso
 import tech.sco.hetznerkloud.model.Iso.Id
 import tech.sco.hetznerkloud.model.Meta
@@ -22,8 +23,7 @@ class IsoApiTest :
             val expectedIso = Iso(
                 id = Id(42),
                 architecture = "x86",
-                deprecation =
-                Server.Deprecation(
+                deprecation = Deprecation(
                     announced = OffsetDateTime.parse("2023-06-01T00:00:00+00:00"),
                     unavailableAfter = OffsetDateTime.parse("2023-09-01T00:00:00+00:00"),
                 ),
