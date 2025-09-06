@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
  * This project uses @Incubating APIs which are subject to change.
  */
 group = "tech.s-co"
-version = "0.3.0"
+version = "0.4.0"
 gitVersioning.apply {
     refs {
         tag("(?<version>.*)") {
@@ -19,6 +19,7 @@ gitVersioning.apply {
         branch(".+") {
             version = "\${ref}-SNAPSHOT"
         }
+        considerTagsOnBranches = true
     }
     // optional fallback configuration in case of no matching ref configuration
     rev {
