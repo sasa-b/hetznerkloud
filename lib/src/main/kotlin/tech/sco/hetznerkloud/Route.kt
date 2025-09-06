@@ -72,7 +72,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     GET_SERVER_TYPE(Pair(HttpMethod.Get, Path("/server_types/{id}"))),
 
     GET_ALL_PLACEMENT_GROUPS(Pair(HttpMethod.Get, Path("/placement_groups"))),
-    GET_A_PLACEMENT_GROUP(Pair(HttpMethod.Get, Path("/placement_groups/{id}"))),
+    GET_PLACEMENT_GROUP(Pair(HttpMethod.Get, Path("/placement_groups/{id}"))),
     CREATE_PLACEMENT_GROUP(Pair(HttpMethod.Post, Path("/placement_groups"))),
     UPDATE_PLACEMENT_GROUP(Pair(HttpMethod.Patch, Path("/placement_groups/{id}"))),
     DELETE_PLACEMENT_GROUP(Pair(HttpMethod.Delete, Path("/placement_groups/{id}"))),
@@ -196,6 +196,9 @@ internal enum class Route(val value: HttpMethodAndPath) {
 
     GET_ALL_STORAGE_BOX_TYPES(Pair(HttpMethod.Get, Path("/storage_box_types"))),
     GET_STORAGE_BOX_TYPE(Pair(HttpMethod.Get, Path("/storage_box_types/{id}"))),
+    CREATE_STORAGE_BOX(Pair(HttpMethod.Post, Path("/storage_boxes"))),
+    UPDATE_STORAGE_BOX(Pair(HttpMethod.Put, Path("/storage_boxes/{id}"))),
+    DELETE_STORAGE_BOX(Pair(HttpMethod.Delete, Path("/storage_boxes/{id}"))),
     ;
 
     val method: HttpMethod

@@ -120,6 +120,10 @@ data class PrimaryIpResource(override val id: PrimaryIp.Id) : Resource
 data class FloatingIpResource(override val id: FloatingIp.Id) : Resource
 
 @Serializable
+@SerialName("storage_box")
+data class StorageBoxResource(override val id: StorageBox.Id) : Resource
+
+@Serializable
 data class Meta(val pagination: Pagination) {
     @Serializable
     data class Pagination(

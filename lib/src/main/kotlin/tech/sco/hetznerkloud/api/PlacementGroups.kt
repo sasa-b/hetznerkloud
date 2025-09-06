@@ -18,7 +18,7 @@ class PlacementGroups @InternalAPI constructor(private val httpClient: HttpClien
     suspend fun all(): Items<PlacementGroup> = httpClient.makeRequest(Route.GET_ALL_PLACEMENT_GROUPS)
 
     @Throws(Failure::class)
-    suspend fun find(id: Id): Item<PlacementGroup> = httpClient.makeRequest(Route.GET_A_PLACEMENT_GROUP, id.value)
+    suspend fun find(id: Id): Item<PlacementGroup> = httpClient.makeRequest(Route.GET_PLACEMENT_GROUP, id.value)
 
     @Throws(Failure::class)
     suspend fun create(body: CreatePlacementGroup): Item<PlacementGroup> = httpClient.makeRequest(Route.CREATE_PLACEMENT_GROUP, body = body)

@@ -85,9 +85,13 @@ data class ItemCreated<out T>(
         "floating_ip",
         "firewall",
         "certificate",
+        "storage_box",
     )
     val item: T,
 )
+
+@Serializable
+data class ItemDeleted(val action: Action)
 
 @Serializable
 data class Error(val error: DomainError)

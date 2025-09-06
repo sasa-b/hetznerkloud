@@ -2,15 +2,24 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import tech.sco.hetznerkloud.model.Action
+import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Deprecation
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.Server
+import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.StorageBox
+import tech.sco.hetznerkloud.model.StorageBoxResource
 import tech.sco.hetznerkloud.model.StorageBoxType
+import tech.sco.hetznerkloud.request.CreateStorageBox
+import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemCreated
+import tech.sco.hetznerkloud.response.ItemDeleted
 import tech.sco.hetznerkloud.response.Items
 import java.time.OffsetDateTime
 
@@ -97,6 +106,132 @@ class StorageBoxApiTest :
 
             should("get a Storage Box by id") {
                 underTest.storageBoxes.find(storageBoxId) shouldBe Item(expectedStorageBox)
+            }
+        }
+
+        context("Storage Box resource write API") {
+            should("create a Storage Box") {
+
+                val requestBody = CreateStorageBox(
+                    storageBoxType = "bx20",
+                    location = "fsn1",
+                    name = "my-resource",
+                    password = "string",
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
+                    sshKeys = listOf("ssh-rsa AAAjjk76kgf...Xt"),
+                    accessSettings = CreateStorageBox.AccessSettings(
+                        reachableExternally = false,
+                        sambaEnabled = false,
+                        sshEnabled = true,
+                        webdavEnabled = false,
+                        zfsEnabled = false,
+                    ),
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box.json"
+
+                underTest.storageBoxes.create(requestBody) shouldBe ItemCreated(
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "create",
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(
+                                id = StorageBox.Id(42),
+                            ),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                    item = StorageBox(
+                        id = StorageBox.Id(42),
+                        status = StorageBox.Status.INITIALIZING,
+                        name = "my-resource",
+                        storageBoxType = StorageBoxType(
+                            id = StorageBoxType.Id(1),
+                            name = "bx20",
+                            description = "BX20",
+                            snapshotLimit = 10,
+                            automaticSnapshotLimit = 10,
+                            subaccountsLimit = 100,
+                            size = 1073741824,
+                            prices = listOf(
+                                StorageBoxType.Price(
+                                    location = "fsn1",
+                                    priceHourly = Price.Amount(gross = "0.0061", net = "0.0051"),
+                                    priceMonthly = Price.Amount(gross = "3.8080", net = "3.2000"),
+                                    setupFee = Price.Amount(gross = "0.0000", net = "0.0000"),
+                                ),
+                            ),
+                        ),
+                        location = Location(
+                            id = Location.Id(1),
+                            city = "Falkenstein",
+                            country = "DE",
+                            description = "Falkenstein DC Park 1",
+                            latitude = 50.476119,
+                            longitude = 12.370071,
+                            name = "fsn1",
+                            networkZone = NetworkZone.EU_CENTRAL,
+                        ),
+                        accessSettings = StorageBox.AccessSettings(
+                            reachableExternally = false,
+                            sambaEnabled = false,
+                            sshEnabled = false,
+                            webdavEnabled = false,
+                            zfsEnabled = false,
+                        ),
+                        server = null,
+                        system = null,
+                        stats = null,
+                        labels = mapOf(
+                            "environment" to "prod",
+                            "example.com/my" to "label",
+                            "just-a-key" to "",
+                        ),
+                        protection = Protection(delete = false),
+                        snapshotPlan = null,
+                        created = OffsetDateTime.parse("2016-01-30T23:50:00Z"),
+                        username = null,
+                    ),
+                )
+            }
+
+            should("update a Storage Box") {
+
+                val requestBody = UpdateResource(
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
+                    name = "string",
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box.json"
+
+                underTest.storageBoxes.update(storageBoxId, requestBody) shouldBe Item(expectedStorageBox)
+            }
+
+            should("delete a Storage Box") {
+                underTest.storageBoxes.delete(storageBoxId) shouldBe ItemDeleted(
+                    Action(
+                        id = Action.Id(13),
+                        command = "delete",
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
             }
         }
     })

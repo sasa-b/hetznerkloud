@@ -2,7 +2,6 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
-import kotlinx.serialization.encodeToString
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Datacenter
@@ -41,12 +40,12 @@ import tech.sco.hetznerkloud.request.RebuildFromImageByName
 import tech.sco.hetznerkloud.request.ServerMetricsFilter
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemDeleted
 import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerActionWithImage
 import tech.sco.hetznerkloud.response.ServerActionWithRootPassword
 import tech.sco.hetznerkloud.response.ServerConsoleRequestedAction
 import tech.sco.hetznerkloud.response.ServerCreated
-import tech.sco.hetznerkloud.response.ServerDeleted
 import java.time.OffsetDateTime
 
 @Suppress("LargeClass")
@@ -559,7 +558,7 @@ class ServerApiTest :
             }
 
             should("delete a Server") {
-                underTest.servers.delete(serverId) shouldBe ServerDeleted(
+                underTest.servers.delete(serverId) shouldBe ItemDeleted(
                     Action(
                         id = Action.Id(42),
                         command = "start_resource",

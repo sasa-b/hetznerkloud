@@ -31,12 +31,12 @@ import tech.sco.hetznerkloud.request.ServerSorting
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Item
+import tech.sco.hetznerkloud.response.ItemDeleted
 import tech.sco.hetznerkloud.response.Items
 import tech.sco.hetznerkloud.response.ServerActionWithImage
 import tech.sco.hetznerkloud.response.ServerActionWithRootPassword
 import tech.sco.hetznerkloud.response.ServerConsoleRequestedAction
 import tech.sco.hetznerkloud.response.ServerCreated
-import tech.sco.hetznerkloud.response.ServerDeleted
 
 @Suppress("TooManyFunctions")
 class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
@@ -58,7 +58,7 @@ class Servers @InternalAPI constructor(private val httpClient: HttpClient) {
     suspend fun update(id: Id, body: UpdateResource): Item<Server> = httpClient.makeRequest(Route.UPDATE_SERVER, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun delete(id: Id): ServerDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id.value)
+    suspend fun delete(id: Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_SERVER, id.value)
 
     @Throws(Failure::class)
     suspend fun metrics(id: Id, filter: Set<ServerMetricsFilter>): Item<ServerMetrics> {

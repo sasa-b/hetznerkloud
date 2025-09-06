@@ -93,7 +93,7 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.GET_ISO, request, routeParamsProvider) -> response(Route.GET_ISO, HttpStatusCode.OK, defaultHeaders)
 
         matchRoute(Route.GET_ALL_PLACEMENT_GROUPS, request, routeParamsProvider) -> response(Route.GET_ALL_PLACEMENT_GROUPS, HttpStatusCode.OK, defaultHeaders)
-        matchRoute(Route.GET_A_PLACEMENT_GROUP, request, routeParamsProvider) -> response(Route.GET_A_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_PLACEMENT_GROUP, request, routeParamsProvider) -> response(Route.GET_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.CREATE_PLACEMENT_GROUP, request, routeParamsProvider) -> response(Route.CREATE_PLACEMENT_GROUP, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_PLACEMENT_GROUP, request, routeParamsProvider) -> response(Route.UPDATE_PLACEMENT_GROUP, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_PLACEMENT_GROUP, request, routeParamsProvider) -> response(Route.DELETE_PLACEMENT_GROUP, HttpStatusCode.NoContent, defaultHeaders)
@@ -250,6 +250,9 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
 
         matchRoute(Route.GET_ALL_STORAGE_BOXES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOXES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.CREATE_STORAGE_BOX, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.UPDATE_STORAGE_BOX, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.DELETE_STORAGE_BOX, HttpStatusCode.NoContent, defaultHeaders)
 
         matchRoute(Route.GET_ALL_STORAGE_BOX_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -348,7 +351,7 @@ private fun content(route: Route): String = when (route) {
     Route.CHANGE_IMAGE_PROTECTION -> "src/test/resources/examples/response/image/change_image_protection.json"
 
     Route.GET_ALL_PLACEMENT_GROUPS -> "src/test/resources/examples/response/placement_group/get_all_placement_groups.json"
-    Route.GET_A_PLACEMENT_GROUP -> "src/test/resources/examples/response/placement_group/get_a_placement_group.json"
+    Route.GET_PLACEMENT_GROUP -> "src/test/resources/examples/response/placement_group/get_a_placement_group.json"
     Route.CREATE_PLACEMENT_GROUP -> "src/test/resources/examples/response/placement_group/create_a_placement_group.json"
     Route.UPDATE_PLACEMENT_GROUP -> "src/test/resources/examples/response/placement_group/update_a_placement_group.json"
     Route.DELETE_PLACEMENT_GROUP -> "src/test/resources/examples/response/no_content.json"
@@ -469,6 +472,9 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_STORAGE_BOXES -> "src/test/resources/examples/response/storage_box/get_all_storage_boxes.json"
     Route.GET_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/get_a_storage_box.json"
+    Route.CREATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/create_a_storage_box.json"
+    Route.UPDATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/update_a_storage_box.json"
+    Route.DELETE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/delete_a_storage_box.json"
 
     Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
     Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
