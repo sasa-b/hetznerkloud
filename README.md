@@ -48,7 +48,7 @@ import tech.sco.hetznerkloud.ApiToken
 fun main() {
 
     runBlocking {
-        val apiToken = ApiToken.load(Path("/some/path/token.txt"))
+        val apiToken = ApiToken.env("HETZNER_API_TOKEN") ?: ApiToken.file(Path("/some/path/token.txt"))
 
         val client = ApiClient(apiToken)
 
@@ -73,7 +73,7 @@ import tech.sco.hetznerkloud.request.CreateSSHKey
 fun main() {
     
     runBlocking {
-        val apiToken = ApiToken.load(Path("/some/path/token.txt"))
+        val apiToken = ApiToken.env("HETZNER_API_TOKEN") ?: ApiToken.file(Path("/some/path/token.txt"))
 
         val client = CloudApiClient(apiToken)
 
