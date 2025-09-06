@@ -199,6 +199,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_STORAGE_BOX(Pair(HttpMethod.Post, Path("/storage_boxes"))),
     UPDATE_STORAGE_BOX(Pair(HttpMethod.Put, Path("/storage_boxes/{id}"))),
     DELETE_STORAGE_BOX(Pair(HttpMethod.Delete, Path("/storage_boxes/{id}"))),
+    GET_STORAGE_BOX_CONTENT(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/folders"))),
     ;
 
     val method: HttpMethod

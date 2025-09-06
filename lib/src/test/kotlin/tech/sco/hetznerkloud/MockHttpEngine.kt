@@ -253,6 +253,7 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CREATE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.CREATE_STORAGE_BOX, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.UPDATE_STORAGE_BOX, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.DELETE_STORAGE_BOX, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX_CONTENT, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_CONTENT, HttpStatusCode.OK, defaultHeaders)
 
         matchRoute(Route.GET_ALL_STORAGE_BOX_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -475,6 +476,7 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/create_a_storage_box.json"
     Route.UPDATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/update_a_storage_box.json"
     Route.DELETE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/delete_a_storage_box.json"
+    Route.GET_STORAGE_BOX_CONTENT -> "src/test/resources/examples/response/storage_box/get_a_storage_box_content.json"
 
     Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
     Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"

@@ -17,6 +17,7 @@ import tech.sco.hetznerkloud.model.StorageBoxResource
 import tech.sco.hetznerkloud.model.StorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
 import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.response.Folders
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.ItemDeleted
@@ -106,6 +107,12 @@ class StorageBoxApiTest :
 
             should("get a Storage Box by id") {
                 underTest.storageBoxes.find(storageBoxId) shouldBe Item(expectedStorageBox)
+            }
+
+            should("get a Storage Box content") {
+                underTest.storageBoxes.content(storageBoxId) shouldBe Folders(
+                    value = listOf("offsite-backup", "photos"),
+                )
             }
         }
 
