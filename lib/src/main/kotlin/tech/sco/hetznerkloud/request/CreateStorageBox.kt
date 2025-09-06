@@ -1,11 +1,8 @@
 package tech.sco.hetznerkloud.request
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNames
 import tech.sco.hetznerkloud.model.Labels
-import tech.sco.hetznerkloud.model.StorageBox
 
 @Serializable
 data class CreateStorageBox(

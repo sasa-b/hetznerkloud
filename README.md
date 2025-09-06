@@ -13,6 +13,8 @@ dependencies {
 ```
 
 ## Usage
+
+### [Hetzner Cloud API](https://docs.hetzner.cloud/reference/cloud)
 ```kotlin
 import tech.sco.hetznerkloud.CloudApiClient
 import tech.sco.hetznerkloud.ApiToken
@@ -36,7 +38,26 @@ fun main() {
         }
     }
 }
+```
 
+### [Hetzner Storage Box API](https://docs.hetzner.cloud/reference/hetzner) 
+```kotlin
+import tech.sco.hetznerkloud.ApiClient
+import tech.sco.hetznerkloud.ApiToken
+
+fun main() {
+
+    runBlocking {
+        val apiToken = ApiToken.load(Path("/some/path/token.txt"))
+
+        val client = ApiClient(apiToken)
+
+        client.storageBoxes.all().map {
+            println("Id: ${it.id}")
+            println("Name: ${it.name}")
+        }
+    }
+}
 ```
 
 ## Error handling
