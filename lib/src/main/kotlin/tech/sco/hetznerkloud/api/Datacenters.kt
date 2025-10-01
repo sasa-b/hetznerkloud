@@ -11,13 +11,12 @@ import tech.sco.hetznerkloud.request.DatacenterFilter
 import tech.sco.hetznerkloud.request.DatacenterSorting
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.toQueryParams
-import tech.sco.hetznerkloud.response.DatacenterItems
 import tech.sco.hetznerkloud.response.Item
 
 class Datacenters @InternalAPI constructor(private val httpClient: HttpClient) {
 
     @Throws(Failure::class)
-    suspend fun all(filter: Set<DatacenterFilter> = emptySet(), sorting: Set<DatacenterSorting> = emptySet(), pagination: Pagination = Pagination()): DatacenterItems =
+    suspend fun all(filter: Set<DatacenterFilter> = emptySet(), sorting: Set<DatacenterSorting> = emptySet(), pagination: Pagination = Pagination()): Datacenter.Items =
         httpClient.makeRequest(Route.GET_ALL_DATACENTERS, queryParams = filter.toQueryParams() + sorting.toQueryParams() + pagination.toQueryParams())
 
     @Throws(Failure::class)

@@ -35,4 +35,10 @@ data class Snapshot(
         @JsonNames("size_filesystem")
         val sizeFilesystem: Long,
     )
+
+    @Serializable
+    data class Items(
+        @JsonNames("snapshots")
+        val items: List<Snapshot>,
+    ) : Collection<Snapshot> by items
 }

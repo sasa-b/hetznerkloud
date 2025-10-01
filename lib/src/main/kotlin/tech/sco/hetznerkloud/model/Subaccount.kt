@@ -43,4 +43,10 @@ data class Subaccount(
         @JsonNames("webdav_enabled")
         val webdavEnabled: Boolean,
     )
+
+    @Serializable
+    data class Items(
+        @JsonNames("subaccounts")
+        val items: List<Subaccount>,
+    ) : Collection<Subaccount> by items
 }

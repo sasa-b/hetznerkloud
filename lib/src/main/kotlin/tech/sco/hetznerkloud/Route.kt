@@ -197,6 +197,9 @@ internal enum class Route(val value: HttpMethodAndPath) {
     GET_STORAGE_BOX_ACTIONS(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/actions"))),
     GET_STORAGE_BOX_ACTION(Pair(HttpMethod.Get, Path("/storage_boxes/actions/{id}"))),
     GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/actions/{action_id}"))),
+    CHANGE_STORAGE_BOX_PROTECTION(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/change_protection"))),
+    CHANGE_STORAGE_BOX_TYPE(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/change_type"))),
+    RESET_STORAGE_BOX_PASSWORD(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/reset_password"))),
 
     GET_STORAGE_BOX_SUBACCOUNTS(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/subaccounts"))),
     GET_STORAGE_BOX_SUBACCOUNT(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}"))),

@@ -262,6 +262,31 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.GET_ALL_STORAGE_BOX_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_ACTIONS, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_ACTIONS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_ACTION, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_ACTION, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CHANGE_STORAGE_BOX_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_STORAGE_BOX_PROTECTION, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.CHANGE_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.CHANGE_STORAGE_BOX_TYPE, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.RESET_STORAGE_BOX_PASSWORD, request, routeParamsProvider) -> response(Route.RESET_STORAGE_BOX_PASSWORD, HttpStatusCode.Created, defaultHeaders)
+
+        matchRoute(Route.GET_STORAGE_BOX_SUBACCOUNTS, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_SUBACCOUNTS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX_SUBACCOUNT, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_SUBACCOUNT, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_STORAGE_BOX_SUBACCOUNT, request, routeParamsProvider) -> response(Route.CREATE_STORAGE_BOX_SUBACCOUNT, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_STORAGE_BOX_SUBACCOUNT, request, routeParamsProvider) -> response(Route.UPDATE_STORAGE_BOX_SUBACCOUNT, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_STORAGE_BOX_SUBACCOUNT, request, routeParamsProvider) -> response(Route.DELETE_STORAGE_BOX_SUBACCOUNT, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(
+            Route.RESET_STORAGE_BOX_SUBACCOUNT_PASSWORD,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.RESET_STORAGE_BOX_SUBACCOUNT_PASSWORD, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.UPDATE_STORAGE_BOX_SUBACCOUNT_ACCESS_SETTINGS,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.UPDATE_STORAGE_BOX_SUBACCOUNT_ACCESS_SETTINGS, HttpStatusCode.Created, defaultHeaders)
+
+        matchRoute(Route.GET_STORAGE_BOX_SNAPSHOTS, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_SNAPSHOTS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_SNAPSHOT, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.CREATE_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.CREATE_STORAGE_BOX_SNAPSHOT, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.UPDATE_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.UPDATE_STORAGE_BOX_SNAPSHOT, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.DELETE_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.DELETE_STORAGE_BOX_SNAPSHOT, HttpStatusCode.NoContent, defaultHeaders)
 
         matchRoute(Route.GET_ALL_STORAGE_BOX_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -481,32 +506,34 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_STORAGE_BOXES -> "src/test/resources/examples/response/storage_box/get_all_storage_boxes.json"
     Route.GET_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/get_a_storage_box.json"
-    Route.CREATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/create_a_storage_box.json"
-    Route.UPDATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/update_a_storage_box.json"
-    Route.DELETE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/delete_a_storage_box.json"
-    Route.GET_STORAGE_BOX_CONTENT -> "src/test/resources/examples/response/storage_box/get_a_storage_box_content.json"
-
-    Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
-    Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
-
     Route.GET_ALL_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_all_storage_box_actions.json"
     Route.GET_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_storage_box_actions.json"
     Route.GET_STORAGE_BOX_ACTION -> "src/test/resources/examples/response/storage_box/get_a_storage_box_action.json"
     Route.GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/get_a_storage_box_action_for_storage_box.json"
+    Route.CREATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/create_a_storage_box.json"
+    Route.UPDATE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/update_a_storage_box.json"
+    Route.DELETE_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/delete_a_storage_box.json"
+    Route.GET_STORAGE_BOX_CONTENT -> "src/test/resources/examples/response/storage_box/get_a_storage_box_content.json"
+    Route.CHANGE_STORAGE_BOX_PROTECTION -> "src/test/resources/examples/response/storage_box/change_storage_box_protection.json"
+    Route.CHANGE_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/change_storage_box_type.json"
+    Route.RESET_STORAGE_BOX_PASSWORD -> "src/test/resources/examples/response/storage_box/reset_storage_box_password.json"
 
-    Route.GET_STORAGE_BOX_SUBACCOUNTS -> TODO()
-    Route.GET_STORAGE_BOX_SUBACCOUNT -> TODO()
-    Route.CREATE_STORAGE_BOX_SUBACCOUNT -> TODO()
-    Route.UPDATE_STORAGE_BOX_SUBACCOUNT -> TODO()
-    Route.DELETE_STORAGE_BOX_SUBACCOUNT -> TODO()
-    Route.RESET_STORAGE_BOX_SUBACCOUNT_PASSWORD -> TODO()
-    Route.UPDATE_STORAGE_BOX_SUBACCOUNT_ACCESS_SETTINGS -> TODO()
+    Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
+    Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
 
-    Route.GET_STORAGE_BOX_SNAPSHOTS -> TODO()
-    Route.GET_STORAGE_BOX_SNAPSHOT -> TODO()
-    Route.CREATE_STORAGE_BOX_SNAPSHOT -> TODO()
-    Route.UPDATE_STORAGE_BOX_SNAPSHOT -> TODO()
-    Route.DELETE_STORAGE_BOX_SNAPSHOT -> TODO()
+    Route.GET_STORAGE_BOX_SUBACCOUNTS -> "src/test/resources/examples/response/storage_box/get_storage_box_subaccounts.json"
+    Route.GET_STORAGE_BOX_SUBACCOUNT -> "src/test/resources/examples/response/storage_box/get_a_storage_box_subaccount.json"
+    Route.CREATE_STORAGE_BOX_SUBACCOUNT -> "src/test/resources/examples/response/storage_box/create_a_storage_box_subaccount.json"
+    Route.UPDATE_STORAGE_BOX_SUBACCOUNT -> "src/test/resources/examples/response/storage_box/update_a_storage_box_subaccount.json"
+    Route.DELETE_STORAGE_BOX_SUBACCOUNT -> "src/test/resources/examples/response/storage_box/delete_a_storage_box_subaccount.json"
+    Route.RESET_STORAGE_BOX_SUBACCOUNT_PASSWORD -> "src/test/resources/examples/response/storage_box/reset_storage_box_subaccount_password.json"
+    Route.UPDATE_STORAGE_BOX_SUBACCOUNT_ACCESS_SETTINGS -> "src/test/resources/examples/response/storage_box/update_a_storage_box_subaccount_access_settings.json"
+
+    Route.GET_STORAGE_BOX_SNAPSHOTS -> "src/test/resources/examples/response/storage_box/get_storage_box_snapshots.json"
+    Route.GET_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/get_a_storage_box_snapshot.json"
+    Route.CREATE_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/create_a_storage_box_snapshot.json"
+    Route.UPDATE_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/update_a_storage_box_snapshot.json"
+    Route.DELETE_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/delete_a_storage_box_snapshot.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

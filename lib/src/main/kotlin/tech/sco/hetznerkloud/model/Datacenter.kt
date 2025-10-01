@@ -30,4 +30,12 @@ data class Datacenter(
         val availableForMigration: List<ServerType.Id>,
         val supported: List<ServerType.Id>,
     )
+
+    @Serializable
+    data class Items(
+        val meta: Meta,
+        @JsonNames("datacenters")
+        val items: List<Datacenter>,
+        val recommendation: Long,
+    ) : Collection<Datacenter> by items
 }

@@ -58,6 +58,8 @@ data class Item<out T>(
         "pricing",
         "storage_box",
         "storage_box_type",
+        "subaccount",
+        "snapshot",
     )
     val value: T,
 )

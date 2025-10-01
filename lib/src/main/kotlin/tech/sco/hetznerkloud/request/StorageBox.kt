@@ -31,3 +31,12 @@ data class CreateStorageBox(
         val zfsEnabled: Boolean? = null,
     )
 }
+
+@Serializable
+data class ChangeStorageBoxType(
+    @SerialName("storage_box_type")
+    val storageBoxType: String,
+) : HttpBody
+
+@Serializable
+data class ResetStorageBoxPassword(val password: String) : HttpBody

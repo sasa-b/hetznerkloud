@@ -7,7 +7,6 @@ import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.ServerType
-import tech.sco.hetznerkloud.response.DatacenterItems
 import tech.sco.hetznerkloud.response.Item
 
 class DatacenterApiTest :
@@ -44,7 +43,7 @@ class DatacenterApiTest :
 
             should("get all Datacenters") {
                 underTest.datacenters.all() shouldBe
-                    DatacenterItems(
+                    Datacenter.Items(
                         meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
                         items = listOf(expectedDatacenter),
                         recommendation = 1,

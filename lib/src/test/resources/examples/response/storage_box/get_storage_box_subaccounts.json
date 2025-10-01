@@ -13,11 +13,11 @@
         "readonly": false
       },
       "description": "host01 backup",
-      "created": "2025-02-22:00:02.000Z",
+      "created": "2025-02-22T00:00:02.000Z",
       "labels": {
         "environment": "prod",
         "example.com/my": "label",
-        "just-a-key": null
+        "just-a-key": ""
       },
       "storage_box": 42
     }

@@ -5,6 +5,8 @@ import io.kotest.matchers.shouldBe
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Deprecation
+import tech.sco.hetznerkloud.model.Image.Id
+import tech.sco.hetznerkloud.model.ImageResource
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
@@ -13,10 +15,15 @@ import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
+import tech.sco.hetznerkloud.model.Snapshot
 import tech.sco.hetznerkloud.model.StorageBox
 import tech.sco.hetznerkloud.model.StorageBoxResource
 import tech.sco.hetznerkloud.model.StorageBoxType
+import tech.sco.hetznerkloud.model.Subaccount
+import tech.sco.hetznerkloud.request.ChangeDeleteProtection
+import tech.sco.hetznerkloud.request.ChangeStorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
+import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Folders
 import tech.sco.hetznerkloud.response.Item
@@ -28,8 +35,17 @@ import java.time.OffsetDateTime
 class StorageBoxApiTest :
     ShouldSpec({
         val storageBoxId = StorageBox.Id(42)
+        val subaccountId = Subaccount.Id(42)
+        val snapshotId = Snapshot.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to storageBoxId.value.toString(), "action_id" to "42") }
+        val mockEngine = createMockEngine(apiToken) {
+            mapOf(
+                "id" to storageBoxId.value.toString(),
+                "action_id" to "42",
+                "subaccount_id" to subaccountId.value.toString(),
+                "snapshot_id" to snapshotId.value.toString(),
+            )
+        }
         val underTest = ApiClient.of(apiToken, mockEngine)
 
         val expectedStorageBox = StorageBox(
@@ -181,6 +197,114 @@ class StorageBoxApiTest :
                     ),
                 )
             }
+
+            should("get a Storage Box subaccounts") {
+                underTest.storageBoxes.subaccounts(storageBoxId) shouldBe Subaccount.Items(
+                    items = listOf(
+                        Subaccount(
+                            id = Subaccount.Id(42),
+                            username = "u1337-sub1",
+                            server = "u1337-sub1.your-storagebox.de",
+                            homeDirectory = "my_backups/host01.my.company",
+                            accessSettings = Subaccount.AccessSettings(
+                                sambaEnabled = false,
+                                sshEnabled = true,
+                                webdavEnabled = false,
+                                reachableExternally = true,
+                                readonly = false,
+                            ),
+                            description = "host01 backup",
+                            labels = mapOf(
+                                "environment" to "prod",
+                                "example.com/my" to "label",
+                                "just-a-key" to "",
+                            ),
+                            created = OffsetDateTime.parse("2025-02-22T00:00:02.000Z"),
+                            storageBox = StorageBox.Id(42),
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Storage Box subaccount") {
+                underTest.storageBoxes.subaccount(storageBoxId, subaccountId) shouldBe Item(
+                    Subaccount(
+                        id = Subaccount.Id(42),
+                        username = "u1337-sub1",
+                        homeDirectory = "my_backups/host01.my.company",
+                        server = "u1337-sub1.your-storagebox.de",
+                        accessSettings = Subaccount.AccessSettings(
+                            sambaEnabled = false,
+                            sshEnabled = false,
+                            webdavEnabled = false,
+                            reachableExternally = false,
+                            readonly = false,
+                        ),
+                        description = "host01 backup",
+                        labels = mapOf(
+                            "environment" to "prod",
+                            "example.com/my" to "label",
+                            "just-a-key" to "",
+                        ),
+                        created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                        storageBox = StorageBox.Id(42),
+                    ),
+                )
+            }
+
+            should("get a Storage Box snapshots") {
+                underTest.storageBoxes.snapshots(storageBoxId) shouldBe Snapshot.Items(
+                    items = listOf(
+                        Snapshot(
+                            id = Snapshot.Id(1),
+                            name = "2025-02-12T11-35-19",
+                            description = "my-description",
+                            stats = Snapshot.Stats(size = 2097152, sizeFilesystem = 1048576),
+                            isAutomatic = false,
+                            labels = mapOf(
+                                "environment" to "prod",
+                                "example.com/my" to "label",
+                                "just-a-key" to "",
+                            ),
+                            created = OffsetDateTime.parse("2025-02-12T11:35:19.000Z"),
+                            storageBox = StorageBox.Id(42),
+                        ),
+                        Snapshot(
+                            id = Snapshot.Id(2),
+                            name = "snapshot-daily--2025-02-12T22-00-02",
+                            description = "",
+                            stats = Snapshot.Stats(size = 2097152, sizeFilesystem = 1048576),
+                            isAutomatic = true,
+                            labels = mapOf(
+                                "environment" to "prod",
+                                "example.com/my" to "label",
+                                "just-a-key" to "",
+                            ),
+                            created = OffsetDateTime.parse("2025-02-22T00:00:02.000Z"),
+                            storageBox = StorageBox.Id(42),
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Storage Box snapshot") {
+                underTest.storageBoxes.snapshot(storageBoxId, snapshotId) shouldBe Item(
+                    Snapshot(
+                        id = Snapshot.Id(42),
+                        name = "my-resource",
+                        description = "This describes my resource",
+                        stats = Snapshot.Stats(size = 0, sizeFilesystem = 0),
+                        isAutomatic = false,
+                        labels = mapOf(
+                            "environment" to "prod",
+                            "example.com/my" to "label",
+                            "just-a-key" to "",
+                        ),
+                        created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                        storageBox = StorageBox.Id(42),
+                    ),
+                )
+            }
         }
 
         context("Storage Box resource write API") {
@@ -304,6 +428,72 @@ class StorageBoxApiTest :
                         ),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
                         status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change a Storage Box protection") {
+                val requestBody = ChangeDeleteProtection(true)
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "change_storage_box_protection.json"
+
+                underTest.storageBoxes.changeProtection(
+                    storageBoxId,
+                    requestBody,
+                ) shouldBe Item(
+                    value = Action(
+                        id = Action.Id(value = 13),
+                        command = "change_protection",
+                        error = null,
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(StorageBoxResource(id = StorageBox.Id(value = 42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
+                )
+            }
+
+            should("change a Storage Box type") {
+                val requestBody = ChangeStorageBoxType("BX21")
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "change_storage_box_type.json"
+
+                underTest.storageBoxes.changeType(
+                    storageBoxId,
+                    requestBody,
+                ) shouldBe Item(
+                    value = Action(
+                        id = Action.Id(value = 13),
+                        command = "change_type",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(StorageBoxResource(id = StorageBox.Id(value = 42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("reset a Storage Box password") {
+                val requestBody = ResetStorageBoxPassword("12345")
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "reset_storage_box_password.json"
+
+                underTest.storageBoxes.resetPassword(
+                    storageBoxId,
+                    requestBody,
+                ) shouldBe Item(
+                    value = Action(
+                        id = Action.Id(value = 13),
+                        command = "reset_password",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(StorageBoxResource(id = StorageBox.Id(value = 42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
                     ),
                 )
             }

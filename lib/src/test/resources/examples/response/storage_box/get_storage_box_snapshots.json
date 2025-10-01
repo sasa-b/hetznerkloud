@@ -14,7 +14,7 @@
       "labels": {
         "environment": "prod",
         "example.com/my": "label",
-        "just-a-key": null
+        "just-a-key": ""
       }
     },
     {
@@ -26,12 +26,12 @@
       "is_automatic": true,
       "name": "snapshot-daily--2025-02-12T22-00-02",
       "description": "",
-      "created": "2025-02-22:00:02.000Z",
+      "created": "2025-02-22T00:00:02.000Z",
       "storage_box": 42,
       "labels": {
         "environment": "prod",
         "example.com/my": "label",
-        "just-a-key": null
+        "just-a-key": ""
       }
     }
   ]
