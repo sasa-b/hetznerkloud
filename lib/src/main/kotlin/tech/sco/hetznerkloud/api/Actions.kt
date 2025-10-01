@@ -73,6 +73,7 @@ class Actions @InternalAPI constructor(private val httpClient: HttpClient) {
     )
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun ResourceType.toRoute(actionId: Action.Id?) = when (this) {
     ResourceType.SERVER if actionId != null -> Route.GET_SERVER_ACTION
     ResourceType.NETWORK if actionId != null -> Route.GET_NETWORK_ACTION
@@ -99,6 +100,7 @@ private fun ResourceType.toRoute(actionId: Action.Id?) = when (this) {
     else -> throw InvalidResourceType(this)
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun ResourceId.toRoute(actionId: Action.Id?) = when (this) {
     is Server.Id if actionId != null -> Route.GET_SERVER_ACTION_FOR_SERVER
     is Network.Id if actionId != null -> Route.GET_NETWORK_ACTION_FOR_NETWORK

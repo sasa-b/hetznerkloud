@@ -9,7 +9,7 @@
     "resources": [
       {
         "id": 42,
-        "type": "server"
+        "type": "storage_box"
       }
     ],
     "error": {

@@ -10,6 +10,7 @@ import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
+import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.StorageBox
@@ -28,7 +29,7 @@ class StorageBoxApiTest :
     ShouldSpec({
         val storageBoxId = StorageBox.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to storageBoxId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to storageBoxId.value.toString(), "action_id" to "42") }
         val underTest = ApiClient.of(apiToken, mockEngine)
 
         val expectedStorageBox = StorageBox(
@@ -112,6 +113,72 @@ class StorageBoxApiTest :
             should("get a Storage Box content") {
                 underTest.storageBoxes.content(storageBoxId) shouldBe Folders(
                     value = listOf("offsite-backup", "photos"),
+                )
+            }
+
+            should("get all Storage Box actions") {
+                underTest.actions.all(ResourceType.STORAGE_BOX) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(42),
+                            command = "start_resource",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            progress = 100,
+                            resources = listOf(StorageBoxResource(id = StorageBox.Id(42))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.RUNNING,
+                        ),
+                    ),
+                )
+            }
+
+            should("get Storage Box actions") {
+                underTest.actions.all(resourceId = storageBoxId) shouldBe Items(
+                    meta = Meta(pagination = Meta.Pagination(lastPage = 4, nextPage = 4, page = 3, perPage = 25, previousPage = 2, totalEntries = 100)),
+                    items = listOf(
+                        Action(
+                            id = Action.Id(13),
+                            command = "create",
+                            error = ActionFailedError(message = "Action failed"),
+                            finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                            progress = 100,
+                            resources = listOf(StorageBoxResource(id = StorageBox.Id(42))),
+                            started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                            status = Action.Status.SUCCESS,
+                        ),
+                    ),
+                )
+            }
+
+            should("get a Storage Box action") {
+                underTest.actions.find(ResourceType.STORAGE_BOX, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(42),
+                        command = "start_resource",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        progress = 100,
+                        resources = listOf(StorageBoxResource(id = StorageBox.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("get a Storage Box action for storage box") {
+                underTest.actions.find(resourceId = storageBoxId, actionId = Action.Id(42)) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "create",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = OffsetDateTime.parse("2016-01-30T23:56Z"),
+                        progress = 100,
+                        resources = listOf(StorageBoxResource(id = StorageBox.Id(42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:55Z"),
+                        status = Action.Status.SUCCESS,
+                    ),
                 )
             }
         }

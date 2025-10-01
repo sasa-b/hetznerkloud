@@ -15,7 +15,7 @@ import tech.sco.hetznerkloud.model.ErrorCode
 import java.io.File
 import java.net.URI
 
-@Suppress("CyclomaticComplexMethod", "LongMethod")
+@Suppress("CyclomaticComplexMethod", "LongMethod", "MaxLineLength")
 internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpRequestData) -> RouteParams)? = null) = MockEngine { request ->
 
     if (request.headers["Authorization"] != "Bearer ${apiToken.value}") {
@@ -254,6 +254,14 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.UPDATE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.UPDATE_STORAGE_BOX, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_STORAGE_BOX, request, routeParamsProvider) -> response(Route.DELETE_STORAGE_BOX, HttpStatusCode.NoContent, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_CONTENT, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_CONTENT, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(
+            Route.GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_ALL_STORAGE_BOX_ACTIONS, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX_ACTIONS, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_ACTIONS, HttpStatusCode.OK, defaultHeaders)
+        matchRoute(Route.GET_STORAGE_BOX_ACTION, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_ACTION, HttpStatusCode.OK, defaultHeaders)
 
         matchRoute(Route.GET_ALL_STORAGE_BOX_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -481,7 +489,7 @@ private fun content(route: Route): String = when (route) {
     Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
     Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
 
-    Route.GET_ALL_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_all_storage_actions.json"
+    Route.GET_ALL_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_all_storage_box_actions.json"
     Route.GET_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_storage_box_actions.json"
     Route.GET_STORAGE_BOX_ACTION -> "src/test/resources/examples/response/storage_box/get_a_storage_box_action.json"
     Route.GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/get_a_storage_box_action_for_storage_box.json"
