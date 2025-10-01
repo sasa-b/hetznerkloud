@@ -21,6 +21,8 @@ typealias PrimaryIpFilter = Pair<FilterFields.PrimaryIp, String>
 typealias FloatingIpFilter = Pair<FilterFields.FloatingIp, String>
 typealias StorageBoxFilter = Pair<FilterFields.StorageBox, String>
 typealias StorageBoxTypeFilter = Pair<FilterFields.StorageBoxType, String>
+typealias SubaccountFilter = Pair<FilterFields.Subaccount, String>
+typealias SnapshotFilter = Pair<FilterFields.Snapshot, String>
 
 sealed interface FilterField {
     val value: String
@@ -125,5 +127,14 @@ object FilterFields {
 
     enum class StorageBoxType(override val value: String) : FilterField {
         NAME("name"),
+    }
+
+    enum class Subaccount(override val value: String) : FilterField {
+        LABEL_SELECTOR("label_selector"),
+    }
+
+    enum class Snapshot(override val value: String) : FilterField {
+        NAME("name"),
+        LABEL_SELECTOR("label_selector"),
     }
 }

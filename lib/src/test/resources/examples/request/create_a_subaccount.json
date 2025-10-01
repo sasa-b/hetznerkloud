@@ -1,0 +1,17 @@
+{
+  "password": "string",
+  "home_directory": "my-backup/server01",
+  "access_settings": {
+    "samba_enabled": false,
+    "ssh_enabled": true,
+    "webdav_enabled": false,
+    "readonly": false,
+    "reachable_externally": false
+  },
+  "description": "my-backup-server01",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  }
+}

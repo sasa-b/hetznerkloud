@@ -1,0 +1,19 @@
+{
+  "snapshot": {
+    "id": 42,
+    "name": "my-resource",
+    "description": "This describes my resource",
+    "stats": {
+      "size": 0,
+      "size_filesystem": 0
+    },
+    "is_automatic": false,
+    "labels": {
+      "environment": "prod",
+      "example.com/my": "label",
+      "just-a-key": ""
+    },
+    "created": "2016-01-30T23:55:00+00:00",
+    "storage_box": 42
+  }
+}

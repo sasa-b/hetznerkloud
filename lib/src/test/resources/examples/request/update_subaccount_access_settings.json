@@ -1,0 +1,8 @@
+{
+  "home_directory": "my-backup/server01",
+  "samba_enabled": false,
+  "ssh_enabled": true,
+  "webdav_enabled": false,
+  "readonly": false,
+  "reachable_externally": false
+}

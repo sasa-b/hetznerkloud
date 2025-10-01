@@ -74,6 +74,12 @@ enum class ResourceType {
 
     @SerialName("storage_box_type")
     STORAGE_BOX_TYPE,
+
+    @SerialName("subaccount")
+    SUBACCOUNT,
+
+    @SerialName("snapshot")
+    SNAPSHOT,
 }
 
 @Serializable

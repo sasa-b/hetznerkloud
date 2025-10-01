@@ -480,6 +480,25 @@ private fun content(route: Route): String = when (route) {
 
     Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
     Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
+
+    Route.GET_ALL_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_all_storage_actions.json"
+    Route.GET_STORAGE_BOX_ACTIONS -> "src/test/resources/examples/response/storage_box/get_storage_box_actions.json"
+    Route.GET_STORAGE_BOX_ACTION -> "src/test/resources/examples/response/storage_box/get_a_storage_box_action.json"
+    Route.GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX -> "src/test/resources/examples/response/storage_box/get_a_storage_box_action_for_storage_box.json"
+
+    Route.GET_STORAGE_BOX_SUBACCOUNTS -> TODO()
+    Route.GET_STORAGE_BOX_SUBACCOUNT -> TODO()
+    Route.CREATE_STORAGE_BOX_SUBACCOUNT -> TODO()
+    Route.UPDATE_STORAGE_BOX_SUBACCOUNT -> TODO()
+    Route.DELETE_STORAGE_BOX_SUBACCOUNT -> TODO()
+    Route.RESET_STORAGE_BOX_SUBACCOUNT_PASSWORD -> TODO()
+    Route.UPDATE_STORAGE_BOX_SUBACCOUNT_ACCESS_SETTINGS -> TODO()
+
+    Route.GET_STORAGE_BOX_SNAPSHOTS -> TODO()
+    Route.GET_STORAGE_BOX_SNAPSHOT -> TODO()
+    Route.CREATE_STORAGE_BOX_SNAPSHOT -> TODO()
+    Route.UPDATE_STORAGE_BOX_SNAPSHOT -> TODO()
+    Route.DELETE_STORAGE_BOX_SNAPSHOT -> TODO()
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

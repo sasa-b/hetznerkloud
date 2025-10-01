@@ -9,7 +9,6 @@ import tech.sco.hetznerkloud.api.StorageBoxes
 @OptIn(InternalAPI::class)
 class ApiClient private constructor(val storageBoxes: StorageBoxes, val storageBoxTypes: StorageBoxTypes) {
     companion object {
-        @Suppress("LongMethod")
         fun of(token: ApiToken, httpEngine: HttpClientEngine = CIO.create(), block: HttpClientConfig<*>.() -> Unit = {}): ApiClient =
             configureHttpClient(token, httpEngine, block).let { httpClient ->
                 ApiClient(

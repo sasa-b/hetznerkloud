@@ -193,6 +193,24 @@ internal enum class Route(val value: HttpMethodAndPath) {
 
     GET_ALL_STORAGE_BOXES(Pair(HttpMethod.Get, Path("/storage_boxes"))),
     GET_STORAGE_BOX(Pair(HttpMethod.Get, Path("/storage_boxes/{id}"))),
+    GET_ALL_STORAGE_BOX_ACTIONS(Pair(HttpMethod.Get, Path("/storage_boxes/actions"))),
+    GET_STORAGE_BOX_ACTIONS(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/actions"))),
+    GET_STORAGE_BOX_ACTION(Pair(HttpMethod.Get, Path("/storage_boxes/actions/{id}"))),
+    GET_STORAGE_BOX_ACTION_FOR_STORAGE_BOX(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/actions/{action_id}"))),
+
+    GET_STORAGE_BOX_SUBACCOUNTS(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/subaccounts"))),
+    GET_STORAGE_BOX_SUBACCOUNT(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}"))),
+    CREATE_STORAGE_BOX_SUBACCOUNT(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/subaccounts"))),
+    UPDATE_STORAGE_BOX_SUBACCOUNT(Pair(HttpMethod.Put, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}"))),
+    DELETE_STORAGE_BOX_SUBACCOUNT(Pair(HttpMethod.Delete, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}"))),
+    RESET_STORAGE_BOX_SUBACCOUNT_PASSWORD(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}/actions/reset_subaccount_password"))),
+    UPDATE_STORAGE_BOX_SUBACCOUNT_ACCESS_SETTINGS(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}/actions/update_access_settings"))),
+
+    GET_STORAGE_BOX_SNAPSHOTS(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/snapshots"))),
+    GET_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/snapshots/{snapshot_id}"))),
+    CREATE_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/snapshots"))),
+    UPDATE_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Put, Path("/storage_boxes/{id}/snapshots/{snapshot_id}"))),
+    DELETE_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Delete, Path("/storage_boxes/{id}/snapshots/{snapshot_id}"))),
 
     GET_ALL_STORAGE_BOX_TYPES(Pair(HttpMethod.Get, Path("/storage_box_types"))),
     GET_STORAGE_BOX_TYPE(Pair(HttpMethod.Get, Path("/storage_box_types/{id}"))),

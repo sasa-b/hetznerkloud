@@ -1,0 +1,8 @@
+{
+  "description": "snapshot-0001",
+  "labels": {
+    "environment": "prod",
+    "example.com/my": "label",
+    "just-a-key": ""
+  }
+}
