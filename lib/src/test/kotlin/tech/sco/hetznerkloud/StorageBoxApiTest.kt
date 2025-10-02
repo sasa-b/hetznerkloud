@@ -507,40 +507,9 @@ class StorageBoxApiTest :
 
             should("create a Storage Box snapshot") {
 
-                val requestBody = CreateStorageBoxSnapshot(
-                    description = "snapshot-0001",
-                )
+                val requestBody = CreateStorageBoxSnapshot(description = "snapshot-0001")
 
                 jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_snapshot.json"
-
-                // {
-                //  "snapshot": {
-                //    "id": 42,
-                //    "storage_box": 43
-                //  },
-                //  "action": {
-                //    "id": 13,
-                //    "command": "create_snapshot",
-                //    "status": "running",
-                //    "progress": 0,
-                //    "started": "2016-01-30T23:50:00+00:00",
-                //    "finished": null,
-                //    "resources": [
-                //      {
-                //        "id": 42,
-                //        "type": "storage_box"
-                //      },
-                //      {
-                //        "id": 43,
-                //        "type": "storage_box_snapshot"
-                //      }
-                //    ],
-                //    "error": {
-                //      "code": "action_failed",
-                //      "message": "Action failed"
-                //    }
-                //  }
-                // }
 
                 underTest.storageBoxes.createSnapshot(StorageBox.Id(42), requestBody) shouldBe StorageBoxSnapshotCreated(
                     snapshot = StorageBoxSnapshotCreated.Ids(
@@ -584,35 +553,6 @@ class StorageBoxApiTest :
                 )
 
                 jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_subaccount.json"
-
-// {
-//  "subaccount": {
-//    "id": 42,
-//    "storage_box": 43
-//  },
-//  "action": {
-//    "id": 13,
-//    "command": "create_subaccount",
-//    "status": "running",
-//    "progress": 0,
-//    "started": "2016-01-30T23:50:00+00:00",
-//    "finished": null,
-//    "resources": [
-//      {
-//        "id": 42,
-//        "type": "storage_box"
-//      },
-//      {
-//        "id": 43,
-//        "type": "storage_box_subaccount"
-//      }
-//    ],
-//    "error": {
-//      "code": "action_failed",
-//      "message": "Action failed"
-//    }
-//  }
-// }
 
                 underTest.storageBoxes.createSubaccount(StorageBox.Id(42), requestBody) shouldBe StorageBoxSubaccountCreated(
                     subaccount = StorageBoxSubaccountCreated.Ids(
