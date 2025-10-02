@@ -265,6 +265,11 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CHANGE_STORAGE_BOX_PROTECTION, request, routeParamsProvider) -> response(Route.CHANGE_STORAGE_BOX_PROTECTION, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.CHANGE_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.CHANGE_STORAGE_BOX_TYPE, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.RESET_STORAGE_BOX_PASSWORD, request, routeParamsProvider) -> response(Route.RESET_STORAGE_BOX_PASSWORD, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.UPDATE_STORAGE_BOX_ACCESS_SETTINGS,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.UPDATE_STORAGE_BOX_ACCESS_SETTINGS, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_STORAGE_BOX_SUBACCOUNTS, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_SUBACCOUNTS, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_SUBACCOUNT, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_SUBACCOUNT, HttpStatusCode.OK, defaultHeaders)
@@ -517,6 +522,7 @@ private fun content(route: Route): String = when (route) {
     Route.CHANGE_STORAGE_BOX_PROTECTION -> "src/test/resources/examples/response/storage_box/change_storage_box_protection.json"
     Route.CHANGE_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/change_storage_box_type.json"
     Route.RESET_STORAGE_BOX_PASSWORD -> "src/test/resources/examples/response/storage_box/reset_storage_box_password.json"
+    Route.UPDATE_STORAGE_BOX_ACCESS_SETTINGS -> "src/test/resources/examples/response/storage_box/update_storage_box_access_settings.json"
 
     Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
     Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"

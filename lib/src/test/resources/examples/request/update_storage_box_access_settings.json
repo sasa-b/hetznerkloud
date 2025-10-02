@@ -1,0 +1,7 @@
+{
+  "samba_enabled": false,
+  "ssh_enabled": true,
+  "webdav_enabled": false,
+  "zfs_enabled": false,
+  "reachable_externally": false
+}

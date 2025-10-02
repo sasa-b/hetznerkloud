@@ -18,13 +18,14 @@ import tech.sco.hetznerkloud.model.StorageBoxSnapshotResource
 import tech.sco.hetznerkloud.model.StorageBoxSubaccountResource
 import tech.sco.hetznerkloud.model.StorageBoxType
 import tech.sco.hetznerkloud.model.Subaccount
-import tech.sco.hetznerkloud.request.AccessSettings
 import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.ChangeStorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
 import tech.sco.hetznerkloud.request.CreateStorageBoxSnapshot
 import tech.sco.hetznerkloud.request.CreateStorageBoxSubaccount
 import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
+import tech.sco.hetznerkloud.request.StorageBoxAccessSettings
+import tech.sco.hetznerkloud.request.SubaccountAccessSettings
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.request.UpdateStorageBoxResource
 import tech.sco.hetznerkloud.response.Folders
@@ -502,6 +503,34 @@ class StorageBoxApiTest :
                 )
             }
 
+            should("update a Storage Box access settings") {
+                val requestBody = StorageBoxAccessSettings(
+                    reachableExternally = false,
+                    sambaEnabled = false,
+                    sshEnabled = true,
+                    webdavEnabled = false,
+                    zfsEnabled = false,
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_storage_box_access_settings.json"
+
+                underTest.storageBoxes.updateAccessSettings(
+                    storageBoxId,
+                    requestBody,
+                ) shouldBe Item(
+                    value = Action(
+                        id = Action.Id(value = 13),
+                        command = "update_access_settings",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(StorageBoxResource(id = StorageBox.Id(value = 42))),
+                        started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
             should("create a Storage Box snapshot") {
 
                 val requestBody = CreateStorageBoxSnapshot(description = "snapshot-0001")
@@ -584,7 +613,7 @@ class StorageBoxApiTest :
             val requestBody = CreateStorageBoxSubaccount(
                 password = "string",
                 homeDirectory = "my-backup/server01",
-                accessSettings = AccessSettings(
+                accessSettings = SubaccountAccessSettings(
                     sambaEnabled = false,
                     sshEnabled = true,
                     webdavEnabled = false,

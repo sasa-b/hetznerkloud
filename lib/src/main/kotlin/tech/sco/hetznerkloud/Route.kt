@@ -213,6 +213,7 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CHANGE_STORAGE_BOX_PROTECTION(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/change_protection"))),
     CHANGE_STORAGE_BOX_TYPE(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/change_type"))),
     RESET_STORAGE_BOX_PASSWORD(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/reset_password"))),
+    UPDATE_STORAGE_BOX_ACCESS_SETTINGS(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/update_access_settings"))),
 
     GET_STORAGE_BOX_SUBACCOUNTS(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/subaccounts"))),
     GET_STORAGE_BOX_SUBACCOUNT(Pair(HttpMethod.Get, Path("/storage_boxes/{id}/subaccounts/{subaccount_id}"))),

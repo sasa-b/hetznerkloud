@@ -18,6 +18,7 @@ import tech.sco.hetznerkloud.request.CreateStorageBoxSubaccount
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
 import tech.sco.hetznerkloud.request.SnapshotFilter
+import tech.sco.hetznerkloud.request.StorageBoxAccessSettings
 import tech.sco.hetznerkloud.request.StorageBoxFilter
 import tech.sco.hetznerkloud.request.SubaccountFilter
 import tech.sco.hetznerkloud.request.UpdateResource
@@ -119,4 +120,8 @@ class StorageBoxes @InternalAPI constructor(private val httpClient: HttpClient) 
 
     @Throws(Failure::class)
     suspend fun resetPassword(id: Id, body: ResetStorageBoxPassword): Item<Action> = httpClient.makeRequest(Route.RESET_STORAGE_BOX_PASSWORD, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun updateAccessSettings(id: Id, body: StorageBoxAccessSettings): Item<Action> =
+        httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_ACCESS_SETTINGS, resourceId = id.value, body = body)
 }
