@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
  * This project uses @Incubating APIs which are subject to change.
  */
 group = "tech.s-co"
-version = "0.4.0"
+version = "0.5.0"
 gitVersioning.apply {
     refs {
         tag("(?<version>.*)") {
