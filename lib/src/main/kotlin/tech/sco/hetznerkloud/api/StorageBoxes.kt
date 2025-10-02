@@ -21,6 +21,7 @@ import tech.sco.hetznerkloud.request.SnapshotFilter
 import tech.sco.hetznerkloud.request.StorageBoxFilter
 import tech.sco.hetznerkloud.request.SubaccountFilter
 import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.request.UpdateStorageBoxResource
 import tech.sco.hetznerkloud.request.toQueryParams
 import tech.sco.hetznerkloud.response.Folders
 import tech.sco.hetznerkloud.response.Item
@@ -56,10 +57,12 @@ class StorageBoxes @InternalAPI constructor(private val httpClient: HttpClient) 
     suspend fun update(id: Id, body: UpdateResource): Item<StorageBox> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun updateSnapshot(id: Id, body: UpdateResource): Item<Snapshot> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SNAPSHOT, resourceId = id.value, body = body)
+    suspend fun updateSnapshot(id: Id, snapshotId: Snapshot.Id, body: UpdateStorageBoxResource): Item<Snapshot> =
+        httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SNAPSHOT, routeParams = mapOf("id" to id.value.toString(), "snapshot_id" to snapshotId.value.toString()), body = body)
 
     @Throws(Failure::class)
-    suspend fun updateSubaccount(id: Id, body: UpdateResource): Item<Subaccount> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SUBACCOUNT, resourceId = id.value, body = body)
+    suspend fun updateSubaccount(id: Id, subaccountId: Subaccount.Id, body: UpdateStorageBoxResource): Item<Subaccount> =
+        httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SUBACCOUNT, routeParams = mapOf("id" to id.value.toString(), "subaccount_id" to subaccountId.value.toString()), body = body)
 
     @Throws(Failure::class)
     suspend fun content(id: Id): Folders = httpClient.makeRequest(Route.GET_STORAGE_BOX_CONTENT, resourceId = id.value)

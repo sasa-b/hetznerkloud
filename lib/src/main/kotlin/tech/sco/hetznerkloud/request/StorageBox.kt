@@ -53,20 +53,20 @@ data class CreateStorageBoxSubaccount(
     val accessSettings: AccessSettings,
     val description: String?,
     val labels: Labels,
-) : HttpBody {
-    @Serializable
-    data class AccessSettings(
-        @SerialName("reachable_externally")
-        val reachableExternally: Boolean? = null,
-        @SerialName("samba_enabled")
-        val sambaEnabled: Boolean? = null,
-        @SerialName("ssh_enabled")
-        val sshEnabled: Boolean? = null,
-        @SerialName("webdav_enabled")
-        val webdavEnabled: Boolean? = null,
-        val readonly: Boolean? = null,
-    )
-}
+) : HttpBody
 
 @Serializable
-data class UpdateStorageBoxResource(val description: String?, val labels: Labels)
+data class AccessSettings(
+    @SerialName("reachable_externally")
+    val reachableExternally: Boolean? = null,
+    @SerialName("samba_enabled")
+    val sambaEnabled: Boolean? = null,
+    @SerialName("ssh_enabled")
+    val sshEnabled: Boolean? = null,
+    @SerialName("webdav_enabled")
+    val webdavEnabled: Boolean? = null,
+    val readonly: Boolean? = null,
+)
+
+@Serializable
+data class UpdateStorageBoxResource(val description: String?, val labels: Labels) : HttpBody

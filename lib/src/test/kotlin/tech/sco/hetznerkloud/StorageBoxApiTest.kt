@@ -2,20 +2,15 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
-import io.ktor.http.toURI
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Deprecation
-import tech.sco.hetznerkloud.model.Image.Id
-import tech.sco.hetznerkloud.model.ImageResource
 import tech.sco.hetznerkloud.model.Location
 import tech.sco.hetznerkloud.model.Meta
 import tech.sco.hetznerkloud.model.NetworkZone
 import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.ResourceType
-import tech.sco.hetznerkloud.model.Server
-import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.Snapshot
 import tech.sco.hetznerkloud.model.StorageBox
 import tech.sco.hetznerkloud.model.StorageBoxResource
@@ -23,6 +18,7 @@ import tech.sco.hetznerkloud.model.StorageBoxSnapshotResource
 import tech.sco.hetznerkloud.model.StorageBoxSubaccountResource
 import tech.sco.hetznerkloud.model.StorageBoxType
 import tech.sco.hetznerkloud.model.Subaccount
+import tech.sco.hetznerkloud.request.AccessSettings
 import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.ChangeStorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
@@ -30,6 +26,7 @@ import tech.sco.hetznerkloud.request.CreateStorageBoxSnapshot
 import tech.sco.hetznerkloud.request.CreateStorageBoxSubaccount
 import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
 import tech.sco.hetznerkloud.request.UpdateResource
+import tech.sco.hetznerkloud.request.UpdateStorageBoxResource
 import tech.sco.hetznerkloud.response.Folders
 import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
@@ -532,19 +529,10 @@ class StorageBoxApiTest :
                 )
             }
 
-            should("create a Storage Box subaccount") {
+            should("update a Storage Box snapshot") {
 
-                val requestBody = CreateStorageBoxSubaccount(
-                    password = "string",
-                    homeDirectory = "my-backup/server01",
-                    accessSettings = CreateStorageBoxSubaccount.AccessSettings(
-                        sambaEnabled = false,
-                        sshEnabled = true,
-                        webdavEnabled = false,
-                        reachableExternally = false,
-                        readonly = false,
-                    ),
-                    description = "my-backup-server01",
+                val requestBody = UpdateStorageBoxResource(
+                    description = "snapshot-0001",
                     labels = mapOf(
                         "environment" to "prod",
                         "example.com/my" to "label",
@@ -552,27 +540,105 @@ class StorageBoxApiTest :
                     ),
                 )
 
-                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_subaccount.json"
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box_snapshot.json"
 
-                underTest.storageBoxes.createSubaccount(StorageBox.Id(42), requestBody) shouldBe StorageBoxSubaccountCreated(
-                    subaccount = StorageBoxSubaccountCreated.Ids(
-                        id = Subaccount.Id(42),
-                        storageBox = StorageBox.Id(43),
-                    ),
-                    action = Action(
-                        id = Action.Id(13),
-                        command = "create_subaccount",
-                        error = ActionFailedError(message = "Action failed"),
-                        finished = null,
-                        progress = 0,
-                        resources = listOf(
-                            StorageBoxResource(id = StorageBox.Id(42)),
-                            StorageBoxSubaccountResource(id = Subaccount.Id(43)),
+                underTest.storageBoxes.updateSnapshot(storageBoxId, snapshotId, requestBody) shouldBe Item(
+                    Snapshot(
+                        id = Snapshot.Id(42),
+                        name = "my-resource",
+                        description = "This describes my resource",
+                        stats = Snapshot.Stats(size = 0, sizeFilesystem = 0),
+                        isAutomatic = false,
+                        labels = mapOf(
+                            "environment" to "prod",
+                            "example.com/my" to "label",
+                            "just-a-key" to "",
                         ),
-                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                        status = Action.Status.RUNNING,
+                        created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                        storageBox = StorageBox.Id(42),
                     ),
                 )
             }
+        }
+
+        should("create a Storage Box subaccount") {
+
+            val requestBody = CreateStorageBoxSubaccount(
+                password = "string",
+                homeDirectory = "my-backup/server01",
+                accessSettings = AccessSettings(
+                    sambaEnabled = false,
+                    sshEnabled = true,
+                    webdavEnabled = false,
+                    reachableExternally = false,
+                    readonly = false,
+                ),
+                description = "my-backup-server01",
+                labels = mapOf(
+                    "environment" to "prod",
+                    "example.com/my" to "label",
+                    "just-a-key" to "",
+                ),
+            )
+
+            jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_subaccount.json"
+
+            underTest.storageBoxes.createSubaccount(StorageBox.Id(42), requestBody) shouldBe StorageBoxSubaccountCreated(
+                subaccount = StorageBoxSubaccountCreated.Ids(
+                    id = Subaccount.Id(42),
+                    storageBox = StorageBox.Id(43),
+                ),
+                action = Action(
+                    id = Action.Id(13),
+                    command = "create_subaccount",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        StorageBoxResource(id = StorageBox.Id(42)),
+                        StorageBoxSubaccountResource(id = Subaccount.Id(43)),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                    status = Action.Status.RUNNING,
+                ),
+            )
+        }
+
+        should("update a Storage Box subaccount") {
+
+            val requestBody = UpdateStorageBoxResource(
+                description = "my-backup-server01",
+                labels = mapOf(
+                    "environment" to "prod",
+                    "example.com/my" to "label",
+                    "just-a-key" to "",
+                ),
+            )
+
+            jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box_subaccount.json"
+
+            underTest.storageBoxes.updateSubaccount(storageBoxId, subaccountId, requestBody) shouldBe Item(
+                Subaccount(
+                    id = Subaccount.Id(42),
+                    username = "u1337-sub1",
+                    homeDirectory = "my_backups/host01.my.company",
+                    server = "u1337-sub1.your-storagebox.de",
+                    accessSettings = Subaccount.AccessSettings(
+                        sambaEnabled = false,
+                        sshEnabled = false,
+                        webdavEnabled = false,
+                        reachableExternally = false,
+                        readonly = false,
+                    ),
+                    description = "host01 backup",
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
+                    created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                    storageBox = StorageBox.Id(42),
+                ),
+            )
         }
     })
