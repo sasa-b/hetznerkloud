@@ -57,12 +57,18 @@ class StorageBoxes @InternalAPI constructor(private val httpClient: HttpClient) 
     suspend fun update(id: Id, body: UpdateResource): Item<StorageBox> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
-    suspend fun updateSnapshot(id: Id, snapshotId: Snapshot.Id, body: UpdateStorageBoxResource): Item<Snapshot> =
-        httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SNAPSHOT, routeParams = mapOf("id" to id.value.toString(), "snapshot_id" to snapshotId.value.toString()), body = body)
+    suspend fun updateSnapshot(storageBoxId: Id, snapshotId: Snapshot.Id, body: UpdateStorageBoxResource): Item<Snapshot> = httpClient.makeRequest(
+        Route.UPDATE_STORAGE_BOX_SNAPSHOT,
+        routeParams = mapOf("id" to storageBoxId.value.toString(), "snapshot_id" to snapshotId.value.toString()),
+        body = body,
+    )
 
     @Throws(Failure::class)
-    suspend fun updateSubaccount(id: Id, subaccountId: Subaccount.Id, body: UpdateStorageBoxResource): Item<Subaccount> =
-        httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SUBACCOUNT, routeParams = mapOf("id" to id.value.toString(), "subaccount_id" to subaccountId.value.toString()), body = body)
+    suspend fun updateSubaccount(storageBoxId: Id, subaccountId: Subaccount.Id, body: UpdateStorageBoxResource): Item<Subaccount> = httpClient.makeRequest(
+        Route.UPDATE_STORAGE_BOX_SUBACCOUNT,
+        routeParams = mapOf("id" to storageBoxId.value.toString(), "subaccount_id" to subaccountId.value.toString()),
+        body = body,
+    )
 
     @Throws(Failure::class)
     suspend fun content(id: Id): Folders = httpClient.makeRequest(Route.GET_STORAGE_BOX_CONTENT, resourceId = id.value)
@@ -71,10 +77,12 @@ class StorageBoxes @InternalAPI constructor(private val httpClient: HttpClient) 
     suspend fun delete(id: Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_STORAGE_BOX, resourceId = id.value)
 
     @Throws(Failure::class)
-    suspend fun deleteSnapshot(id: Snapshot.Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_STORAGE_BOX_SNAPSHOT, resourceId = id.value)
+    suspend fun deleteSnapshot(storageBoxId: Id, snapshotId: Snapshot.Id): ItemDeleted =
+        httpClient.makeRequest(Route.DELETE_STORAGE_BOX_SNAPSHOT, routeParams = mapOf("id" to storageBoxId.value.toString(), "snapshot_id" to snapshotId.value.toString()))
 
     @Throws(Failure::class)
-    suspend fun deleteSubaccount(id: Subaccount.Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_STORAGE_BOX_SUBACCOUNT, resourceId = id.value)
+    suspend fun deleteSubaccount(storageBoxId: Id, subaccountId: Subaccount.Id): ItemDeleted =
+        httpClient.makeRequest(Route.DELETE_STORAGE_BOX_SUBACCOUNT, routeParams = mapOf("id" to storageBoxId.value.toString(), "subaccount_id" to subaccountId.value.toString()))
 
     @Throws(Failure::class)
     suspend fun subaccounts(storageBoxId: Id, filter: Set<SubaccountFilter> = emptySet(), pagination: Pagination = Pagination()): Subaccount.Items = httpClient.makeRequest(

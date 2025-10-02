@@ -561,6 +561,24 @@ class StorageBoxApiTest :
             }
         }
 
+        should("delete a Storage Box snapshot") {
+            underTest.storageBoxes.deleteSnapshot(storageBoxId, snapshotId) shouldBe ItemDeleted(
+                Action(
+                    id = Action.Id(13),
+                    command = "delete_snapshot",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        StorageBoxResource(id = StorageBox.Id(42)),
+                        StorageBoxSnapshotResource(id = Snapshot.Id(42)),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                    status = Action.Status.RUNNING,
+                ),
+            )
+        }
+
         should("create a Storage Box subaccount") {
 
             val requestBody = CreateStorageBoxSubaccount(
@@ -638,6 +656,24 @@ class StorageBoxApiTest :
                     ),
                     created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
                     storageBox = StorageBox.Id(42),
+                ),
+            )
+        }
+
+        should("delete a Storage Box subaccount") {
+            underTest.storageBoxes.deleteSubaccount(storageBoxId, subaccountId) shouldBe ItemDeleted(
+                Action(
+                    id = Action.Id(13),
+                    command = "delete_subaccount",
+                    error = ActionFailedError(message = "Action failed"),
+                    finished = null,
+                    progress = 0,
+                    resources = listOf(
+                        StorageBoxResource(id = StorageBox.Id(42)),
+                        StorageBoxSubaccountResource(id = Subaccount.Id(42)),
+                    ),
+                    started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                    status = Action.Status.RUNNING,
                 ),
             )
         }
