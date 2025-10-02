@@ -320,7 +320,7 @@ private fun matchRoute(route: Route, request: HttpRequestData, routeParamsProvid
 
     return if (routeParams != null) {
         val (httpMethod, path) = route.value
-        httpMethod == test.first && path.withParams(routeParams) == test.second
+        httpMethod == test.first && path.toRegex().matches(testPath.value) && path.withParams(routeParams) == test.second
     } else {
         route.value == test
     }

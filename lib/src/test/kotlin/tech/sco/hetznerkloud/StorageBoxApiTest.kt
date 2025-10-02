@@ -2,6 +2,7 @@ package tech.sco.hetznerkloud
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.http.toURI
 import tech.sco.hetznerkloud.model.Action
 import tech.sco.hetznerkloud.model.ActionFailedError
 import tech.sco.hetznerkloud.model.Deprecation
@@ -18,11 +19,15 @@ import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.Snapshot
 import tech.sco.hetznerkloud.model.StorageBox
 import tech.sco.hetznerkloud.model.StorageBoxResource
+import tech.sco.hetznerkloud.model.StorageBoxSnapshotResource
+import tech.sco.hetznerkloud.model.StorageBoxSubaccountResource
 import tech.sco.hetznerkloud.model.StorageBoxType
 import tech.sco.hetznerkloud.model.Subaccount
 import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.ChangeStorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
+import tech.sco.hetznerkloud.request.CreateStorageBoxSnapshot
+import tech.sco.hetznerkloud.request.CreateStorageBoxSubaccount
 import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
 import tech.sco.hetznerkloud.request.UpdateResource
 import tech.sco.hetznerkloud.response.Folders
@@ -30,6 +35,8 @@ import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.ItemDeleted
 import tech.sco.hetznerkloud.response.Items
+import tech.sco.hetznerkloud.response.StorageBoxSnapshotCreated
+import tech.sco.hetznerkloud.response.StorageBoxSubaccountCreated
 import java.time.OffsetDateTime
 
 class StorageBoxApiTest :
@@ -493,6 +500,136 @@ class StorageBoxApiTest :
                         progress = 0,
                         resources = listOf(StorageBoxResource(id = StorageBox.Id(value = 42))),
                         started = OffsetDateTime.parse("2016-01-30T23:50Z"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("create a Storage Box snapshot") {
+
+                val requestBody = CreateStorageBoxSnapshot(
+                    description = "snapshot-0001",
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_snapshot.json"
+
+                // {
+                //  "snapshot": {
+                //    "id": 42,
+                //    "storage_box": 43
+                //  },
+                //  "action": {
+                //    "id": 13,
+                //    "command": "create_snapshot",
+                //    "status": "running",
+                //    "progress": 0,
+                //    "started": "2016-01-30T23:50:00+00:00",
+                //    "finished": null,
+                //    "resources": [
+                //      {
+                //        "id": 42,
+                //        "type": "storage_box"
+                //      },
+                //      {
+                //        "id": 43,
+                //        "type": "storage_box_snapshot"
+                //      }
+                //    ],
+                //    "error": {
+                //      "code": "action_failed",
+                //      "message": "Action failed"
+                //    }
+                //  }
+                // }
+
+                underTest.storageBoxes.createSnapshot(StorageBox.Id(42), requestBody) shouldBe StorageBoxSnapshotCreated(
+                    snapshot = StorageBoxSnapshotCreated.Ids(
+                        id = Snapshot.Id(42),
+                        storageBox = StorageBox.Id(43),
+                    ),
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "create_snapshot",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSnapshotResource(id = Snapshot.Id(43)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("create a Storage Box subaccount") {
+
+                val requestBody = CreateStorageBoxSubaccount(
+                    password = "string",
+                    homeDirectory = "my-backup/server01",
+                    accessSettings = CreateStorageBoxSubaccount.AccessSettings(
+                        sambaEnabled = false,
+                        sshEnabled = true,
+                        webdavEnabled = false,
+                        reachableExternally = false,
+                        readonly = false,
+                    ),
+                    description = "my-backup-server01",
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_subaccount.json"
+
+// {
+//  "subaccount": {
+//    "id": 42,
+//    "storage_box": 43
+//  },
+//  "action": {
+//    "id": 13,
+//    "command": "create_subaccount",
+//    "status": "running",
+//    "progress": 0,
+//    "started": "2016-01-30T23:50:00+00:00",
+//    "finished": null,
+//    "resources": [
+//      {
+//        "id": 42,
+//        "type": "storage_box"
+//      },
+//      {
+//        "id": 43,
+//        "type": "storage_box_subaccount"
+//      }
+//    ],
+//    "error": {
+//      "code": "action_failed",
+//      "message": "Action failed"
+//    }
+//  }
+// }
+
+                underTest.storageBoxes.createSubaccount(StorageBox.Id(42), requestBody) shouldBe StorageBoxSubaccountCreated(
+                    subaccount = StorageBoxSubaccountCreated.Ids(
+                        id = Subaccount.Id(42),
+                        storageBox = StorageBox.Id(43),
+                    ),
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "create_subaccount",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSubaccountResource(id = Subaccount.Id(43)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
                         status = Action.Status.RUNNING,
                     ),
                 )

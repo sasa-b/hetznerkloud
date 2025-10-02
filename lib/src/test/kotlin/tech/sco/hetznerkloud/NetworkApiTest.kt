@@ -33,7 +33,7 @@ class NetworkApiTest :
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) {
             when {
-                Route.GET_NETWORK_ACTION.path.toRegex().matches(it.url.toURI().pathWithoutVersion) -> mapOf("id" to "42")
+                Route.GET_NETWORK_ACTION.path.toRegex().matches(it.url.toURI().path) -> mapOf("id" to "42")
                 else -> mapOf("id" to networkId.value.toString(), "action_id" to "42")
             }
         }

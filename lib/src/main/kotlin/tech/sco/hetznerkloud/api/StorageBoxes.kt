@@ -13,6 +13,8 @@ import tech.sco.hetznerkloud.model.Subaccount
 import tech.sco.hetznerkloud.request.ChangeDeleteProtection
 import tech.sco.hetznerkloud.request.ChangeStorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
+import tech.sco.hetznerkloud.request.CreateStorageBoxSnapshot
+import tech.sco.hetznerkloud.request.CreateStorageBoxSubaccount
 import tech.sco.hetznerkloud.request.Pagination
 import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
 import tech.sco.hetznerkloud.request.SnapshotFilter
@@ -25,6 +27,8 @@ import tech.sco.hetznerkloud.response.Item
 import tech.sco.hetznerkloud.response.ItemCreated
 import tech.sco.hetznerkloud.response.ItemDeleted
 import tech.sco.hetznerkloud.response.Items
+import tech.sco.hetznerkloud.response.StorageBoxSnapshotCreated
+import tech.sco.hetznerkloud.response.StorageBoxSubaccountCreated
 
 @Suppress("TooManyFunctions")
 class StorageBoxes @InternalAPI constructor(private val httpClient: HttpClient) {
@@ -41,13 +45,33 @@ class StorageBoxes @InternalAPI constructor(private val httpClient: HttpClient) 
     suspend fun create(body: CreateStorageBox): ItemCreated<StorageBox> = httpClient.makeRequest(Route.CREATE_STORAGE_BOX, body = body)
 
     @Throws(Failure::class)
+    suspend fun createSnapshot(storageBoxId: Id, body: CreateStorageBoxSnapshot): StorageBoxSnapshotCreated =
+        httpClient.makeRequest(Route.CREATE_STORAGE_BOX_SNAPSHOT, resourceId = storageBoxId.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun createSubaccount(storageBoxId: Id, body: CreateStorageBoxSubaccount): StorageBoxSubaccountCreated =
+        httpClient.makeRequest(Route.CREATE_STORAGE_BOX_SUBACCOUNT, resourceId = storageBoxId.value, body = body)
+
+    @Throws(Failure::class)
     suspend fun update(id: Id, body: UpdateResource): Item<StorageBox> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun updateSnapshot(id: Id, body: UpdateResource): Item<Snapshot> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SNAPSHOT, resourceId = id.value, body = body)
+
+    @Throws(Failure::class)
+    suspend fun updateSubaccount(id: Id, body: UpdateResource): Item<Subaccount> = httpClient.makeRequest(Route.UPDATE_STORAGE_BOX_SUBACCOUNT, resourceId = id.value, body = body)
 
     @Throws(Failure::class)
     suspend fun content(id: Id): Folders = httpClient.makeRequest(Route.GET_STORAGE_BOX_CONTENT, resourceId = id.value)
 
     @Throws(Failure::class)
     suspend fun delete(id: Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_STORAGE_BOX, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun deleteSnapshot(id: Snapshot.Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_STORAGE_BOX_SNAPSHOT, resourceId = id.value)
+
+    @Throws(Failure::class)
+    suspend fun deleteSubaccount(id: Subaccount.Id): ItemDeleted = httpClient.makeRequest(Route.DELETE_STORAGE_BOX_SUBACCOUNT, resourceId = id.value)
 
     @Throws(Failure::class)
     suspend fun subaccounts(storageBoxId: Id, filter: Set<SubaccountFilter> = emptySet(), pagination: Pagination = Pagination()): Subaccount.Items = httpClient.makeRequest(

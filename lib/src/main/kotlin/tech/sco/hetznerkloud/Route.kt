@@ -4,14 +4,27 @@ import io.ktor.http.HttpMethod
 
 internal typealias HttpMethodAndPath = Pair<HttpMethod, Path>
 
-internal data class Path(val value: String) {
-    fun withId(id: Long) = Path(value.replace("{id}", id.toString()))
+internal data class Path(private val rawValue: String) {
+    companion object {
+        const val BASE = "/v1"
+    }
+
+    val value: String
+        get() = "$BASE/${rawValue.trimStart('/')}"
+
+    override fun toString(): String = value
+
     fun withParams(params: RouteParams): Path {
-        var path: String = value
+        var path: String = rawValue
         params.forEach { (k, v) -> path = path.replace("{$k}", v) }
+        check(!path.contains("{") && !path.contains("}")) {
+            "Failed to replace all parameters in path: $path"
+        }
         return Path(path)
     }
+
     fun toRegex(): Regex = value.replace("(\\{\\w+})".toRegex(), "\\\\d+").toRegex()
+    fun toSegments(): List<String> = value.split("/").filter { it.isNotEmpty() }
 }
 
 internal enum class Route(val value: HttpMethodAndPath) {

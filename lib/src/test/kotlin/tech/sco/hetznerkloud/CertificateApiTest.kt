@@ -31,7 +31,7 @@ class CertificateApiTest :
         val apiToken = ApiToken("foo")
         val mockEngine = createMockEngine(apiToken) {
             when {
-                Route.GET_CERTIFICATE_ACTION.path.toRegex().matches(it.url.toURI().pathWithoutVersion) -> mapOf("id" to "42")
+                Route.GET_CERTIFICATE_ACTION.path.toRegex().matches(it.url.toURI().path) -> mapOf("id" to "42")
                 else -> mapOf("id" to certificateId.value.toString(), "action_id" to "42")
             }
         }

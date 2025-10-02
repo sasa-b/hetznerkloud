@@ -10,18 +10,20 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.encodedPath
 import io.ktor.http.parameters
+import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.valuesOf
 import tech.sco.hetznerkloud.model.RateLimitExceededError
 import tech.sco.hetznerkloud.request.HttpBody
 import tech.sco.hetznerkloud.response.Error
-import kotlin.text.toIntOrNull
-import kotlin.text.toLongOrNull
 
 typealias QueryParams = List<Pair<String, String>>
 typealias RouteParams = Map<String, String>
@@ -30,48 +32,46 @@ internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, rou
     route.value.let {
         val (httpMethod, path) = it
 
-        this
-            .request(BASE_URL) {
-                method = httpMethod
-                url {
-                    appendPathSegments(path.withParams(routeParams).value)
+        this.request {
+            method = httpMethod
+            url {
+                appendPathSegments(path.withParams(routeParams).toSegments())
+            }
+            if (body != null) {
+                contentType(ContentType.Application.Json)
+                setBody(body)
+            }
+            if (queryParams.isNotEmpty()) {
+                parameters {
+                    queryParams.forEach { (key, value) -> append(key, value) }
                 }
-                if (body != null) {
-                    contentType(ContentType.Application.Json)
-                    setBody(body)
-                }
-                if (queryParams.isNotEmpty()) {
-                    parameters {
-                        queryParams.forEach { (key, value) -> append(key, value) }
-                    }
-                }
-            }.body()
+            }
+        }.body()
     }
 
 internal suspend inline fun <reified T> HttpClient.makeRequest(route: Route, resourceId: Long? = null, body: HttpBody? = null, queryParams: QueryParams = emptyList()): T =
     route.value.let {
         val (httpMethod, path) = it
 
-        this
-            .request(BASE_URL) {
-                method = httpMethod
-                url {
-                    if (resourceId != null) {
-                        appendPathSegments(path.withId(resourceId).value)
-                    } else {
-                        appendPathSegments(path.value)
-                    }
+        this.request {
+            method = httpMethod
+            url {
+                if (resourceId != null) {
+                    appendPathSegments(path.withParams(mapOf("id" to resourceId.toString())).toSegments())
+                } else {
+                    appendPathSegments(path.toSegments())
                 }
-                if (body != null) {
-                    contentType(ContentType.Application.Json)
-                    setBody(body)
+            }
+            if (body != null) {
+                contentType(ContentType.Application.Json)
+                setBody(body)
+            }
+            if (queryParams.isNotEmpty()) {
+                parameters {
+                    queryParams.forEach { (key, value) -> append(key, value) }
                 }
-                if (queryParams.isNotEmpty()) {
-                    parameters {
-                        queryParams.forEach { (key, value) -> append(key, value) }
-                    }
-                }
-            }.body()
+            }
+        }.body()
     }
 
 internal fun configureHttpClient(token: ApiToken, httpEngine: HttpClientEngine, block: HttpClientConfig<*>.() -> Unit = {}) = HttpClient(httpEngine) {
@@ -107,6 +107,7 @@ internal fun configureHttpClient(token: ApiToken, httpEngine: HttpClientEngine, 
                                 hourlyRateLimitResetTimestamp = headers["RateLimit-Reset"]?.toLongOrNull(),
                             )
                         }
+
                         else -> errorResponse.error
                     }
 

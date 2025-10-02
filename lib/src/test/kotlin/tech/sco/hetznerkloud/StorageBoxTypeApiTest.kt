@@ -18,7 +18,7 @@ class StorageBoxTypeApiTest :
     ShouldSpec({
         val storageBoxTypeId = StorageBoxType.Id(42)
         val apiToken = ApiToken("foo")
-        val mockEngine = createMockEngine(apiToken) { mapOf("id" to storageBoxTypeId.value.toString()) }
+        val mockEngine = createMockEngine(apiToken) { mapOf("id" to storageBoxTypeId.value.toString(), "action_id" to "42") }
         val underTest = ApiClient.of(apiToken, mockEngine)
 
         val expectedStorageBoxType = StorageBoxType(
