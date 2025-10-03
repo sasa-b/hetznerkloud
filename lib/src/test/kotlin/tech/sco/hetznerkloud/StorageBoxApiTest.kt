@@ -12,6 +12,7 @@ import tech.sco.hetznerkloud.model.Price
 import tech.sco.hetznerkloud.model.Protection
 import tech.sco.hetznerkloud.model.ResourceType
 import tech.sco.hetznerkloud.model.Snapshot
+import tech.sco.hetznerkloud.model.SnapshotResource
 import tech.sco.hetznerkloud.model.StorageBox
 import tech.sco.hetznerkloud.model.StorageBoxResource
 import tech.sco.hetznerkloud.model.StorageBoxSnapshotResource
@@ -23,7 +24,9 @@ import tech.sco.hetznerkloud.request.ChangeStorageBoxType
 import tech.sco.hetznerkloud.request.CreateStorageBox
 import tech.sco.hetznerkloud.request.CreateStorageBoxSnapshot
 import tech.sco.hetznerkloud.request.CreateStorageBoxSubaccount
-import tech.sco.hetznerkloud.request.ResetStorageBoxPassword
+import tech.sco.hetznerkloud.request.EnableSnapshotPlan
+import tech.sco.hetznerkloud.request.ResetPassword
+import tech.sco.hetznerkloud.request.RollbackSnapshotPlan
 import tech.sco.hetznerkloud.request.StorageBoxAccessSettings
 import tech.sco.hetznerkloud.request.SubaccountAccessSettings
 import tech.sco.hetznerkloud.request.UpdateResource
@@ -37,6 +40,7 @@ import tech.sco.hetznerkloud.response.StorageBoxSnapshotCreated
 import tech.sco.hetznerkloud.response.StorageBoxSubaccountCreated
 import java.time.OffsetDateTime
 
+@Suppress("LargeClass")
 class StorageBoxApiTest :
     ShouldSpec({
         val storageBoxId = StorageBox.Id(42)
@@ -231,7 +235,7 @@ class StorageBoxApiTest :
                 )
             }
 
-            should("get a Storage Box subaccount") {
+            should("get a Storage Box subaccount by id") {
                 underTest.storageBoxes.subaccount(storageBoxId, subaccountId) shouldBe Item(
                     Subaccount(
                         id = Subaccount.Id(42),
@@ -292,7 +296,7 @@ class StorageBoxApiTest :
                 )
             }
 
-            should("get a Storage Box snapshot") {
+            should("get a Storage Box snapshot by id") {
                 underTest.storageBoxes.snapshot(storageBoxId, snapshotId) shouldBe Item(
                     Snapshot(
                         id = Snapshot.Id(42),
@@ -482,7 +486,7 @@ class StorageBoxApiTest :
             }
 
             should("reset a Storage Box password") {
-                val requestBody = ResetStorageBoxPassword("12345")
+                val requestBody = ResetPassword("12345")
 
                 jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "reset_storage_box_password.json"
 
@@ -512,7 +516,7 @@ class StorageBoxApiTest :
                     zfsEnabled = false,
                 )
 
-                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_storage_box_access_settings.json"
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box_access_settings.json"
 
                 underTest.storageBoxes.updateAccessSettings(
                     storageBoxId,
@@ -530,6 +534,9 @@ class StorageBoxApiTest :
                     ),
                 )
             }
+        }
+
+        context("Storage Box snapshot write API") {
 
             should("create a Storage Box snapshot") {
 
@@ -588,122 +595,244 @@ class StorageBoxApiTest :
                     ),
                 )
             }
-        }
 
-        should("delete a Storage Box snapshot") {
-            underTest.storageBoxes.deleteSnapshot(storageBoxId, snapshotId) shouldBe ItemDeleted(
-                Action(
-                    id = Action.Id(13),
-                    command = "delete_snapshot",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        StorageBoxResource(id = StorageBox.Id(42)),
-                        StorageBoxSnapshotResource(id = Snapshot.Id(42)),
+            should("delete a Storage Box snapshot") {
+                underTest.storageBoxes.deleteSnapshot(storageBoxId, snapshotId) shouldBe ItemDeleted(
+                    Action(
+                        id = Action.Id(13),
+                        command = "delete_snapshot",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSnapshotResource(id = Snapshot.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
-        }
+                )
+            }
 
-        should("create a Storage Box subaccount") {
+            should("rollback a Storage Box snapshot") {
 
-            val requestBody = CreateStorageBoxSubaccount(
-                password = "string",
-                homeDirectory = "my-backup/server01",
-                accessSettings = SubaccountAccessSettings(
-                    sambaEnabled = false,
-                    sshEnabled = true,
-                    webdavEnabled = false,
-                    reachableExternally = false,
-                    readonly = false,
-                ),
-                description = "my-backup-server01",
-                labels = mapOf(
-                    "environment" to "prod",
-                    "example.com/my" to "label",
-                    "just-a-key" to "",
-                ),
-            )
+                val requestBody = RollbackSnapshotPlan(snapshotId = Snapshot.Id(42))
 
-            jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_subaccount.json"
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "rollback_storage_box_snapshot.json"
 
-            underTest.storageBoxes.createSubaccount(StorageBox.Id(42), requestBody) shouldBe StorageBoxSubaccountCreated(
-                subaccount = StorageBoxSubaccountCreated.Ids(
-                    id = Subaccount.Id(42),
-                    storageBox = StorageBox.Id(43),
-                ),
-                action = Action(
-                    id = Action.Id(13),
-                    command = "create_subaccount",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        StorageBoxResource(id = StorageBox.Id(42)),
-                        StorageBoxSubaccountResource(id = Subaccount.Id(43)),
+                underTest.storageBoxes.rollbackSnapshot(storageBoxId, requestBody) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "rollback_snapshot",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            SnapshotResource(id = Snapshot.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
+                )
+            }
+
+            should("enable a Storage Box snapshot plan") {
+                val requestBody = EnableSnapshotPlan(
+                    maxSnapshots = 10,
+                    minute = 30,
+                    hour = 3,
+                    dayOfWeek = null,
+                    dayOfMonth = null,
+                )
+
+                // TODO: Sort out the issue of null values being removed from the request body
+                // jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "enable_storage_box_snapshot_plan.json"
+
+                underTest.storageBoxes.enableSnapshotPlan(storageBoxId, requestBody) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "enable_snapshot_plan",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("disable a Storage Box snapshot plan") {
+                underTest.storageBoxes.disableSnapshotPlan(storageBoxId) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "disable_snapshot_plan",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
         }
 
-        should("update a Storage Box subaccount") {
+        context("Storage Box subaccount write API") {
 
-            val requestBody = UpdateStorageBoxResource(
-                description = "my-backup-server01",
-                labels = mapOf(
-                    "environment" to "prod",
-                    "example.com/my" to "label",
-                    "just-a-key" to "",
-                ),
-            )
+            should("create a Storage Box subaccount") {
 
-            jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box_subaccount.json"
-
-            underTest.storageBoxes.updateSubaccount(storageBoxId, subaccountId, requestBody) shouldBe Item(
-                Subaccount(
-                    id = Subaccount.Id(42),
-                    username = "u1337-sub1",
-                    homeDirectory = "my_backups/host01.my.company",
-                    server = "u1337-sub1.your-storagebox.de",
-                    accessSettings = Subaccount.AccessSettings(
+                val requestBody = CreateStorageBoxSubaccount(
+                    password = "string",
+                    homeDirectory = "my-backup/server01",
+                    accessSettings = CreateStorageBoxSubaccount.SubaccountAccessSettings(
                         sambaEnabled = false,
-                        sshEnabled = false,
+                        sshEnabled = true,
                         webdavEnabled = false,
                         reachableExternally = false,
                         readonly = false,
                     ),
-                    description = "host01 backup",
+                    description = "my-backup-server01",
                     labels = mapOf(
                         "environment" to "prod",
                         "example.com/my" to "label",
                         "just-a-key" to "",
                     ),
-                    created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
-                    storageBox = StorageBox.Id(42),
-                ),
-            )
-        }
+                )
 
-        should("delete a Storage Box subaccount") {
-            underTest.storageBoxes.deleteSubaccount(storageBoxId, subaccountId) shouldBe ItemDeleted(
-                Action(
-                    id = Action.Id(13),
-                    command = "delete_subaccount",
-                    error = ActionFailedError(message = "Action failed"),
-                    finished = null,
-                    progress = 0,
-                    resources = listOf(
-                        StorageBoxResource(id = StorageBox.Id(42)),
-                        StorageBoxSubaccountResource(id = Subaccount.Id(42)),
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_storage_box_subaccount.json"
+
+                underTest.storageBoxes.createSubaccount(StorageBox.Id(42), requestBody) shouldBe StorageBoxSubaccountCreated(
+                    subaccount = StorageBoxSubaccountCreated.Ids(
+                        id = Subaccount.Id(42),
+                        storageBox = StorageBox.Id(43),
                     ),
-                    started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
-                    status = Action.Status.RUNNING,
-                ),
-            )
+                    action = Action(
+                        id = Action.Id(13),
+                        command = "create_subaccount",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSubaccountResource(id = Subaccount.Id(43)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("update a Storage Box subaccount") {
+
+                val requestBody = UpdateStorageBoxResource(
+                    description = "my-backup-server01",
+                    labels = mapOf(
+                        "environment" to "prod",
+                        "example.com/my" to "label",
+                        "just-a-key" to "",
+                    ),
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box_subaccount.json"
+
+                underTest.storageBoxes.updateSubaccount(storageBoxId, subaccountId, requestBody) shouldBe Item(
+                    Subaccount(
+                        id = Subaccount.Id(42),
+                        username = "u1337-sub1",
+                        homeDirectory = "my_backups/host01.my.company",
+                        server = "u1337-sub1.your-storagebox.de",
+                        accessSettings = Subaccount.AccessSettings(
+                            sambaEnabled = false,
+                            sshEnabled = false,
+                            webdavEnabled = false,
+                            reachableExternally = false,
+                            readonly = false,
+                        ),
+                        description = "host01 backup",
+                        labels = mapOf(
+                            "environment" to "prod",
+                            "example.com/my" to "label",
+                            "just-a-key" to "",
+                        ),
+                        created = OffsetDateTime.parse("2016-01-30T23:55:00+00:00"),
+                        storageBox = StorageBox.Id(42),
+                    ),
+                )
+            }
+
+            should("delete a Storage Box subaccount") {
+                underTest.storageBoxes.deleteSubaccount(storageBoxId, subaccountId) shouldBe ItemDeleted(
+                    Action(
+                        id = Action.Id(13),
+                        command = "delete_subaccount",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSubaccountResource(id = Subaccount.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("update a Storage Box subaccount access settings") {
+                val requestBody = SubaccountAccessSettings(
+                    homeDirectory = "my-backup/server01",
+                    reachableExternally = false,
+                    sambaEnabled = false,
+                    sshEnabled = true,
+                    webdavEnabled = false,
+                    readonly = false,
+                )
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "update_a_storage_box_subaccount_access_settings.json"
+
+                underTest.storageBoxes.updateSubaccountAccessSettings(storageBoxId, subaccountId, requestBody) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "update_access_settings",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSubaccountResource(id = Subaccount.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
+
+            should("reset a Storage Box subaccount password") {
+                val requestBody = ResetPassword("string")
+
+                jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "reset_storage_box_subaccount_password.json"
+
+                underTest.storageBoxes.resetSubaccountPassword(storageBoxId, subaccountId, requestBody) shouldBe Item(
+                    Action(
+                        id = Action.Id(13),
+                        command = "reset_subaccount_password",
+                        error = ActionFailedError(message = "Action failed"),
+                        finished = null,
+                        progress = 0,
+                        resources = listOf(
+                            StorageBoxResource(id = StorageBox.Id(42)),
+                            StorageBoxSubaccountResource(id = Subaccount.Id(42)),
+                        ),
+                        started = OffsetDateTime.parse("2016-01-30T23:50:00+00:00"),
+                        status = Action.Status.RUNNING,
+                    ),
+                )
+            }
         }
     })

@@ -1,0 +1,7 @@
+{
+  "max_snapshots": 10,
+  "minute": 30,
+  "hour": 3,
+  "day_of_week": null,
+  "day_of_month": null
+}

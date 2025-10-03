@@ -228,6 +228,9 @@ internal enum class Route(val value: HttpMethodAndPath) {
     CREATE_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/snapshots"))),
     UPDATE_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Put, Path("/storage_boxes/{id}/snapshots/{snapshot_id}"))),
     DELETE_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Delete, Path("/storage_boxes/{id}/snapshots/{snapshot_id}"))),
+    ROLLBACK_STORAGE_BOX_SNAPSHOT(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/rollback_snapshot"))),
+    DISABLE_STORAGE_BOX_SNAPSHOT_PLAN(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/disable_snapshot_plan"))),
+    ENABLE_STORAGE_BOX_SNAPSHOT_PLAN(Pair(HttpMethod.Post, Path("/storage_boxes/{id}/actions/enable_snapshot_plan"))),
 
     GET_ALL_STORAGE_BOX_TYPES(Pair(HttpMethod.Get, Path("/storage_box_types"))),
     GET_STORAGE_BOX_TYPE(Pair(HttpMethod.Get, Path("/storage_box_types/{id}"))),

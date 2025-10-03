@@ -134,6 +134,10 @@ data class StorageBoxResource(override val id: StorageBox.Id) : Resource
 data class StorageBoxSnapshotResource(override val id: Snapshot.Id) : Resource
 
 @Serializable
+@SerialName("snapshot")
+data class SnapshotResource(override val id: Snapshot.Id) : Resource
+
+@Serializable
 @SerialName("storage_box_subaccount")
 data class StorageBoxSubaccountResource(override val id: Subaccount.Id) : Resource
 

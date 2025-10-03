@@ -292,6 +292,13 @@ internal fun createMockEngine(apiToken: ApiToken, routeParamsProvider: ((HttpReq
         matchRoute(Route.CREATE_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.CREATE_STORAGE_BOX_SNAPSHOT, HttpStatusCode.Created, defaultHeaders)
         matchRoute(Route.UPDATE_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.UPDATE_STORAGE_BOX_SNAPSHOT, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.DELETE_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.DELETE_STORAGE_BOX_SNAPSHOT, HttpStatusCode.NoContent, defaultHeaders)
+        matchRoute(Route.ROLLBACK_STORAGE_BOX_SNAPSHOT, request, routeParamsProvider) -> response(Route.ROLLBACK_STORAGE_BOX_SNAPSHOT, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(Route.ENABLE_STORAGE_BOX_SNAPSHOT_PLAN, request, routeParamsProvider) -> response(Route.ENABLE_STORAGE_BOX_SNAPSHOT_PLAN, HttpStatusCode.Created, defaultHeaders)
+        matchRoute(
+            Route.DISABLE_STORAGE_BOX_SNAPSHOT_PLAN,
+            request,
+            routeParamsProvider,
+        ) -> response(Route.DISABLE_STORAGE_BOX_SNAPSHOT_PLAN, HttpStatusCode.Created, defaultHeaders)
 
         matchRoute(Route.GET_ALL_STORAGE_BOX_TYPES, request, routeParamsProvider) -> response(Route.GET_ALL_STORAGE_BOX_TYPES, HttpStatusCode.OK, defaultHeaders)
         matchRoute(Route.GET_STORAGE_BOX_TYPE, request, routeParamsProvider) -> response(Route.GET_STORAGE_BOX_TYPE, HttpStatusCode.OK, defaultHeaders)
@@ -522,7 +529,7 @@ private fun content(route: Route): String = when (route) {
     Route.CHANGE_STORAGE_BOX_PROTECTION -> "src/test/resources/examples/response/storage_box/change_storage_box_protection.json"
     Route.CHANGE_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/change_storage_box_type.json"
     Route.RESET_STORAGE_BOX_PASSWORD -> "src/test/resources/examples/response/storage_box/reset_storage_box_password.json"
-    Route.UPDATE_STORAGE_BOX_ACCESS_SETTINGS -> "src/test/resources/examples/response/storage_box/update_storage_box_access_settings.json"
+    Route.UPDATE_STORAGE_BOX_ACCESS_SETTINGS -> "src/test/resources/examples/response/storage_box/update_a_storage_box_access_settings.json"
 
     Route.GET_ALL_STORAGE_BOX_TYPES -> "src/test/resources/examples/response/storage_box/get_all_storage_box_types.json"
     Route.GET_STORAGE_BOX_TYPE -> "src/test/resources/examples/response/storage_box/get_a_storage_box_type.json"
@@ -540,6 +547,9 @@ private fun content(route: Route): String = when (route) {
     Route.CREATE_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/create_a_storage_box_snapshot.json"
     Route.UPDATE_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/update_a_storage_box_snapshot.json"
     Route.DELETE_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/delete_a_storage_box_snapshot.json"
+    Route.ROLLBACK_STORAGE_BOX_SNAPSHOT -> "src/test/resources/examples/response/storage_box/rollback_storage_box_snapshot.json"
+    Route.ENABLE_STORAGE_BOX_SNAPSHOT_PLAN -> "src/test/resources/examples/response/storage_box/enable_storage_box_snapshot_plan.json"
+    Route.DISABLE_STORAGE_BOX_SNAPSHOT_PLAN -> "src/test/resources/examples/response/storage_box/disable_storage_box_snapshot_plan.json"
 }.let {
     File(it).readText(Charsets.UTF_8)
 }

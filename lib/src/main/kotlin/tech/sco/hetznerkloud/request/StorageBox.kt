@@ -3,6 +3,7 @@ package tech.sco.hetznerkloud.request
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import tech.sco.hetznerkloud.model.Labels
+import tech.sco.hetznerkloud.model.Snapshot
 
 @Serializable
 data class CreateStorageBox(
@@ -39,7 +40,7 @@ data class ChangeStorageBoxType(
 ) : HttpBody
 
 @Serializable
-data class ResetStorageBoxPassword(val password: String) : HttpBody
+data class ResetPassword(val password: String) : HttpBody
 
 @Serializable
 data class CreateStorageBoxSnapshot(val description: String) : HttpBody
@@ -53,10 +54,25 @@ data class CreateStorageBoxSubaccount(
     val accessSettings: SubaccountAccessSettings,
     val description: String?,
     val labels: Labels,
-) : HttpBody
+) : HttpBody {
+    @Serializable
+    data class SubaccountAccessSettings(
+        @SerialName("reachable_externally")
+        val reachableExternally: Boolean? = null,
+        @SerialName("samba_enabled")
+        val sambaEnabled: Boolean? = null,
+        @SerialName("ssh_enabled")
+        val sshEnabled: Boolean? = null,
+        @SerialName("webdav_enabled")
+        val webdavEnabled: Boolean? = null,
+        val readonly: Boolean? = null,
+    ) : HttpBody
+}
 
 @Serializable
 data class SubaccountAccessSettings(
+    @SerialName("home_directory")
+    val homeDirectory: String?,
     @SerialName("reachable_externally")
     val reachableExternally: Boolean? = null,
     @SerialName("samba_enabled")
@@ -66,7 +82,7 @@ data class SubaccountAccessSettings(
     @SerialName("webdav_enabled")
     val webdavEnabled: Boolean? = null,
     val readonly: Boolean? = null,
-)
+) : HttpBody
 
 @Serializable
 data class StorageBoxAccessSettings(
@@ -84,3 +100,18 @@ data class StorageBoxAccessSettings(
 
 @Serializable
 data class UpdateStorageBoxResource(val description: String?, val labels: Labels) : HttpBody
+
+@Serializable
+data class RollbackSnapshotPlan(@SerialName("snapshot_id") val snapshotId: Snapshot.Id) : HttpBody
+
+@Serializable
+data class EnableSnapshotPlan(
+    @SerialName("max_snapshots")
+    val maxSnapshots: Int,
+    val minute: Int?,
+    val hour: Int?,
+    @SerialName("day_of_week")
+    val dayOfWeek: Int?,
+    @SerialName("day_of_month")
+    val dayOfMonth: Int?,
+) : HttpBody
