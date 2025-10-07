@@ -11,31 +11,31 @@ import tech.sco.hetznerkloud.model.Labels
 import tech.sco.hetznerkloud.model.Network
 import tech.sco.hetznerkloud.model.PlacementGroup
 import tech.sco.hetznerkloud.model.SSHKey
+import tech.sco.hetznerkloud.model.Volume
 
-// TODO: check which values can be omitted and which ones can be sent as null
 @Serializable
 data class CreateServer(
-    val automount: Boolean = false,
-    val datacenter: String? = null,
-    val firewalls: List<Firewall> = emptyList(),
-    val image: String,
-    val labels: Labels? = null,
-    val location: String? = null,
     val name: String,
-    val networks: List<Int> = emptyList(),
-    @SerialName("placement_group")
-    val placementGroup: PlacementGroup.Id? = null,
-    @SerialName("public_net")
-    val publicNetwork: PublicNetwork,
+    val location: String? = null,
+    val datacenter: String? = null,
     @SerialName("server_type")
     val serverType: String,
-    @SerialName("ssh_keys")
-    val sshKeys: List<String>,
     @SerialName("start_after_create")
     val startAfterCreate: Boolean = true,
+    val image: String,
+    @SerialName("placement_group")
+    val placementGroup: PlacementGroup.Id? = null,
+    @SerialName("ssh_keys")
+    val sshKeys: List<String>,
+    val volumes: List<Volume.Id> = emptyList(),
+    val networks: List<Network.Id> = emptyList(),
+    val firewalls: List<Firewall> = emptyList(),
     @SerialName("user_data")
     val userData: String,
-    val volumes: List<Int> = emptyList(),
+    val labels: Labels? = null,
+    val automount: Boolean = false,
+    @SerialName("public_net")
+    val publicNetwork: PublicNetwork,
 ) : HttpBody {
 
     init {

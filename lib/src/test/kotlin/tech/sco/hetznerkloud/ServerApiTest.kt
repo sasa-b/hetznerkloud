@@ -22,6 +22,7 @@ import tech.sco.hetznerkloud.model.Server
 import tech.sco.hetznerkloud.model.ServerMetrics
 import tech.sco.hetznerkloud.model.ServerResource
 import tech.sco.hetznerkloud.model.ServerType
+import tech.sco.hetznerkloud.model.Volume
 import tech.sco.hetznerkloud.request.AddToPlacementGroup
 import tech.sco.hetznerkloud.request.AttachIsoById
 import tech.sco.hetznerkloud.request.AttachIsoByName
@@ -381,7 +382,7 @@ class ServerApiTest :
                     ),
                     location = "nbg1",
                     name = "my-server",
-                    networks = listOf(456),
+                    networks = listOf(Network.Id(456)),
                     placementGroup = PlacementGroup.Id(1),
                     publicNetwork = CreateServer.PublicNetwork(
                         enableIpv4 = false,
@@ -393,7 +394,7 @@ class ServerApiTest :
                     sshKeys = listOf("my-ssh-key"),
                     startAfterCreate = true,
                     userData = "#cloud-config\nruncmd:\n- [touch, /root/cloud-init-worked]\n",
-                    volumes = listOf(123),
+                    volumes = listOf(Volume.Id(123)),
                 )
 
                 jsonEncoder().encodeToString(requestBody) shouldBeEqualToRequest "create_a_server.json"
