@@ -6,10 +6,10 @@ detekt = "1.23.8"
 git-version = "6.4.4"
 konsist = "0.17.3"
 kotest = "5.9.1"
-kotlin = "2.2.0"
+kotlin = "2.2.20"
 ktor = "3.2.3"
 maven-deployer = "0.18.0"
-version-catalog-update = "1.0.0"
+version-catalog-update = "1.0.1"
 
 [libraries]
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
